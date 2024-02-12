@@ -30,7 +30,7 @@ class _TransferMoneyState extends State<TransferMoney> {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              Text(AppStrings.transfermoney),
+              const Text(AppStrings.transfermoney),
               // SwitchAccount(accountType: isMyAccount),
               FlutterToggleTab(
                 labels: accounts,
@@ -66,7 +66,7 @@ Container fromTo(String from, String accNo) {
     decoration: BoxDecoration(
         border: Border.all(color: Colors.black.withOpacity(0.2)),
         color: Colors.white,
-        borderRadius: BorderRadius.all(Radius.circular(7))),
+        borderRadius: const BorderRadius.all(Radius.circular(7))),
     child: Padding(
       padding: const EdgeInsets.fromLTRB(10, 5, 10, 0),
       child: Column(

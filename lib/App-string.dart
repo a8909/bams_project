@@ -54,4 +54,8 @@ class AppStrings {
   static const savedBeneficiary = "Saved Beneficiaries";
   static const transferSummary = "Transfer Summary";
   static const amountToSend = "Amount to send?";
+  static const transactionPin = "Transaction PIN";
+  static const transactiontxt =
+      "Kindly enter your transaction PIN to complete your transaction";
+  static const transactionSuccessful = "TransactionSuccessful";
 }
