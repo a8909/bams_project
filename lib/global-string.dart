@@ -1,0 +1,9 @@
+const String login = "/login";
+const String signup = "/signup";
+const String verification = "/verification";
+const String signin = "/signin";
+const String toast = "/toast";
+const String screen1 = "/screen1";
+const String verifyaccount = "/verifyaccount";
+const String transfer = "/transfer";
+const String transfermoney = "/transfermoney";

@@ -1,0 +1,46 @@
+// import 'dart:js';
+
+import 'package:bams_project/HomePage_1.dart';
+import 'package:bams_project/controller/dependency_injection.dart';
+import 'package:bams_project/global-string.dart';
+import 'package:bams_project/login.dart';
+import 'package:bams_project/screen_1.dart';
+import 'package:bams_project/signIn.dart';
+import 'package:bams_project/signup.dart';
+import 'package:bams_project/toast.dart';
+import 'package:bams_project/transfer-money.dart';
+import 'package:bams_project/transfer.dart';
+import 'package:bams_project/verify-account.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import 'otp-verificaion.dart';
+
+Future<void> main() async {
+  runApp(const MyApp());
+  DependencyInjection.init();
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return GetMaterialApp(
+      initialRoute: "/",
+      routes: {
+        '/': (context) => const MainPage(),
+        login: (context) => const LogIn(),
+        signup: (context) => const SignUp(),
+        verification: (context) => const Verification(),
+        signin: (context) => const SignIn(),
+        toast: (context) => const Toast(),
+        screen1: (context) => const Screen1(),
+        verifyaccount: (context) => const VerifyAccount(),
+        transfer: (context) => const Transfer(),
+        transfermoney: (context) => const TransferMoney()
+      },
+      debugShowCheckedModeBanner: false,
+    );
+  }
+}
