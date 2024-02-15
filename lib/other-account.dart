@@ -26,132 +26,168 @@ class _OtherAccountState extends State<OtherAccount> {
         const SizedBox(height: 10),
         container("From"),
         const SizedBox(height: 10),
-        const SizedBox(
-          height: 50,
-          width: 250,
-          child: TextField(
-              decoration: InputDecoration(
-                  hintText: "Recepient",
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(7))))),
-        ),
-        const SizedBox(
-          width: 10,
-        ),
-        GestureDetector(
-          onTap: () {
-            showModalBottomSheet(
-              context: context,
-              builder: (context) {
-                return StatefulBuilder(
-                  builder: (context, setState) {
-                    return Container(
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            cancelButton(context),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            const Text(AppStrings.savedBeneficiary),
-                            const TextField(
-                              decoration: InputDecoration(
-                                  hintText: "search beneficiaries",
-                                  prefixIcon: Icon(Icons.search_outlined),
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(7)))),
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
+        Row(
+          children: [
+            const SizedBox(
+              height: 50,
+              width: 250,
+              child: TextField(
+                  decoration: InputDecoration(
+                      hintText: "Recepient",
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(7))))),
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            GestureDetector(
+              onTap: () {
+                showModalBottomSheet(
+                  context: context,
+                  builder: (context) {
+                    return StatefulBuilder(
+                      builder: (context, setState) {
+                        return Container(
+                          child: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                cancelButton(context),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                const Text(AppStrings.savedBeneficiary),
+                                const TextField(
+                                  decoration: InputDecoration(
+                                      hintText: "search beneficiaries",
+                                      prefixIcon: Icon(Icons.search_outlined),
+                                      border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(7)))),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
 
-                            // if(i = 0; i < bank bbeneficiary API.length; i++ ) the api to be render should be loop through
-                            Container(
-                              height: 50,
-                              width: double.infinity,
-                              child: Row(
-                                children: [
-                                  IconButton(
-                                      onPressed: () {
-                                        setState(() {
-                                          iconType = !iconType;
-                                        });
-                                      },
-                                      icon: (iconType)
-                                          ? const Icon(
-                                              Icons.circle_outlined,
-                                            )
-                                          : const Icon(
-                                              Icons.check_circle_rounded)),
-                                  // Image.asset(name)  image should be passed from backend
-                                  const Column(
+                                // if(i = 0; i < bank bbeneficiary API.length; i++ ) the api to be render should be loop through
+                                Container(
+                                  height: 50,
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                          color:
+                                              Colors.black.withOpacity(0.5))),
+                                  child: Row(
                                     children: [
-                                      Row(
+                                      IconButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              iconType = !iconType;
+                                            });
+                                          },
+                                          icon: (iconType)
+                                              ? const Icon(
+                                                  Icons.circle_outlined,
+                                                )
+                                              : const Icon(
+                                                  Icons.check_circle_rounded)),
+                                      // Image.asset(name)  image should be passed from backend
+                                      const Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
                                         children: [
-                                          Text("CUR."),
-                                          Text("3092773812")
-                                        ],
-                                      ),
-                                      Text("JOHN DOE ADEROGBA")
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                              height: 50,
-                              width: double.infinity,
-                              child: ElevatedButton(
-                                  onPressed: () {
-                                    showModalBottomSheet(
-                                      context: context,
-                                      builder: (context) {
-                                        return Container(
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(10.0),
-                                            child: Column(
-                                              children: [
-                                                cancelButton(context),
-                                                const Text(
-                                                    AppStrings.addBeneficiary),
-                                                _BeneficiaryIcon(
-                                                    "Create beneficiaries Group"),
-                                              ],
-                                            ),
+                                          Row(
+                                            children: [
+                                              Text("CUR."),
+                                              Text("3092773812")
+                                            ],
                                           ),
-                                        );
-                                      },
-                                    );
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                      backgroundColor: AppColors.btn1,
-                                      foregroundColor: Colors.white),
-                                  child: const Text(AppStrings.cont)),
-                            )
-                          ],
-                        ),
-                      ),
+                                          Text("JOHN DOE ADEROGBA")
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                const Spacer(),
+                                SizedBox(
+                                  height: 50,
+                                  width: double.infinity,
+                                  child: ElevatedButton(
+                                      onPressed: () {},
+                                      style: ElevatedButton.styleFrom(
+                                          backgroundColor: AppColors.btn1,
+                                          foregroundColor: Colors.white),
+                                      child: const Text(AppStrings.cont)),
+                                )
+                              ],
+                            ),
+                          ),
+                        );
+                      },
                     );
                   },
                 );
               },
-            );
-          },
-          child: Container(
-            height: 50,
-            width: 50,
-            color: AppColors.btn2,
-            child: const Icon(Icons.person_add_alt_outlined),
-          ),
+              child: Container(
+                height: 50,
+                width: 50,
+                decoration: const BoxDecoration(
+                    color: AppColors.btn2,
+                    borderRadius: BorderRadius.all(Radius.circular(7))),
+                child: const Icon(Icons
+                    .person_add_alt_outlined), // the precise image should be downloaded from figma which should be reverted..
+              ),
+            ),
+          ],
         ),
-
         // const AppField(hint: "Recepient", heigth: 7),
         const SizedBox(height: 10),
         GestureDetector(
-            onTap: () {}, child: _BeneficiaryIcon(AppStrings.addBeneficiary)),
+            onTap: () {
+              showModalBottomSheet(
+                context: context,
+                builder: (context) {
+                  return StatefulBuilder(
+                    builder: (context, setState) {
+                      return Container(
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Column(
+                            children: [
+                              cancelButton(context),
+                              const Text(AppStrings.addBeneficiary),
+                              _BeneficiaryIcon("Create beneficiaries Group"),
+                              (iconType)
+                                  ? Row(
+                                      children: [
+                                        Container(
+                                          height: 100,
+                                          width: 200,
+                                          decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  color: Colors.black
+                                                      .withOpacity(0.5))),
+                                        ),
+                                        InkWell(
+                                            onTapCancel: () {
+                                              Navigator.pop(context);
+                                            },
+                                            child: const Icon(Icons
+                                                .disabled_by_default_outlined))
+                                      ],
+                                    )
+                                  : const Text("")
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+              );
+            },
+            child: _BeneficiaryIcon(AppStrings.addBeneficiary)),
         const SizedBox(height: 20),
         const AppField(hint: "Why are you sending money?", heigth: 7),
         const SizedBox(

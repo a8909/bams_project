@@ -14,14 +14,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  bool addAccount = false;
-
-  void addFunction() {
-    setState(() {
-      addAccount = !addAccount;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,96 +46,109 @@ class _HomeState extends State<Home> {
                       isScrollControlled: true,
                       context: context,
                       builder: (BuildContext context) {
-                        return Container(
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.max,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                cancelButton(context),
-                                const Text(
-                                  AppStrings.addAccount,
-                                  style: TextStyle(
-                                      fontSize: 40, color: AppColors.txt1),
-                                ),
-                                const Text(
-                                  AppStrings.local,
-                                  style: TextStyle(fontSize: 10),
-                                ),
-                                const SizedBox(height: 10),
-                                const AppField(
-                                    hint: AppStrings.accountNumber, heigth: 7),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                container("Guarantee Trust Bank"),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                (addAccount)
-                                    ? Column(
-                                        children: [
-                                          const AppField(
-                                              hint: AppStrings.accountNumber,
-                                              heigth: 7),
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                          container("Guarantee Trust Bank"),
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                        ],
-                                      )
-                                    : const Text(AppStrings.empty),
-                                Align(
-                                  alignment: Alignment.center,
-                                  child: SizedBox(
-                                    height: 50,
-                                    width: 180,
-                                    child: OutlinedButton(
-                                        onPressed: () => addFunction(),
-                                        style: OutlinedButton.styleFrom(
-                                            backgroundColor:
-                                                Colors.grey.withOpacity(0.1),
-                                            foregroundColor: Colors.grey),
-                                        child: const Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            Text("Add another account"),
-                                            Icon(Icons
-                                                .add_circle_outline_outlined)
-                                          ],
-                                        )),
-                                  ),
-                                ),
-                                const Spacer(),
-                                SizedBox(
-                                  height: 50,
-                                  width: double.infinity,
-                                  child: ElevatedButton(
-                                      onPressed: () {
-                                        showModalBottomSheet(
-                                          context: context,
-                                          builder: (context) {
-                                            return const VerifyAccount();
+                        return StatefulBuilder(
+                          builder: (context, setState) {
+                            bool addAccount = false;
+                            void addFunction() {
+                              setState(() {
+                                addAccount = !addAccount;
+                              });
+                            }
+
+                            return Container(
+                              child: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.max,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    cancelButton(context),
+                                    const Text(
+                                      AppStrings.addAccount,
+                                      style: TextStyle(
+                                          fontSize: 40, color: AppColors.txt1),
+                                    ),
+                                    const Text(
+                                      AppStrings.local,
+                                      style: TextStyle(fontSize: 10),
+                                    ),
+                                    const SizedBox(height: 10),
+                                    const AppField(
+                                        hint: AppStrings.accountNumber,
+                                        heigth: 7),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    container("Guarantee Trust Bank"),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    (addAccount)
+                                        ? Column(
+                                            children: [
+                                              const AppField(
+                                                  hint:
+                                                      AppStrings.accountNumber,
+                                                  heigth: 7),
+                                              const SizedBox(
+                                                height: 10,
+                                              ),
+                                              container("Guarantee Trust Bank"),
+                                              const SizedBox(
+                                                height: 10,
+                                              ),
+                                            ],
+                                          )
+                                        : const Text(AppStrings.empty),
+                                    Align(
+                                      alignment: Alignment.center,
+                                      child: SizedBox(
+                                        height: 50,
+                                        width: 180,
+                                        child: OutlinedButton(
+                                            onPressed: () => addFunction(),
+                                            style: OutlinedButton.styleFrom(
+                                                backgroundColor: Colors.grey
+                                                    .withOpacity(0.1),
+                                                foregroundColor: Colors.grey),
+                                            child: const Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                Text("Add another account"),
+                                                Icon(Icons
+                                                    .add_circle_outline_outlined)
+                                              ],
+                                            )),
+                                      ),
+                                    ),
+                                    const Spacer(),
+                                    SizedBox(
+                                      height: 50,
+                                      width: double.infinity,
+                                      child: ElevatedButton(
+                                          onPressed: () {
+                                            showModalBottomSheet(
+                                              context: context,
+                                              builder: (context) {
+                                                return const VerifyAccount();
+                                              },
+                                            );
                                           },
-                                        );
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                          // shape:  OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(7))),
-                                          backgroundColor: AppColors.btn1),
-                                      child: const Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [Text(AppStrings.done)],
-                                      )),
-                                )
-                              ],
-                            ),
-                          ),
+                                          style: ElevatedButton.styleFrom(
+                                              // shape:  OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(7))),
+                                              backgroundColor: AppColors.btn1),
+                                          child: const Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [Text(AppStrings.done)],
+                                          )),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
                         );
                       },
                     );
