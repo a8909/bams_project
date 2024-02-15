@@ -58,4 +58,5 @@ class AppStrings {
   static const transactiontxt =
       "Kindly enter your transaction PIN to complete your transaction";
   static const transactionSuccessful = "TransactionSuccessful";
+  static const onboard1 = "Managing your money just got a lot easier...";
 }

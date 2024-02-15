@@ -153,7 +153,7 @@ class _SwitchAccountState extends State<SwitchAccount> {
               child: Container(
                 color: Colors.white.withOpacity(0.5),
                 width: 100,
-                child: Column(
+                child: const Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(AppStrings.ownaccount),
@@ -174,7 +174,7 @@ class _SwitchAccountState extends State<SwitchAccount> {
               child: Container(
                 width: 100,
                 color: Colors.white.withOpacity(0.5),
-                child: Column(
+                child: const Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(AppStrings.otheraccount),

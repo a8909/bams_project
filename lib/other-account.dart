@@ -169,15 +169,21 @@ class _OtherAccountState extends State<OtherAccount> {
                                                   color: Colors.black
                                                       .withOpacity(0.5))),
                                         ),
-                                        InkWell(
-                                            onTapCancel: () {
-                                              Navigator.pop(context);
-                                            },
-                                            child: const Icon(Icons
-                                                .disabled_by_default_outlined))
+                                        const Icon(
+                                            Icons.disabled_by_default_outlined)
                                       ],
                                     )
-                                  : const Text("")
+                                  : const Text(""),
+                              GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      iconType = !iconType;
+                                    });
+                                  },
+                                  child: _BeneficiaryIcon(
+                                      "Add Another Beneficiary")),
+                              // elvBtn(AppStrings.done, "routeName", context, 50,
+                              //     double.negativeInfinity)
                             ],
                           ),
                         ),

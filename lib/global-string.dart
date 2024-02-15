@@ -7,3 +7,4 @@ const String screen1 = "/screen1";
 const String verifyaccount = "/verifyaccount";
 const String transfer = "/transfer";
 const String transfermoney = "/transfermoney";
+const String mainpage = "/mainpage";

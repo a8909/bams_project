@@ -2,6 +2,7 @@
 
 import 'package:bams_project/HomePage_1.dart';
 import 'package:bams_project/controller/dependency_injection.dart';
+import 'package:bams_project/controller/splash.dart';
 import 'package:bams_project/global-string.dart';
 import 'package:bams_project/login.dart';
 import 'package:bams_project/screen_1.dart';
@@ -29,7 +30,8 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       initialRoute: "/",
       routes: {
-        '/': (context) => const MainPage(),
+        '/': (context) => const SplashScreen(),
+        mainpage: (context) => const MainPage(),
         login: (context) => const LogIn(),
         signup: (context) => const SignUp(),
         verification: (context) => const Verification(),
