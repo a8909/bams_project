@@ -1,4 +1,3 @@
-import 'package:bams_project/HomePage_1.dart';
 import 'package:bams_project/controller/onboarding%20screens/onboard_screens.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

@@ -2,6 +2,7 @@ import 'package:bams_project/App-string.dart';
 import 'package:bams_project/color-template.dart';
 import 'package:bams_project/elevatedBut.dart';
 import 'package:bams_project/fingerprint.dart';
+import 'package:bams_project/screen_1.dart';
 import 'package:bams_project/textfield.dart';
 import 'package:bams_project/top-content.dart';
 import 'package:flutter/material.dart';
@@ -41,7 +42,16 @@ class LogIn extends StatelessWidget {
               const SizedBox(height: 20),
               Row(
                 children: [
-                  elvBtn(AppStrings.login, "routeName", context, 50, 266),
+                  elvBtn(
+                      AppStrings.login,
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const Screen1(),
+                          )) as String,
+                      context,
+                      50,
+                      266),
                   const Padding(
                     padding: EdgeInsets.only(left: 10),
                     child: FingerPrint(),

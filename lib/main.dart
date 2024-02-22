@@ -2,6 +2,7 @@
 
 import 'package:bams_project/HomePage_1.dart';
 import 'package:bams_project/controller/dependency_injection.dart';
+import 'package:bams_project/controller/onboarding%20screens/onboard_screens.dart';
 import 'package:bams_project/controller/splash.dart';
 import 'package:bams_project/global-string.dart';
 import 'package:bams_project/login.dart';
@@ -31,6 +32,7 @@ class MyApp extends StatelessWidget {
       initialRoute: "/",
       routes: {
         '/': (context) => const SplashScreen(),
+        firstScreen: (context) => const OnboardingScreens(),
         mainpage: (context) => const MainPage(),
         login: (context) => const LogIn(),
         signup: (context) => const SignUp(),

@@ -12,8 +12,8 @@ class FingerPrint extends StatefulWidget {
 class _FingerPrintState extends State<FingerPrint> {
   // final screensize = MediaQuery.of(BuildContext context).size;
   LocalAuthentication auth = LocalAuthentication();
-  // bool _canCheckBiometric = false;
-  // List<BiometricType>? available;
+  bool _canCheckBiometric = false;
+  List<BiometricType>? available;
   String success = "Authorization Successful";
   String unsuccessful = "Authorization failed";
 
@@ -26,7 +26,7 @@ class _FingerPrintState extends State<FingerPrint> {
     }
     if (!mounted) return;
     setState(() {
-      canCheckBiometric = canCheckBiometric;
+      _canCheckBiometric = canCheckBiometric;
     });
   }
 
@@ -38,7 +38,7 @@ class _FingerPrintState extends State<FingerPrint> {
       print(e);
     }
     setState(() {
-      availableBiometric = availableBiometric;
+      available = availableBiometric;
     });
   }
 
@@ -59,6 +59,7 @@ class _FingerPrintState extends State<FingerPrint> {
     if (!mounted) return;
     setState(() {
       canAuthenticate ? print(success) : print(unsuccessful);
+      Navigator.of(context).pushNamed("/screen1");
     });
     return authenticate();
   }

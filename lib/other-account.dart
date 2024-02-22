@@ -41,8 +41,15 @@ class _OtherAccountState extends State<OtherAccount> {
               width: 10,
             ),
             GestureDetector(
-              onTap: () {
-                showModalBottomSheet(
+              onTap: () async {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return Center(child: CircularProgressIndicator());
+                  },
+                );
+
+                await showModalBottomSheet(
                   context: context,
                   builder: (context) {
                     return StatefulBuilder(
@@ -70,7 +77,7 @@ class _OtherAccountState extends State<OtherAccount> {
                                   height: 10,
                                 ),
 
-                                // if(i = 0; i < bank bbeneficiary API.length; i++ ) the api to be render should be loop through
+                                // if(i = 0; i < bank bbeneficiary API.length; i++ ) the api to be render should be loop through using listviewbuilder
                                 Container(
                                   height: 50,
                                   width: double.infinity,
@@ -128,6 +135,7 @@ class _OtherAccountState extends State<OtherAccount> {
                     );
                   },
                 );
+                Navigator.pop(context);
               },
               child: Container(
                 height: 50,

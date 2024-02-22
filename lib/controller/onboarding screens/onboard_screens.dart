@@ -1,7 +1,8 @@
-import 'package:bams_project/controller/onboarding%20screens/page1.dart';
-import 'package:bams_project/controller/onboarding%20screens/page2.dart';
-import 'package:bams_project/controller/onboarding%20screens/page3.dart';
 import 'package:flutter/material.dart';
+
+import 'page1.dart';
+import 'page2.dart';
+import 'page3.dart';
 
 class OnboardingScreens extends StatefulWidget {
   const OnboardingScreens({super.key});
@@ -16,13 +17,14 @@ class _OnboardingScreensState extends State<OnboardingScreens> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: onboardingColor ? Colors.blue : Colors.white,
       body: Stack(
         children: [
           PageView(
             controller: _onboardingController,
             onPageChanged: (value) {
               setState(() {
-                onboardingColor = (value == 1);
+                onboardingColor = (value == 0);
               });
             },
             children: const [
@@ -31,7 +33,9 @@ class _OnboardingScreensState extends State<OnboardingScreens> {
               Onboarding3(),
             ],
           ),
-          onboardingBtns(context)
+          // const Spacer(),
+          Align(
+              alignment: Alignment.bottomCenter, child: onboardingBtns(context))
         ],
       ),
     );
