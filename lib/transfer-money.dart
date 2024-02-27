@@ -1,13 +1,12 @@
 import 'package:bams_project/App-string.dart';
+import 'package:bams_project/color-template.dart';
 import 'package:bams_project/other-account.dart';
 // import 'package:bams_project/elevatedBut.dart';
 
 // import 'package:bams_project/textfield.dart';
 import 'package:bams_project/top-content.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:flutter_toggle_tab/flutter_toggle_tab.dart';
-import 'package:get/get.dart';
 
 class TransferMoney extends StatefulWidget {
   const TransferMoney({super.key});
@@ -29,8 +28,15 @@ class _TransferMoneyState extends State<TransferMoney> {
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(AppStrings.transfermoney),
+              const Text(
+                AppStrings.transfermoney,
+                style: TextStyle(color: AppColors.btn2, fontSize: 40),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
               // SwitchAccount(accountType: isMyAccount),
               FlutterToggleTab(
                 labels: accounts,
@@ -40,11 +46,13 @@ class _TransferMoneyState extends State<TransferMoney> {
                   });
                 },
                 selectedIndex: selectedIndex,
+                selectedTextStyle: const TextStyle(
+                    fontWeight: FontWeight.bold, color: Colors.black),
                 height: 50,
                 width: 90,
                 borderRadius: 30,
-                selectedBackgroundColors: [Colors.grey],
-                unSelectedBackgroundColors: [Colors.white],
+                selectedBackgroundColors: [Colors.white],
+                unSelectedBackgroundColors: [Colors.grey],
               ),
               const SizedBox(height: 30),
               (selectedIndex.isEven)

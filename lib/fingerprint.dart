@@ -30,7 +30,7 @@ class _FingerPrintState extends State<FingerPrint> {
     });
   }
 
-  Future<void> _getAvailableBiometric() async {
+  Future<void> getAvailableBiometric() async {
     List<BiometricType>? availableBiometric;
     try {
       availableBiometric = await auth.getAvailableBiometrics();
@@ -69,7 +69,7 @@ class _FingerPrintState extends State<FingerPrint> {
     // TODO: implement initState
     super.initState();
 
-    _getAvailableBiometric();
+    getAvailableBiometric();
     _checkBiomerics();
   }
 

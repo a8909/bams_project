@@ -1,3 +1,4 @@
+import 'package:bams_project/account.dart';
 import 'package:bams_project/color-template.dart';
 import 'package:bams_project/home.dart';
 import 'package:bams_project/transfer.dart';
@@ -30,9 +31,7 @@ class _Screen1State extends State<Screen1> {
 
 final pages = [
   const Home(),
-  const Center(
-    child: Text("hello"),
-  ),
+  const BankAccount(),
   const Transfer(),
 ];
 
