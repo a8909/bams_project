@@ -31,7 +31,7 @@ class _OtherAccountState extends State<OtherAccount> {
       children: [
         const AppField(hint: "Amount to send?", heigth: 7),
         const SizedBox(height: 10),
-        container("From"),
+        container("From", ""),
         const SizedBox(height: 10),
         Row(
           children: [
@@ -195,9 +195,8 @@ class _OtherAccountState extends State<OtherAccount> {
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
                                               children: [
-
                                                 // DropdownButton(items: items, onChanged: (value) {
-                                                  
+
                                                 // },).toList()
                                                 TextField(
                                                   decoration: InputDecoration(

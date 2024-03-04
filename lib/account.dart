@@ -29,6 +29,10 @@ class BankAccount extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
+                  Image.network(
+                      height: 80,
+                      width: 80,
+                      "https://s3-alpha-sig.figma.com/img/46bc/9aa2/ede4a07c6d6b268dbf051bef02038cc1?Expires=1710720000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=kou4JWaWko46z~uRrQ51idZAfdGf-rIGBb0hdddH3Yc8~w1wvOn87F9VmZ-oyNlbDxg-9kkNkKMVjd-Rsg2RPFa-M5q7xkl2MuIPirJfdOridVzP0-njMg7Mn7WnnjhvdkKhuQbdFqnA1668yTeA~kcTzCko5-iwnHI07vWRXDe76mqYTszHgypbs5HgNraA-D563ZVlfHortnlxXsNI~rb6wFWhAmjIzP5Rse4XVgXjyemtpd5XRMvagXSQzx6EG4D968rCmAvvmTfW62r3cVlnLEOZ7CiXVs0qjoFLyum5UwPuIArBUa7Gfc0m-UHN0y1C89p-twasxnxv7ZqQXA__"),
                   // AssetImage(assetName) this  should be passed dynamically from end point
                   Container(
                       child: const Column(

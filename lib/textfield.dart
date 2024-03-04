@@ -77,17 +77,11 @@ class HelperPassword extends StatefulWidget {
 
 class _HelperPasswordState extends State<HelperPassword> {
   bool visible = true;
+
   @override
   Widget build(BuildContext context) {
     return TextField(
-      onChanged: (String progress) {
-        LinearProgressIndicator(
-          value: AppStrings.passwordStrength,
-          backgroundColor: Colors.grey,
-          valueColor: AlwaysStoppedAnimation(
-              AppStrings.passwordStrength > 0.5 ? Colors.green : Colors.red),
-        );
-      },
+      onChanged: (value) => value,
       obscureText: visible,
       decoration: InputDecoration(
           helperText: widget.helper,
