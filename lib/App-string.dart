@@ -39,7 +39,7 @@ class AppStrings {
   static const local = "Enter your Local account details";
   static const accountNumber = "Enter account number";
   static const done = "Done";
-  static const empty = "null";
+  static const empty = "";
   static const verifyaccount = "Verify Account";
   static const sweep = "Sweep funds easily.";
   static const sweepTransfer =

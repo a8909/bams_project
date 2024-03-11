@@ -23,7 +23,15 @@ class _HomeState extends State<Home> {
   String valueChange = "Last 6 months";
   // int counter = 0;
   final _controller = ScrollController();
+  final TextEditingController controller = TextEditingController();
   bool addAccount = false;
+
+  // onPressAddAccount(bool addAnotherAccount) {
+  //   setState(() {
+  //     print("state passsed");
+  //     addAccount == (addAnotherAccount = true);
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +61,6 @@ class _HomeState extends State<Home> {
               width: 150,
               child: OutlinedButton(
                   onPressed: () {
-                    int counter = 0;
                     showModalBottomSheet(
                       isScrollControlled: true,
                       context: context,
@@ -76,8 +83,11 @@ class _HomeState extends State<Home> {
                                   style: TextStyle(fontSize: 10),
                                 ),
                                 const SizedBox(height: 10),
-                                const AppField(
-                                    hint: AppStrings.accountNumber, heigth: 7),
+                                AppField(
+                                  hint: AppStrings.accountNumber,
+                                  heigth: 7,
+                                  controller: controller,
+                                ),
                                 const SizedBox(
                                   height: 10,
                                 ),
@@ -87,6 +97,7 @@ class _HomeState extends State<Home> {
                                   height: 10,
                                 ),
                                 (addAccount)
+                                    // onPressAddAccount(true)
                                     ? const Text(AppStrings.empty)
                                     : ListView.builder(
                                         shrinkWrap: true,
@@ -98,10 +109,12 @@ class _HomeState extends State<Home> {
                                                 0, 0, 0, 8),
                                             child: Column(
                                               children: [
-                                                const AppField(
-                                                    hint: AppStrings
-                                                        .accountNumber,
-                                                    heigth: 7),
+                                                AppField(
+                                                  hint:
+                                                      AppStrings.accountNumber,
+                                                  heigth: 7,
+                                                  controller: controller,
+                                                ),
                                                 const SizedBox(
                                                   height: 10,
                                                 ),
@@ -204,6 +217,8 @@ class _HomeState extends State<Home> {
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(5))),
                           child: DropdownButton(
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(7)),
                             // value: valueChange = valueChange,
                             items: monthList.map((e) {
                               return DropdownMenuItem(value: e, child: Text(e));

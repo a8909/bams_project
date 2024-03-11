@@ -5,22 +5,23 @@ import 'package:flutter/material.dart';
 
 class TxtField extends StatefulWidget {
   final String label;
+  final TextEditingController controller;
 
-  const TxtField({
-    super.key,
-    required this.label,
-  });
+  const TxtField({super.key, required this.label, required this.controller});
 
   @override
   State<TxtField> createState() => _TxtFieldState();
 }
 
 class _TxtFieldState extends State<TxtField> {
+  final TextEditingController controller = TextEditingController();
+
   // late final String label;
   bool visible = true;
   @override
   Widget build(BuildContext context) {
     return TextField(
+      controller: controller,
       obscureText: visible,
       decoration: InputDecoration(
           label: Text(widget.label),
@@ -41,27 +42,33 @@ class _TxtFieldState extends State<TxtField> {
           border: const OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(7))),
           focusedBorder: const OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.transparent),
+              borderSide: BorderSide(color: Colors.blue),
               borderRadius: BorderRadius.all(Radius.circular(7)))),
     );
   }
 }
 
 class AppField extends StatelessWidget {
+  final TextEditingController controller;
   final String hint;
   final double heigth;
-  const AppField({super.key, required this.hint, required this.heigth});
+  const AppField(
+      {super.key,
+      required this.hint,
+      required this.heigth,
+      required this.controller});
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      controller: controller,
       decoration: InputDecoration(
           label: Text(hint),
           hintText: hint,
           border: OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(heigth))),
           focusedBorder: OutlineInputBorder(
-              borderSide: const BorderSide(color: Colors.transparent),
+              borderSide: const BorderSide(color: Colors.blue),
               borderRadius: BorderRadius.all(Radius.circular(heigth)))),
     );
   }

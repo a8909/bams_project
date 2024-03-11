@@ -19,6 +19,7 @@ class _SignInState extends State<SignIn> {
   final letters = RegExp(r".*[A-Za-z].*");
   bool visible = true;
   String message = AppStrings.helperTxt;
+  final TextEditingController controller = TextEditingController();
 
   void onPasswordChange(String value) {
     password = value.trim();
@@ -115,7 +116,10 @@ class _SignInState extends State<SignIn> {
                 Text(message,
                     style: const TextStyle(fontSize: 18, color: Colors.grey)),
                 const SizedBox(height: 10),
-                const TxtField(label: AppStrings.confirmPassword),
+                TxtField(
+                  label: AppStrings.confirmPassword,
+                  controller: controller,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

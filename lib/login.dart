@@ -5,9 +5,36 @@ import 'package:bams_project/fingerprint.dart';
 import 'package:bams_project/textfield.dart';
 import 'package:bams_project/top-content.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
-class LogIn extends StatelessWidget {
+class LogIn extends StatefulWidget {
   const LogIn({super.key});
+
+  @override
+  State<LogIn> createState() => _LogInState();
+}
+
+class _LogInState extends State<LogIn> {
+  final TextEditingController emailcontroller = TextEditingController();
+  final TextEditingController passwordcontroller = TextEditingController();
+  String readMessage = '';
+
+  Future<void> loginUser() async {
+    final url = "fgfg";
+    final response = await http.post(Uri.parse(url), body: {
+      'email': emailcontroller.text,
+      'password': passwordcontroller.text
+    });
+
+    try {
+      if (response.statusCode == 200) {
+        readMessage = "Access Granted";
+        print(readMessage);
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,14 +57,18 @@ class LogIn extends StatelessWidget {
               const SizedBox(
                 height: 50,
               ),
-              const AppField(
+              AppField(
                 hint: AppStrings.email,
                 heigth: 7,
+                controller: emailcontroller,
               ),
               const SizedBox(
                 height: 20,
               ),
-              const TxtField(label: AppStrings.password),
+              TxtField(
+                label: AppStrings.password,
+                controller: passwordcontroller,
+              ),
               const SizedBox(height: 20),
               Row(
                 children: [

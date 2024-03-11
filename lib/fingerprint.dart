@@ -54,7 +54,7 @@ class _FingerPrintState extends State<FingerPrint> {
         ),
       );
     } catch (e) {
-      print(e);
+      print("Error message : $e");
     }
     if (!mounted) return;
     setState(() {
@@ -76,7 +76,7 @@ class _FingerPrintState extends State<FingerPrint> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => authenticate(),
+      onTap: () => authenticate,
       child: Container(
         decoration: const BoxDecoration(
           color: AppColors.btn2,

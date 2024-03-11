@@ -21,15 +21,25 @@ class OtherAccount extends StatefulWidget {
 ButtonState state = ButtonState.init;
 
 class _OtherAccountState extends State<OtherAccount> {
+  final TextEditingController controller = TextEditingController();
   bool iconType = true;
   final isDone = state == ButtonState.done;
   final initial = state == ButtonState.init;
+  final List<String> accountNumber = ["3092773812"];
+  final List<String> accountName = ["JOHN DOE ADEROGBA"];
+  final List<String> accountstat = ["CUR."];
+  bool onHoverChange = false;
+  final statecontroller = MaterialStatesController();
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const AppField(hint: "Amount to send?", heigth: 7),
+        AppField(
+          hint: "Amount to send?",
+          heigth: 7,
+          controller: controller,
+        ),
         const SizedBox(height: 10),
         container("From", ""),
         const SizedBox(height: 10),
@@ -84,45 +94,64 @@ class _OtherAccountState extends State<OtherAccount> {
                                   height: 10,
                                 ),
 
-                                // if(i = 0; i < bank bbeneficiary API.length; i++ ) the api to be render should be loop through using listviewbuilder
-                                Container(
-                                  height: 50,
-                                  width: double.infinity,
-                                  decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color:
-                                              Colors.black.withOpacity(0.5))),
-                                  child: Row(
-                                    children: [
-                                      IconButton(
-                                          onPressed: () {
-                                            setState(() {
-                                              iconType = !iconType;
-                                            });
-                                          },
-                                          icon: (iconType)
-                                              ? const Icon(
-                                                  Icons.circle_outlined,
-                                                )
-                                              : const Icon(
-                                                  Icons.check_circle_rounded)),
-                                      // Image.asset(name)  image should be passed from backend
-                                      const Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Text("CUR."),
-                                              Text("3092773812")
-                                            ],
-                                          ),
-                                          Text("JOHN DOE ADEROGBA")
-                                        ],
-                                      )
-                                    ],
-                                  ),
+                                ListView.builder(
+                                  itemCount: accountNumber.length,
+                                  shrinkWrap: true,
+                                  itemBuilder: (context, index) {
+                                    return InkWell(
+                                      onTap: () {
+                                        print("This is my prenet state..");
+                                      },
+                                      statesController: statecontroller,
+                                      hoverColor: Colors.green[600],
+                                      onHover: (value) {
+                                        setState(() {
+                                          onHoverChange = !onHoverChange;
+                                        });
+                                      },
+                                      child: Container(
+                                        height: 50,
+                                        width: double.infinity,
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: Colors.black
+                                                    .withOpacity(0.5))),
+                                        child: Row(
+                                          children: [
+                                            IconButton(
+                                                onPressed: () {
+                                                  setState(() {
+                                                    iconType = !iconType;
+                                                  });
+                                                },
+                                                icon: (iconType)
+                                                    ? const Icon(
+                                                        Icons.circle_outlined,
+                                                      )
+                                                    : const Icon(Icons
+                                                        .check_circle_rounded)),
+                                            // Image.asset(name)  image should be passed from backend
+                                            Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    Text(accountstat[index]),
+                                                    Text(accountNumber[index])
+                                                  ],
+                                                ),
+                                                Text(accountName[index])
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  },
                                 ),
+
+                                // if(i = 0; i < bank bbeneficiary API.length; i++ ) the api to be render should be loop through using listviewbuilder
                                 const Spacer(),
                                 SizedBox(
                                   height: 50,
@@ -195,9 +224,6 @@ class _OtherAccountState extends State<OtherAccount> {
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
                                               children: [
-                                                // DropdownButton(items: items, onChanged: (value) {
-
-                                                // },).toList()
                                                 TextField(
                                                   decoration: InputDecoration(
                                                       hintText:
@@ -229,15 +255,20 @@ class _OtherAccountState extends State<OtherAccount> {
                                             ),
                                           ),
                                         ),
-                                        IconButton(
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                            },
-                                            icon: const Icon(Icons
-                                                .disabled_by_default_outlined))
+                                        InkWell(
+                                          onTapCancel: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Icon(Icons
+                                              .disabled_by_default_outlined),
+                                        ),
 
-                                        // const Icon(
-                                        //     Icons.disabled_by_default_outlined),
+                                        // IconButton(
+                                        //     onPressed: () {
+                                        //       Navigator.pop(context);
+                                        //     },
+                                        //     icon: const Icon(Icons
+                                        //         .disabled_by_default_outlined))
                                       ],
                                     )
                                   : const Text(""),
@@ -262,7 +293,11 @@ class _OtherAccountState extends State<OtherAccount> {
             },
             child: _BeneficiaryIcon(AppStrings.addBeneficiary)),
         const SizedBox(height: 20),
-        const AppField(hint: "Why are you sending money?", heigth: 7),
+        AppField(
+          hint: "Why are you sending money?",
+          heigth: 7,
+          controller: controller,
+        ),
         const SizedBox(
           height: 30,
         ),
@@ -284,9 +319,14 @@ class _OtherAccountState extends State<OtherAccount> {
 enum Checkstate { init, done }
 
 Column ownAccount(BuildContext context) {
+  final TextEditingController controller = TextEditingController();
   return Column(
     children: [
-      const AppField(hint: AppStrings.amountTosend, heigth: 7),
+      AppField(
+        hint: AppStrings.amountTosend,
+        heigth: 7,
+        controller: controller,
+      ),
       const SizedBox(
         height: 20,
       ),
@@ -300,7 +340,11 @@ Column ownAccount(BuildContext context) {
       const SizedBox(
         height: 20,
       ),
-      const AppField(hint: AppStrings.reason, heigth: 7),
+      AppField(
+        hint: AppStrings.reason,
+        heigth: 7,
+        controller: controller,
+      ),
       const SizedBox(
         height: 30,
       ),
@@ -422,7 +466,11 @@ Column ownAccount(BuildContext context) {
                               const SizedBox(
                                 height: 15,
                               ),
-                              const AppField(hint: "Reason", heigth: 7),
+                              AppField(
+                                hint: "Reason",
+                                heigth: 7,
+                                controller: controller,
+                              ),
                               const Spacer(),
                               SizedBox(
                                 height: 50,
