@@ -1,5 +1,6 @@
 import 'package:bams_project/account.dart';
 import 'package:bams_project/color-template.dart';
+import 'package:bams_project/controller/onboarding%20screens/bank_call.dart';
 import 'package:bams_project/home.dart';
 import 'package:bams_project/transfer.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +31,9 @@ class _Screen1State extends State<Screen1> {
 }
 
 final pages = [
-  const Home(),
+  Home(
+    bankObject: BankObject(name: ''),
+  ),
   const BankAccount(),
   const Transfer(),
 ];

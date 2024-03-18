@@ -50,7 +50,7 @@ class AppStrings {
   static const otheraccount = "Other Account";
   static const amountTosend = "Amount to send?";
   static const reason = "Why are you making this transfer?";
-  static const addBeneficiary = "Add another Beneficiary";
+  static const addBeneficiary = "Add Beneficiary";
   static const savedBeneficiary = "Saved Beneficiaries";
   static const transferSummary = "Transfer Summary";
   static const amountToSend = "Amount to send?";

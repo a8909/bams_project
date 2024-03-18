@@ -21,6 +21,8 @@ class OtherAccount extends StatefulWidget {
 ButtonState state = ButtonState.init;
 
 class _OtherAccountState extends State<OtherAccount> {
+  late final textchange;
+  List<TextEditingController> listcontroller = [TextEditingController()];
   final TextEditingController controller = TextEditingController();
   bool iconType = true;
   final isDone = state == ButtonState.done;
@@ -28,7 +30,7 @@ class _OtherAccountState extends State<OtherAccount> {
   final List<String> accountNumber = ["3092773812"];
   final List<String> accountName = ["JOHN DOE ADEROGBA"];
   final List<String> accountstat = ["CUR."];
-  bool onHoverChange = false;
+
   final statecontroller = MaterialStatesController();
 
   @override
@@ -41,7 +43,25 @@ class _OtherAccountState extends State<OtherAccount> {
           controller: controller,
         ),
         const SizedBox(height: 10),
-        container("From", ""),
+        Container(
+          width: double.infinity,
+          height: 70,
+          decoration: BoxDecoration(
+              borderRadius: const BorderRadius.all(Radius.circular(7)),
+              border: Border.all(color: Colors.black.withOpacity(0.3))),
+          child: const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('From'),
+                Icon(Icons.keyboard_arrow_down_outlined)
+              ],
+            ),
+          ),
+        ),
+
+        // container("From", Icon(icon)),
         const SizedBox(height: 10),
         Row(
           children: [
@@ -100,16 +120,12 @@ class _OtherAccountState extends State<OtherAccount> {
                                   itemBuilder: (context, index) {
                                     return InkWell(
                                       onTap: () {
-                                        print("This is my prenet state..");
+                                        print("This is my present state..");
                                       },
                                       statesController: statecontroller,
-                                      hoverColor: Colors.green[600],
-                                      onHover: (value) {
-                                        setState(() {
-                                          onHoverChange = !onHoverChange;
-                                        });
-                                      },
                                       child: Container(
+                                        margin: const EdgeInsets.fromLTRB(
+                                            0, 8, 0, 8),
                                         height: 50,
                                         width: double.infinity,
                                         decoration: BoxDecoration(
@@ -202,80 +218,104 @@ class _OtherAccountState extends State<OtherAccount> {
                             mainAxisSize: MainAxisSize.max,
                             children: [
                               cancelButton(context),
-                              const Text(AppStrings.addBeneficiary),
+                              const Align(
+                                alignment: AlignmentDirectional.topStart,
+                                child: Text(
+                                  AppStrings.addBeneficiary,
+                                  style: TextStyle(
+                                      fontSize: 30, color: AppColors.btn2),
+                                ),
+                              ),
                               _BeneficiaryIcon("Create beneficiaries Group"),
                               (iconType)
-                                  ? Row(
-                                      children: [
-                                        Container(
-                                          height: 150,
-                                          width: 300,
-                                          decoration: BoxDecoration(
-                                              border: Border.all(
-                                                  color: Colors.black
-                                                      .withOpacity(0.5))),
-                                          margin: const EdgeInsets.fromLTRB(
-                                              5, 10, 5, 10),
-                                          child: const Padding(
-                                            padding: EdgeInsets.all(8.0),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                TextField(
-                                                  decoration: InputDecoration(
-                                                      hintText:
-                                                          "Enter Acoount Number",
-                                                      suffixIcon: Icon(Icons
-                                                          .keyboard_arrow_down_outlined)),
+                                  ? ListView.builder(
+                                      itemCount: listcontroller.length,
+                                      shrinkWrap: true,
+                                      itemBuilder: (context, index) {
+                                        final controll =
+                                            TextEditingController();
+                                        return Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                              height: 150,
+                                              width: 300,
+                                              decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                      color: Colors.black
+                                                          .withOpacity(0.5))),
+                                              margin: const EdgeInsets.fromLTRB(
+                                                  5, 10, 5, 10),
+                                              child: Padding(
+                                                padding: EdgeInsets.all(8.0),
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    TextFormField(
+                                                      controller:
+                                                          listcontroller[index],
+                                                      decoration: const InputDecoration(
+                                                          hintText:
+                                                              "Enter Acoount Number",
+                                                          suffixIcon: Icon(Icons
+                                                              .keyboard_arrow_down_outlined)),
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 10,
+                                                    ),
+                                                    TextFormField(
+                                                      controller: controll,
+                                                      onChanged: (value) {
+                                                        textchange = value;
+                                                      },
+                                                      decoration:
+                                                          const InputDecoration(
+                                                              hintText:
+                                                                  "Enter Amount",
+                                                              border: OutlineInputBorder(
+                                                                  borderRadius:
+                                                                      BorderRadius.all(
+                                                                          Radius.circular(
+                                                                              7))),
+                                                              focusedBorder:
+                                                                  OutlineInputBorder(
+                                                                      // borderSide: const BorderSide(color: Colors.transparent),
+                                                                      borderRadius:
+                                                                          BorderRadius.all(
+                                                                              Radius.circular(7)))),
+                                                    )
+                                                  ],
                                                 ),
-                                                SizedBox(
-                                                  height: 10,
-                                                ),
-                                                TextField(
-                                                  decoration: InputDecoration(
-                                                      hintText: "Enter Amount",
-                                                      border: OutlineInputBorder(
-                                                          borderRadius:
-                                                              BorderRadius.all(
-                                                                  Radius
-                                                                      .circular(
-                                                                          7))),
-                                                      focusedBorder:
-                                                          OutlineInputBorder(
-                                                              // borderSide: const BorderSide(color: Colors.transparent),
-                                                              borderRadius: BorderRadius
-                                                                  .all(Radius
-                                                                      .circular(
-                                                                          7)))),
-                                                )
-                                              ],
+                                              ),
                                             ),
-                                          ),
-                                        ),
-                                        InkWell(
-                                          onTapCancel: () {
-                                            Navigator.pop(context);
-                                          },
-                                          child: const Icon(Icons
-                                              .disabled_by_default_outlined),
-                                        ),
-
-                                        // IconButton(
-                                        //     onPressed: () {
-                                        //       Navigator.pop(context);
-                                        //     },
-                                        //     icon: const Icon(Icons
-                                        //         .disabled_by_default_outlined))
-                                      ],
+                                            GestureDetector(
+                                              onTap: () {
+                                                setState(() {
+                                                  listcontroller[index].clear();
+                                                  listcontroller[index]
+                                                      .dispose();
+                                                  listcontroller
+                                                      .removeAt(index);
+                                                });
+                                              },
+                                              child: const Icon(Icons
+                                                  .disabled_by_default_outlined),
+                                            )
+                                          ],
+                                        );
+                                      },
                                     )
                                   : const Text(""),
+                              const SizedBox(height: 10),
                               GestureDetector(
                                   onTap: () {
                                     setState(() {
-                                      iconType = !iconType;
+                                      listcontroller
+                                          .add(TextEditingController());
                                     });
                                   },
                                   child: _BeneficiaryIcon(
@@ -334,7 +374,8 @@ Column ownAccount(BuildContext context) {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           fromTo("from", "2262997831"),
-          fromTo("To", "accNo"),
+          // Icon(Icons.transfer)
+          fromTo("To", ""),
         ],
       ),
       const SizedBox(
