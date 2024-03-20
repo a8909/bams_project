@@ -23,7 +23,11 @@ class Toast extends StatelessWidget {
             ),
             const Text(AppStrings.greatness),
             const SizedBox(height: 15),
-            const Text(AppStrings.cheers),
+            const Center(
+                child: Text(
+              AppStrings.cheers,
+              style: TextStyle(fontSize: 20),
+            )),
             const Spacer(),
             elvBtn(AppStrings.cont, "/screen1", context, 50, double.infinity)
           ],

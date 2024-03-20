@@ -95,7 +95,7 @@ class _SignInState extends State<SignIn> {
                       border: const OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(7))),
                       focusedBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.transparent),
+                          borderSide: BorderSide(color: Colors.blue),
                           borderRadius: BorderRadius.all(Radius.circular(7)))),
                 ),
                 const SizedBox(
@@ -114,7 +114,7 @@ class _SignInState extends State<SignIn> {
                 //     : const TxtField(label: AppStrings.password),
                 const SizedBox(height: 10),
                 Text(message,
-                    style: const TextStyle(fontSize: 18, color: Colors.grey)),
+                    style: const TextStyle(fontSize: 10, color: Colors.black)),
                 const SizedBox(height: 10),
                 TxtField(
                   label: AppStrings.confirmPassword,
@@ -127,7 +127,7 @@ class _SignInState extends State<SignIn> {
                         style: TextStyle(fontSize: 10, color: Colors.black)),
                     TextButton(
                         onPressed: () {
-                          Navigator.of(context).pushNamed("/signup");
+                          Navigator.of(context).pushNamed("/login");
                         },
                         child: const Row(
                           children: [

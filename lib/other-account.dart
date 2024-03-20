@@ -4,7 +4,7 @@ import 'package:bams_project/home.dart';
 import 'package:bams_project/textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
-import 'package:get/get_connect/sockets/src/sockets_html.dart';
+// import 'package:get/get_connect/sockets/src/sockets_html.dart';
 
 import 'App-string.dart';
 import 'transfer-money.dart';
@@ -32,6 +32,11 @@ class _OtherAccountState extends State<OtherAccount> {
   final List<String> accountstat = ["CUR."];
 
   final statecontroller = MaterialStatesController();
+  // @override
+  // void dispose() {
+  //   listcontroller.dispose();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -79,13 +84,6 @@ class _OtherAccountState extends State<OtherAccount> {
             ),
             GestureDetector(
               onTap: () async {
-                showDialog(
-                  context: context,
-                  builder: (context) {
-                    return const Center(child: CircularProgressIndicator());
-                  },
-                );
-
                 await showModalBottomSheet(
                   context: context,
                   builder: (context) {
@@ -102,13 +100,16 @@ class _OtherAccountState extends State<OtherAccount> {
                                   height: 10,
                                 ),
                                 const Text(AppStrings.savedBeneficiary),
-                                const TextField(
-                                  decoration: InputDecoration(
-                                      hintText: "search beneficiaries",
-                                      prefixIcon: Icon(Icons.search_outlined),
-                                      border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(7)))),
+                                const SizedBox(
+                                  height: 40,
+                                  child: TextField(
+                                    decoration: InputDecoration(
+                                        hintText: "search beneficiaries",
+                                        prefixIcon: Icon(Icons.search_outlined),
+                                        border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(7)))),
+                                  ),
                                 ),
                                 const SizedBox(
                                   height: 10,
@@ -207,122 +208,152 @@ class _OtherAccountState extends State<OtherAccount> {
             //Add beneficiaries section
             onTap: () {
               showModalBottomSheet(
+                isScrollControlled: true,
+                backgroundColor: Colors.transparent,
                 context: context,
                 builder: (context) {
-                  return StatefulBuilder(
-                    builder: (context, setState) {
+                  return DraggableScrollableSheet(
+                    initialChildSize: 0.85,
+                    maxChildSize: 0.9,
+                    minChildSize: 0.5,
+                    builder: (context, controller) {
                       return Container(
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              cancelButton(context),
-                              const Align(
-                                alignment: AlignmentDirectional.topStart,
-                                child: Text(
-                                  AppStrings.addBeneficiary,
-                                  style: TextStyle(
-                                      fontSize: 30, color: AppColors.btn2),
+                        decoration: const BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(20))),
+                        child: SingleChildScrollView(
+                          controller: controller,
+                          child: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Column(
+                              // mainAxisSize: MainAxisSize.min,
+                              children: [
+                                cancelButton(context),
+                                const Align(
+                                  alignment: AlignmentDirectional.topStart,
+                                  child: Text(
+                                    AppStrings.addBeneficiary,
+                                    style: TextStyle(
+                                        fontSize: 30, color: AppColors.btn2),
+                                  ),
                                 ),
-                              ),
-                              _BeneficiaryIcon("Create beneficiaries Group"),
-                              (iconType)
-                                  ? ListView.builder(
-                                      itemCount: listcontroller.length,
-                                      shrinkWrap: true,
-                                      itemBuilder: (context, index) {
-                                        final controll =
-                                            TextEditingController();
-                                        return Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Container(
-                                              height: 150,
-                                              width: 300,
-                                              decoration: BoxDecoration(
-                                                  border: Border.all(
-                                                      color: Colors.black
-                                                          .withOpacity(0.5))),
-                                              margin: const EdgeInsets.fromLTRB(
-                                                  5, 10, 5, 10),
-                                              child: Padding(
-                                                padding: EdgeInsets.all(8.0),
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    TextFormField(
-                                                      controller:
-                                                          listcontroller[index],
-                                                      decoration: const InputDecoration(
-                                                          hintText:
-                                                              "Enter Acoount Number",
-                                                          suffixIcon: Icon(Icons
-                                                              .keyboard_arrow_down_outlined)),
-                                                    ),
-                                                    const SizedBox(
-                                                      height: 10,
-                                                    ),
-                                                    TextFormField(
-                                                      controller: controll,
-                                                      onChanged: (value) {
-                                                        textchange = value;
-                                                      },
-                                                      decoration:
-                                                          const InputDecoration(
-                                                              hintText:
-                                                                  "Enter Amount",
-                                                              border: OutlineInputBorder(
-                                                                  borderRadius:
-                                                                      BorderRadius.all(
-                                                                          Radius.circular(
-                                                                              7))),
-                                                              focusedBorder:
-                                                                  OutlineInputBorder(
-                                                                      // borderSide: const BorderSide(color: Colors.transparent),
-                                                                      borderRadius:
-                                                                          BorderRadius.all(
-                                                                              Radius.circular(7)))),
-                                                    )
-                                                  ],
+
+                                GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        listcontroller
+                                            .add(TextEditingController());
+                                      });
+                                    },
+                                    child: _BeneficiaryIcon(
+                                        "Create beneficiaries Group")),
+                                (listcontroller.isNotEmpty)
+                                    ? ListView.builder(
+                                        itemCount: listcontroller.length,
+                                        shrinkWrap: true,
+                                        itemBuilder: (context, index) {
+                                          final controll =
+                                              TextEditingController();
+                                          return Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Container(
+                                                height: 150,
+                                                width: 300,
+                                                decoration: BoxDecoration(
+                                                    border: Border.all(
+                                                        color: Colors.black
+                                                            .withOpacity(0.5))),
+                                                margin:
+                                                    const EdgeInsets.fromLTRB(
+                                                        5, 10, 5, 10),
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      TextFormField(
+                                                        controller:
+                                                            listcontroller[
+                                                                index],
+                                                        decoration: const InputDecoration(
+                                                            hintText:
+                                                                "Enter Acoount Number",
+                                                            suffixIcon: Icon(Icons
+                                                                .keyboard_arrow_down_outlined)),
+                                                      ),
+                                                      const SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      TextFormField(
+                                                        controller: controll,
+                                                        onChanged: (value) {
+                                                          textchange = value;
+                                                        },
+                                                        decoration:
+                                                            const InputDecoration(
+                                                                hintText:
+                                                                    "Enter Amount",
+                                                                border: OutlineInputBorder(
+                                                                    borderRadius:
+                                                                        BorderRadius.all(Radius.circular(
+                                                                            7))),
+                                                                focusedBorder:
+                                                                    OutlineInputBorder(
+                                                                        // borderSide: const BorderSide(color: Colors.transparent),
+                                                                        borderRadius:
+                                                                            BorderRadius.all(Radius.circular(7)))),
+                                                      )
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                            GestureDetector(
-                                              onTap: () {
-                                                setState(() {
-                                                  listcontroller[index].clear();
-                                                  listcontroller[index]
-                                                      .dispose();
-                                                  listcontroller
-                                                      .removeAt(index);
-                                                });
-                                              },
-                                              child: const Icon(Icons
-                                                  .disabled_by_default_outlined),
-                                            )
-                                          ],
-                                        );
-                                      },
-                                    )
-                                  : const Text(""),
-                              const SizedBox(height: 10),
-                              GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      listcontroller
-                                          .add(TextEditingController());
-                                    });
-                                  },
-                                  child: _BeneficiaryIcon(
-                                      "Add Another Beneficiaries")),
-                              // elvBtn(AppStrings.cont, "routeName", context, 50,
-                              //     double.infinity)
-                            ],
+                                              GestureDetector(
+                                                onTap: () {
+                                                  setState(() {
+                                                    listcontroller[index]
+                                                        .clear();
+                                                    listcontroller[index]
+                                                        .dispose();
+                                                    listcontroller
+                                                        .removeAt(index);
+                                                  });
+                                                },
+                                                child: const Icon(Icons
+                                                    .disabled_by_default_outlined),
+                                              )
+                                            ],
+                                          );
+                                        },
+                                      )
+                                    : const Text(""),
+
+                                const SizedBox(height: 10),
+                                GestureDetector(
+                                    onTap: () {
+                                      for (var i = 0;
+                                          i < listcontroller.length;
+                                          i++) {
+                                        final entries = [];
+                                        setState(() {
+                                          entries.add(i);
+                                        });
+                                      }
+                                    },
+                                    child: _BeneficiaryIcon(
+                                        "Add Another Beneficiaries")),
+                                // elvBtn(AppStrings.cont, "routeName", context, 50,
+                                //     double.infinity)
+                              ],
+                            ),
                           ),
                         ),
                       );
@@ -373,9 +404,9 @@ Column ownAccount(BuildContext context) {
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          fromTo("from", "2262997831"),
+          fromTo("from", "assets/images/firstbank.png", "2262997831"),
           // Icon(Icons.transfer)
-          fromTo("To", ""),
+          fromTo("To", "assets/images/gtb.png", "2262997831"),
         ],
       ),
       const SizedBox(
@@ -496,11 +527,13 @@ Column ownAccount(BuildContext context) {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    fromTo("From", "accNo"),
+                                    fromTo("From", "accNo",
+                                        "assets/images/gtb.png"),
                                     const SizedBox(
                                       width: 10,
                                     ),
-                                    fromTo("To", "accNo")
+                                    fromTo("To", "accNo",
+                                        "assets/images/firstbank.png")
                                   ],
                                 ),
                               ),

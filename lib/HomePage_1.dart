@@ -21,10 +21,10 @@ class MainPage extends StatelessWidget {
           ),
           const Text(
             AppStrings.font,
-            style: TextStyle(color: AppColors.txt2, fontSize: 50),
+            style: TextStyle(color: AppColors.txt2, fontSize: 45),
           ),
           const SizedBox(
-            height: 50,
+            height: 40,
           ),
           cnt("date", "+#92,800"),
           const SizedBox(

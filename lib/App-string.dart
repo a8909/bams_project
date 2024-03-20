@@ -29,7 +29,7 @@ class AppStrings {
   static const helperTxt =
       "Must contain at least one capital letter, number and speciall characters";
   static const firstname = "Firstname";
-  static const lastname = "Lasttname";
+  static const lastname = "Lastname";
   static const phone = "phone number";
   static const gmail = "Email";
   static double passwordStrength = 1;

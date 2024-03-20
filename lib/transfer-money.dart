@@ -66,11 +66,17 @@ class _TransferMoneyState extends State<TransferMoney> {
   }
 }
 
-// enum Account{own, others}
-Container fromTo(String from, String accNo) {
+Container fromTo(String from, String image, String accNo) {
+  var items = ["9090397455", "9034500772", "2263997831"];
+  String itemchange = "";
+
+  void setState(Null Function() param0) {
+    return setState(() {});
+  }
+
   return Container(
-    height: 80,
-    width: 150,
+    height: 120,
+    width: 190,
     decoration: BoxDecoration(
         border: Border.all(color: Colors.black.withOpacity(0.2)),
         color: Colors.white,
@@ -83,14 +89,63 @@ Container fromTo(String from, String accNo) {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(from),
-              const Icon(Icons.keyboard_arrow_down_outlined)
+              DropdownButton(
+                underline: const SizedBox(
+                  height: 0,
+                ),
+                value: "2263997831",
+                icon: const Icon(Icons.keyboard_arrow_down_outlined),
+                items: items.map((e) {
+                  return DropdownMenuItem(
+                      value: e,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Image.asset("assets/images/gtb.png"),
+                          Text(e, style: const TextStyle(fontSize: 10))
+                        ],
+                      )
+
+                      // ListView.builder(
+                      //   shrinkWrap: true,
+                      //   itemCount: items.length,
+                      //   itemBuilder: (context, index) {
+                      //     return ListTile(
+                      //       leading: Image.asset("assets/images/gtb.png"),
+                      //       trailing: Text(
+                      //         e,
+                      //         style: const TextStyle(fontSize: 10),
+                      //       ),
+                      //     );
+                      //   },
+                      // )
+
+                      );
+                }).toList(),
+                onChanged: (String? value) {
+                  setState(() {
+                    itemchange = value!;
+                  });
+                },
+              ),
             ],
           ),
           const SizedBox(
             height: 10,
           ),
-          // Image.asset(name),
-          Text(accNo)
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              ClipRRect(
+                  borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(15),
+                      topRight: Radius.circular(15),
+                      bottomLeft: Radius.circular(15),
+                      bottomRight: Radius.circular(15)),
+                  child: Image.asset(image)),
+              Text(accNo),
+            ],
+          )
         ],
       ),
     ),

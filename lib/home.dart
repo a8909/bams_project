@@ -23,8 +23,8 @@ class _HomeState extends State<Home> {
   //   "https://s3-alpha-sig.figma.com/img/8298/9591/cb75460c9dcb5c0b1fa3ef95d6710125?Expires=1710720000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=mMlWM8ViIXoIjeBPJb4vmr8sgQRadH9vCjqct~TTucIDtOCTvYRvVtlBF4Aeb2LP3YFUCgwHCRDGZL4GCXwDBoTzxzVIEVde4St3OGsytbLW7822pnr1KeLVxXDhRHupjy1g2IefwCC0vCZriXArGcsDQATK25DHLaLTDrL1ueMj9ReZB8kZ6tNzjUWLtvno4fvIvip1uNvTO7tLxTuPnpENFa2GExaqbIJ1MU5z-~30Xe6-52NmFAu49p9gw-Be~WSPTOw-wpDBLMQLJp9Npn87gPTn1bg6CWtdHF4tR1kQ4VNMY6dIWXiL2ijWOaBfJ-ObB8hubaFOZbUflo1hvA__",
   //   "https://s3-alpha-sig.figma.com/img/297b/ab50/d2074174fabb817d067067bc6eec78f7?Expires=1710720000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=bnWPlIkTaqqVOgSO8m~yuzgaqDraec5K7otntXdOV8eOKXATuImZueuoV50GlAOzDOp8Vg2QjB2Ckk2QdTlNjEORIOGjNdoWLesato7pfmxP1Uba4wll2RNAqBARAjW2zrwRQ8ZDqD3Mg5vmk13MNGXnmiRqaq5rNWDXHnYAUpm8qZCszmD3zwIuPRH3K7QeKmTGbF7RZnRzGizCaksZIFJI~D7qsejtlJVeHJ6x53XKVxzUdvSC7GEf1kj9QbMszfiyGyXA9dSKGdCAo~Mw3XCpDQ6DBdjbC3SPqGlWzXJFq55creJPm0M8IgyTZxA823aLSwZUK7uDGdfKigCXxg__"
   // ];
-  final monthList = ["Last 5 months", "Last 4 months", "Last month"];
-  String valueChange = "Last 6 months";
+  var monthList = ["Last 5 months", "Last 4 months", "Last month"];
+  String dropdownvalue = "Last 6 months";
   List<Home> bankForms = List.empty(growable: true);
 
   final TextEditingController controller = TextEditingController();
@@ -39,6 +39,9 @@ class _HomeState extends State<Home> {
           key: _formKey,
           child: Column(
             children: [
+              const SizedBox(
+                height: 30,
+              ),
               const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -62,152 +65,177 @@ class _HomeState extends State<Home> {
                     onPressed: () {
                       showModalBottomSheet(
                         isScrollControlled: true,
+                        backgroundColor: Colors.transparent,
                         context: context,
-                        builder: (BuildContext context) {
-                          return Container(
-                            child: Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.max,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  cancelButton(context),
-                                  const Text(
-                                    AppStrings.addAccount,
-                                    style: TextStyle(
-                                        fontSize: 40, color: AppColors.txt1),
-                                  ),
-                                  const Text(
-                                    AppStrings.local,
-                                    style: TextStyle(fontSize: 10),
-                                  ),
-                                  const SizedBox(height: 10),
-                                  TextFormField(
-                                    onChanged: (value) =>
-                                        widget.bankObject.name = value,
-                                    onSaved: (newValue) =>
-                                        widget.bankObject.name == newValue,
-                                    controller: controller,
-                                    decoration: const InputDecoration(
-                                        border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(7))),
-                                        hintText: "Enter account number",
-                                        labelText: "Enter account number"),
-                                  ),
-                                  const SizedBox(height: 10),
-                                  container("Guarantee Trust Bank",
-                                      "https://s3-alpha-sig.figma.com/img/46bc/9aa2/ede4a07c6d6b268dbf051bef02038cc1?Expires=1710720000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=kou4JWaWko46z~uRrQ51idZAfdGf-rIGBb0hdddH3Yc8~w1wvOn87F9VmZ-oyNlbDxg-9kkNkKMVjd-Rsg2RPFa-M5q7xkl2MuIPirJfdOridVzP0-njMg7Mn7WnnjhvdkKhuQbdFqnA1668yTeA~kcTzCko5-iwnHI07vWRXDe76mqYTszHgypbs5HgNraA-D563ZVlfHortnlxXsNI~rb6wFWhAmjIzP5Rse4XVgXjyemtpd5XRMvagXSQzx6EG4D968rCmAvvmTfW62r3cVlnLEOZ7CiXVs0qjoFLyum5UwPuIArBUa7Gfc0m-UHN0y1C89p-twasxnxv7ZqQXA__"),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  (bankForms.isEmpty)
-                                      ? const Text("")
-                                      : ListView.builder(
-                                          itemCount: bankForms.length,
-                                          shrinkWrap: true,
-                                          itemBuilder: (context, index) {
-                                            final scrollController =
-                                                ScrollController();
-                                            List<TextEditingController>
-                                                _banknameController = [
-                                              TextEditingController()
-                                            ];
-                                            return SingleChildScrollView(
-                                              controller: scrollController,
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.fromLTRB(
-                                                        16, 8, 16, 8),
-                                                child: Column(
-                                                  children: [
-                                                    TextFormField(
-                                                      onChanged: (value) =>
-                                                          widget.bankObject
-                                                              .name = value,
-                                                      onSaved: (newValue) =>
-                                                          widget.bankObject
-                                                              .name ==
-                                                          newValue,
-                                                      controller:
-                                                          _banknameController[
-                                                              index],
-                                                      decoration: const InputDecoration(
-                                                          border: OutlineInputBorder(
-                                                              borderRadius: BorderRadius
-                                                                  .all(Radius
-                                                                      .circular(
-                                                                          7))),
-                                                          hintText:
-                                                              "Enter account number",
-                                                          labelText:
-                                                              "Enter account number"),
-                                                    ),
-                                                    const SizedBox(height: 10),
-                                                    container(
-                                                        "Guarantee Trust Bank",
-                                                        "https://s3-alpha-sig.figma.com/img/46bc/9aa2/ede4a07c6d6b268dbf051bef02038cc1?Expires=1710720000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=kou4JWaWko46z~uRrQ51idZAfdGf-rIGBb0hdddH3Yc8~w1wvOn87F9VmZ-oyNlbDxg-9kkNkKMVjd-Rsg2RPFa-M5q7xkl2MuIPirJfdOridVzP0-njMg7Mn7WnnjhvdkKhuQbdFqnA1668yTeA~kcTzCko5-iwnHI07vWRXDe76mqYTszHgypbs5HgNraA-D563ZVlfHortnlxXsNI~rb6wFWhAmjIzP5Rse4XVgXjyemtpd5XRMvagXSQzx6EG4D968rCmAvvmTfW62r3cVlnLEOZ7CiXVs0qjoFLyum5UwPuIArBUa7Gfc0m-UHN0y1C89p-twasxnxv7ZqQXA__"),
-                                                  ],
-                                                ),
-                                              ),
-                                            );
-                                          },
+                        builder: (context) {
+                          return DraggableScrollableSheet(
+                            initialChildSize: 0.85,
+                            maxChildSize: 0.9,
+                            minChildSize: 0.5,
+                            builder: (BuildContext context,
+                                ScrollController scrollController) {
+                              return Container(
+                                decoration: const BoxDecoration(
+                                  borderRadius: BorderRadius.vertical(
+                                      top: Radius.circular(20)),
+                                  color: Colors.white,
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: ListView(
+                                    controller: scrollController,
+
+                                    // mainAxisSize: MainAxisSize.min,
+                                    // crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      cancelButton(context),
+                                      const Text(
+                                        AppStrings.addAccount,
+                                        style: TextStyle(
+                                            fontSize: 40,
+                                            color: AppColors.txt1),
+                                      ),
+                                      const Text(
+                                        AppStrings.local,
+                                        style: TextStyle(fontSize: 15),
+                                      ),
+                                      const SizedBox(height: 10),
+                                      TextFormField(
+                                        onChanged: (value) =>
+                                            widget.bankObject.name = value,
+                                        onSaved: (newValue) =>
+                                            widget.bankObject.name == newValue,
+                                        controller: controller,
+                                        decoration: const InputDecoration(
+                                            border: OutlineInputBorder(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(7))),
+                                            hintText: "Enter account number",
+                                            labelText: "Enter account number"),
+                                      ),
+                                      const SizedBox(height: 10),
+                                      container("Guarantee Trust Bank",
+                                          "assets/images/gtb.png"),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      (bankForms.isEmpty)
+                                          ? const Text("")
+                                          : ListView.builder(
+                                              itemCount: bankForms.length,
+                                              shrinkWrap: true,
+                                              controller: ScrollController(),
+                                              itemBuilder: (context, index) {
+                                                // final scrollController =
+                                                //     ScrollController();
+                                                List<TextEditingController>
+                                                    _banknameController = [
+                                                  TextEditingController()
+                                                ];
+                                                return Padding(
+                                                  padding:
+                                                      const EdgeInsets.fromLTRB(
+                                                          16, 8, 16, 8),
+                                                  child: Column(
+                                                    children: [
+                                                      TextFormField(
+                                                        onChanged: (value) =>
+                                                            widget.bankObject
+                                                                .name = value,
+                                                        onSaved: (newValue) =>
+                                                            widget.bankObject
+                                                                .name ==
+                                                            newValue,
+                                                        decoration: const InputDecoration(
+                                                            border: OutlineInputBorder(
+                                                                borderRadius: BorderRadius
+                                                                    .all(Radius
+                                                                        .circular(
+                                                                            7))),
+                                                            hintText:
+                                                                "Enter account number",
+                                                            labelText:
+                                                                "Enter account number"),
+                                                      ),
+                                                      const SizedBox(
+                                                          height: 10),
+                                                      container(
+                                                          "First Bank Of Nigeria",
+                                                          "assets/images/firstbank.png"),
+                                                    ],
+                                                  ),
+                                                );
+                                              },
+                                            ),
+                                      const SizedBox(height: 10),
+                                      Align(
+                                        alignment: Alignment.center,
+                                        child: SizedBox(
+                                          height: 50,
+                                          width: 180,
+                                          child: OutlinedButton(
+                                              onPressed: () {
+                                                setState(() {
+                                                  bankForms.add(Home(
+                                                      bankObject: BankObject(
+                                                          name: widget
+                                                              .bankObject
+                                                              .name)));
+                                                });
+                                              },
+                                              style: OutlinedButton.styleFrom(
+                                                  backgroundColor: Colors.grey
+                                                      .withOpacity(0.1),
+                                                  foregroundColor: Colors.grey),
+                                              child: const Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
+                                                children: [
+                                                  Text("Add another account"),
+                                                  // Icon(Icons
+                                                  //     .add_circle_outline_outlined)
+                                                ],
+                                              )),
                                         ),
-                                  const SizedBox(height: 10),
-                                  Align(
-                                    alignment: Alignment.center,
-                                    child: SizedBox(
-                                      height: 50,
-                                      width: 180,
-                                      child: OutlinedButton(
-                                          onPressed: () {
-                                            setState(() {
-                                              bankForms.add(Home(
-                                                  bankObject: BankObject(
-                                                      name: widget
-                                                          .bankObject.name)));
-                                            });
-                                          },
-                                          style: OutlinedButton.styleFrom(
-                                              backgroundColor:
-                                                  Colors.grey.withOpacity(0.1),
-                                              foregroundColor: Colors.grey),
-                                          child: const Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            children: [
-                                              Text("Add another account"),
-                                              // Icon(Icons
-                                              //     .add_circle_outline_outlined)
-                                            ],
-                                          )),
-                                    ),
-                                  ),
-                                  const Spacer(),
-                                  SizedBox(
-                                    height: 50,
-                                    width: double.infinity,
-                                    child: ElevatedButton(
-                                        onPressed: () {
-                                          showModalBottomSheet(
-                                            context: context,
-                                            builder: (context) {
-                                              return const VerifyAccount();
+                                      ),
+                                      const SizedBox(
+                                        height: 160,
+                                      ),
+                                      SizedBox(
+                                        height: 50,
+                                        width: double.infinity,
+                                        child: ElevatedButton(
+                                            onPressed: () {
+                                              showModalBottomSheet(
+                                                shape:
+                                                    const RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius.vertical(
+                                                                top: Radius
+                                                                    .circular(
+                                                                        20))),
+                                                context: context,
+                                                builder: (context) {
+                                                  return const VerifyAccount();
+                                                },
+                                              );
                                             },
-                                          );
-                                        },
-                                        style: ElevatedButton.styleFrom(
-                                            // shape:  OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(7))),
-                                            backgroundColor: AppColors.btn1),
-                                        child: const Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [Text(AppStrings.done)],
-                                        )),
-                                  )
-                                ],
-                              ),
-                            ),
+                                            style: ElevatedButton.styleFrom(
+                                                // shape:  OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(7))),
+                                                backgroundColor:
+                                                    AppColors.btn1),
+                                            child: const Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [Text(AppStrings.done)],
+                                            )),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
                           );
                         },
                       );
@@ -248,14 +276,14 @@ class _HomeState extends State<Home> {
                             child: DropdownButton(
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(7)),
-                              // value: valueChange = valueChange,
+                              // value: dropdownvalue,
                               items: monthList.map((e) {
                                 return DropdownMenuItem(
                                     value: e, child: Text(e));
                               }).toList(),
-                              onChanged: (value) {
+                              onChanged: (String? value) {
                                 setState(() {
-                                  valueChange == value;
+                                  dropdownvalue = value!;
                                 });
                               },
                             ),
@@ -270,11 +298,11 @@ class _HomeState extends State<Home> {
                         height: 50,
                       ),
 
-                      Center(
-                        child: Image.network(
-                            width: 200,
-                            "https://s3-alpha-sig.figma.com/img/ea98/44da/314dc153d45c81e0f231af41598adb5b?Expires=1710720000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=SkqivKJV5PadUV8G9QItab9BtJZAGdQWEOiqaKYV~mZpobk~whixFncKtQZr50EAdxruAGbThZmrKkzHjyQAx5SQXZrHHW~jtM3Le3JmA7PdynxvrippG2RpxSe1dopg0Dg4dIdXZHiCtuNKmHAUIgQW7fYg9t-FZ12Es1vkkst-bSMqYD9dQPa-WE-tdlh2dcL7S7C1ACGRDqEkdEeup9jazGua7GsmaPMhRHsO5eIFOLlf8BiVUPd6rBgCxIj4g3wwrz4j6jo19~8mkh1bK~tUHpRV4FZtpbeXhFoMNI0R4ELSqwzMT2-P5IO9VAXdp79Ap1iN2vFW2dzKUfRSIA__"),
-                      ),
+                      // Center(
+                      //   child: Image.network(
+                      //       width: 200,
+                      //       "https://s3-alpha-sig.figma.com/img/ea98/44da/314dc153d45c81e0f231af41598adb5b?Expires=1710720000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=SkqivKJV5PadUV8G9QItab9BtJZAGdQWEOiqaKYV~mZpobk~whixFncKtQZr50EAdxruAGbThZmrKkzHjyQAx5SQXZrHHW~jtM3Le3JmA7PdynxvrippG2RpxSe1dopg0Dg4dIdXZHiCtuNKmHAUIgQW7fYg9t-FZ12Es1vkkst-bSMqYD9dQPa-WE-tdlh2dcL7S7C1ACGRDqEkdEeup9jazGua7GsmaPMhRHsO5eIFOLlf8BiVUPd6rBgCxIj4g3wwrz4j6jo19~8mkh1bK~tUHpRV4FZtpbeXhFoMNI0R4ELSqwzMT2-P5IO9VAXdp79Ap1iN2vFW2dzKUfRSIA__"),
+                      // ),
                       const Text(
                         "Oops!",
                         style: TextStyle(fontSize: 10),
@@ -303,9 +331,14 @@ final banks = [
   }
 ];
 
-String dropvalue = '';
+Container container(String text, String image) {
+  var items = ["First Bank Of Nigeria"];
+  String dropvalue = '';
 
-Container container(String text, String networkImage) {
+  void setState(Null Function() param0) {
+    return setState(() {});
+  }
+
   return Container(
     height: 70,
     width: double.infinity,
@@ -318,25 +351,29 @@ Container container(String text, String networkImage) {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Image.network(networkImage), // here should be passed as an image
-          Text(text),
+          // Image.asset(image),
+          // // Image.network(networkImage), // here should be passed as an image
+          // Text(text),
 
-          IconButton(
-              onPressed: () {
-                DropdownButton(
-                  value: dropvalue,
-                  items: banks.map((e) {
-                    return DropdownMenuItem(
-                      value: e,
-                      child: Text("$e"),
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                    print("$value");
-                  },
-                );
-              },
-              icon: const Icon(Icons.keyboard_arrow_down_outlined))
+          DropdownButton(
+            value: "First Bank Of Nigeria",
+            underline: const SizedBox(),
+            icon: const Icon(Icons.keyboard_arrow_down_outlined),
+            items: items.map((e) {
+              return DropdownMenuItem(
+                value: e,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [Image.asset(image), Text(text)],
+                ),
+              );
+            }).toList(),
+            onChanged: (value) {
+              setState(() {
+                dropvalue == value;
+              });
+            },
+          )
         ],
       ),
     ),
