@@ -67,6 +67,10 @@ class _TransferMoneyState extends State<TransferMoney> {
 }
 
 Container fromTo(String from, String image, String accNo) {
+  // final List<Map<dynamic, String>> bankState = [
+  //   {"accountNumber": "2263997831", "bankLogo": "assets/images/gtb.png"},
+  //   {"accountNumber": "2263997831", "bankLogo": "assets/images/gtb.png"}
+  // ];
   var items = ["9090397455", "9034500772", "2263997831"];
   String itemchange = "";
 
@@ -76,7 +80,7 @@ Container fromTo(String from, String image, String accNo) {
 
   return Container(
     height: 120,
-    width: 190,
+    width: 156,
     decoration: BoxDecoration(
         border: Border.all(color: Colors.black.withOpacity(0.2)),
         color: Colors.white,
@@ -101,7 +105,11 @@ Container fromTo(String from, String image, String accNo) {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Image.asset("assets/images/gtb.png"),
+                          Image.asset(
+                            "assets/images/gtb.png",
+                            width: 30,
+                            height: 30,
+                          ),
                           Text(e, style: const TextStyle(fontSize: 10))
                         ],
                       )
@@ -142,7 +150,11 @@ Container fromTo(String from, String image, String accNo) {
                       topRight: Radius.circular(15),
                       bottomLeft: Radius.circular(15),
                       bottomRight: Radius.circular(15)),
-                  child: Image.asset(image)),
+                  child: Image.asset(
+                    image,
+                    width: 40,
+                    height: 40,
+                  )),
               Text(accNo),
             ],
           )

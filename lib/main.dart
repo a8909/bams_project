@@ -1,5 +1,3 @@
-
-
 import 'package:bams_project/HomePage_1.dart';
 import 'package:bams_project/controller/dependency_injection.dart';
 import 'package:bams_project/controller/onboarding%20screens/onboard_screens.dart';
@@ -29,6 +27,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      theme: ThemeData(fontFamily: "Recoleta"),
       initialRoute: "/",
       routes: {
         '/': (context) => const SplashScreen(),

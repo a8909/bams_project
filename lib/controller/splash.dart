@@ -32,11 +32,8 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       body: Center(
           child: Container(
-        child: const Text(
-          "bambs",
-          style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
-        ),
-      )),
+              child: Image.asset("assets/images/bams.png",
+                  width: 50, height: 50))),
     );
   }
 }

@@ -25,7 +25,7 @@ class _HomeState extends State<Home> {
   // ];
   var monthList = ["Last 5 months", "Last 4 months", "Last month"];
   String dropdownvalue = "Last 6 months";
-  List<Home> bankForms = List.empty(growable: true);
+  List<Views> bankForms = List.empty(growable: true);
 
   final TextEditingController controller = TextEditingController();
   final _formKey = GlobalKey();
@@ -126,42 +126,48 @@ class _HomeState extends State<Home> {
                                               shrinkWrap: true,
                                               controller: ScrollController(),
                                               itemBuilder: (context, index) {
-                                                // final scrollController =
-                                                //     ScrollController();
                                                 List<TextEditingController>
                                                     _banknameController = [
                                                   TextEditingController()
                                                 ];
+                                                // final scrollController =
+                                                //     ScrollController();
+
                                                 return Padding(
                                                   padding:
                                                       const EdgeInsets.fromLTRB(
                                                           16, 8, 16, 8),
                                                   child: Column(
                                                     children: [
-                                                      TextFormField(
-                                                        onChanged: (value) =>
-                                                            widget.bankObject
-                                                                .name = value,
-                                                        onSaved: (newValue) =>
-                                                            widget.bankObject
-                                                                .name ==
-                                                            newValue,
-                                                        decoration: const InputDecoration(
-                                                            border: OutlineInputBorder(
-                                                                borderRadius: BorderRadius
-                                                                    .all(Radius
-                                                                        .circular(
-                                                                            7))),
-                                                            hintText:
-                                                                "Enter account number",
-                                                            labelText:
-                                                                "Enter account number"),
-                                                      ),
-                                                      const SizedBox(
-                                                          height: 10),
-                                                      container(
+                                                      view(
                                                           "First Bank Of Nigeria",
-                                                          "assets/images/firstbank.png"),
+                                                          "assets/images/firstbank.png")
+
+                                                      // TextFormField(
+                                                      //   onChanged: (value) =>
+                                                      //       widget.bankObject
+                                                      //           .name = value,
+                                                      //   onSaved: (newValue) =>
+                                                      //       widget.bankObject
+                                                      //           .name ==
+                                                      //       newValue,
+                                                      //   decoration: const InputDecoration(
+                                                      //       border: OutlineInputBorder(
+                                                      //           borderRadius: BorderRadius
+                                                      //               .all(Radius
+                                                      //                   .circular(
+                                                      //                       7))),
+                                                      //       hintText:
+                                                      //           "Enter account number",
+                                                      //       labelText:
+                                                      //           "Enter account number"),
+                                                      // ),
+                                                      // const SizedBox(
+                                                      //     height: 10),
+                                                      // container(
+                                                      //     // the image and the bank here aree to  be passed as an index of a builder
+                                                      //     "First Bank Of Nigeria",
+                                                      //     "assets/images/firstbank.png"),
                                                     ],
                                                   ),
                                                 );
@@ -176,17 +182,29 @@ class _HomeState extends State<Home> {
                                           child: OutlinedButton(
                                               onPressed: () {
                                                 setState(() {
-                                                  bankForms.add(Home(
-                                                      bankObject: BankObject(
-                                                          name: widget
-                                                              .bankObject
-                                                              .name)));
+                                                  bankForms.add(Views(
+                                                          bankName: "bankName",
+                                                          bankImage:
+                                                              "bankImage",
+                                                          bankobj: BankObject(
+                                                              name: widget
+                                                                  .bankObject
+                                                                  .name))
+
+                                                      // Home(
+                                                      //   bankObject: BankObject(
+                                                      //       name: widget
+                                                      //           .bankObject
+                                                      //           .name))
+                                                      );
                                                 });
                                               },
                                               style: OutlinedButton.styleFrom(
-                                                  backgroundColor: Colors.grey
+                                                  backgroundColor: AppColors
+                                                      .btn2
                                                       .withOpacity(0.1),
-                                                  foregroundColor: Colors.grey),
+                                                  foregroundColor:
+                                                      Colors.black),
                                               child: const Row(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment
@@ -363,7 +381,6 @@ Container container(String text, String image) {
               return DropdownMenuItem(
                 value: e,
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [Image.asset(image), Text(text)],
                 ),
               );
@@ -377,5 +394,33 @@ Container container(String text, String image) {
         ],
       ),
     ),
+  );
+}
+
+Widget view(String bankName, String bankImage) {
+  return StatefulBuilder(
+    builder: (context, setState) {
+      final controller = TextEditingController();
+      final bankObj = BankObject(name: "");
+
+      return Container(
+        child: Column(
+          children: [
+            TextFormField(
+              onChanged: (value) => bankObj.name = value,
+              onSaved: (newValue) => bankObj.name == newValue,
+              controller: controller,
+              decoration: const InputDecoration(
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(7))),
+                  hintText: "Enter account number",
+                  labelText: "Enter account number"),
+            ),
+            const SizedBox(height: 10),
+            container(bankName, bankImage),
+          ],
+        ),
+      );
+    },
   );
 }
