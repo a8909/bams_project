@@ -9,25 +9,30 @@ class BankAccount extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: appBar(),
-        body: ListView(
-          children: mockUsersFromServer(),
+        body: Padding(
+          padding: const EdgeInsets.fromLTRB(16.0, 8, 16.0, 8),
+          child: ListView(
+            children: [
+              const Text(
+                "Accounts",
+                style: TextStyle(color: AppColors.btn2, fontSize: 40),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              ...mockUsersFromServer()
+            ],
+          ),
         ));
   }
 }
 
 Widget userItem() {
   return Padding(
-    padding: const EdgeInsets.all(16.0),
+    padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          "Accounts",
-          style: TextStyle(color: AppColors.btn2, fontSize: 40),
-        ),
-        const SizedBox(
-          height: 20,
-        ),
         Container(
           height: 100,
           decoration: BoxDecoration(

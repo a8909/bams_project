@@ -17,15 +17,20 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  // final BankAccount = ["First Bank of Nigeria", "United Bank for Africa"];
-
-  // final bankLogo = [
-  //   "https://s3-alpha-sig.figma.com/img/8298/9591/cb75460c9dcb5c0b1fa3ef95d6710125?Expires=1710720000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=mMlWM8ViIXoIjeBPJb4vmr8sgQRadH9vCjqct~TTucIDtOCTvYRvVtlBF4Aeb2LP3YFUCgwHCRDGZL4GCXwDBoTzxzVIEVde4St3OGsytbLW7822pnr1KeLVxXDhRHupjy1g2IefwCC0vCZriXArGcsDQATK25DHLaLTDrL1ueMj9ReZB8kZ6tNzjUWLtvno4fvIvip1uNvTO7tLxTuPnpENFa2GExaqbIJ1MU5z-~30Xe6-52NmFAu49p9gw-Be~WSPTOw-wpDBLMQLJp9Npn87gPTn1bg6CWtdHF4tR1kQ4VNMY6dIWXiL2ijWOaBfJ-ObB8hubaFOZbUflo1hvA__",
-  //   "https://s3-alpha-sig.figma.com/img/297b/ab50/d2074174fabb817d067067bc6eec78f7?Expires=1710720000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=bnWPlIkTaqqVOgSO8m~yuzgaqDraec5K7otntXdOV8eOKXATuImZueuoV50GlAOzDOp8Vg2QjB2Ckk2QdTlNjEORIOGjNdoWLesato7pfmxP1Uba4wll2RNAqBARAjW2zrwRQ8ZDqD3Mg5vmk13MNGXnmiRqaq5rNWDXHnYAUpm8qZCszmD3zwIuPRH3K7QeKmTGbF7RZnRzGizCaksZIFJI~D7qsejtlJVeHJ6x53XKVxzUdvSC7GEf1kj9QbMszfiyGyXA9dSKGdCAo~Mw3XCpDQ6DBdjbC3SPqGlWzXJFq55creJPm0M8IgyTZxA823aLSwZUK7uDGdfKigCXxg__"
-  // ];
+  final bankResponse = [
+    {"logo": "assets/images/firstbank.png", "banklist": "First Bank Of Nigeria"}
+  ];
   var monthList = ["Last 5 months", "Last 4 months", "Last month"];
   String dropdownvalue = "Last 6 months";
-  List<Views> bankForms = List.empty(growable: true);
+  // List<Views> bankForms = List.empty(growable: true);
+  List<Widget> userForm = [];
+
+  serverInput() {
+    for (var i = 0; i < 1; i++) {
+      userForm
+          .add(view("First Bank Of Nigeria", "assets/images/firstbank.png"));
+    }
+  }
 
   final TextEditingController controller = TextEditingController();
   final _formKey = GlobalKey();
@@ -117,12 +122,12 @@ class _HomeState extends State<Home> {
                                       container("Guarantee Trust Bank",
                                           "assets/images/gtb.png"),
                                       const SizedBox(
-                                        height: 10,
+                                        height: 24,
                                       ),
-                                      (bankForms.isEmpty)
+                                      (userForm.isEmpty)
                                           ? const Text("")
-                                          : ListView.builder(
-                                              itemCount: bankForms.length,
+                                          : ListView.separated(
+                                              itemCount: userForm.length,
                                               shrinkWrap: true,
                                               controller: ScrollController(),
                                               itemBuilder: (context, index) {
@@ -132,44 +137,14 @@ class _HomeState extends State<Home> {
                                                 ];
                                                 // final scrollController =
                                                 //     ScrollController();
-
-                                                return Padding(
-                                                  padding:
-                                                      const EdgeInsets.fromLTRB(
-                                                          16, 8, 16, 8),
-                                                  child: Column(
-                                                    children: [
-                                                      view(
-                                                          "First Bank Of Nigeria",
-                                                          "assets/images/firstbank.png")
-
-                                                      // TextFormField(
-                                                      //   onChanged: (value) =>
-                                                      //       widget.bankObject
-                                                      //           .name = value,
-                                                      //   onSaved: (newValue) =>
-                                                      //       widget.bankObject
-                                                      //           .name ==
-                                                      //       newValue,
-                                                      //   decoration: const InputDecoration(
-                                                      //       border: OutlineInputBorder(
-                                                      //           borderRadius: BorderRadius
-                                                      //               .all(Radius
-                                                      //                   .circular(
-                                                      //                       7))),
-                                                      //       hintText:
-                                                      //           "Enter account number",
-                                                      //       labelText:
-                                                      //           "Enter account number"),
-                                                      // ),
-                                                      // const SizedBox(
-                                                      //     height: 10),
-                                                      // container(
-                                                      //     // the image and the bank here aree to  be passed as an index of a builder
-                                                      //     "First Bank Of Nigeria",
-                                                      //     "assets/images/firstbank.png"),
-                                                    ],
-                                                  ),
+                                                print(userForm.length);
+                                                return userForm[index];
+                                              },
+                                              separatorBuilder:
+                                                  (BuildContext context,
+                                                      int index) {
+                                                return const SizedBox(
+                                                  height: 24,
                                                 );
                                               },
                                             ),
@@ -182,21 +157,23 @@ class _HomeState extends State<Home> {
                                           child: OutlinedButton(
                                               onPressed: () {
                                                 setState(() {
-                                                  bankForms.add(Views(
-                                                          bankName: "bankName",
-                                                          bankImage:
-                                                              "bankImage",
-                                                          bankobj: BankObject(
-                                                              name: widget
-                                                                  .bankObject
-                                                                  .name))
+                                                  serverInput();
 
-                                                      // Home(
-                                                      //   bankObject: BankObject(
-                                                      //       name: widget
-                                                      //           .bankObject
-                                                      //           .name))
-                                                      );
+                                                  // userForm.add(Views(
+                                                  //         bankName: "bankName",
+                                                  //         bankImage:
+                                                  //             "bankImage",
+                                                  //         bankobj: BankObject(
+                                                  //             name: widget
+                                                  //                 .bankObject
+                                                  //                 .name))
+
+                                                  //     // Home(
+                                                  //     //   bankObject: BankObject(
+                                                  //     //       name: widget
+                                                  //     //           .bankObject
+                                                  //     //           .name))
+                                                  //     );
                                                 });
                                               },
                                               style: OutlinedButton.styleFrom(
@@ -424,3 +401,8 @@ Widget view(String bankName, String bankImage) {
     },
   );
 }
+
+// List<Widget> userBankForm (){
+
+//                                                 return userForm;
+// }
