@@ -25,8 +25,8 @@ Row onboardingBtns(BuildContext context) {
     children: [
       ElevatedButton(
           onPressed: () {
-            Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => const LogIn()));
+            Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => LogIn()));
 
             // Navigator.of(context).pushNamed("/login");
           },

@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => const SplashScreen(),
         firstScreen: (context) => const OnboardingScreens(),
         mainpage: (context) => const MainPage(),
-        login: (context) => const LogIn(),
+        login: (context) => LogIn(),
         signup: (context) => const SignUp(),
         verification: (context) => const Verification(),
         signin: (context) => const SignIn(),
