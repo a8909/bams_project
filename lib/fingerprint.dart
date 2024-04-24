@@ -1,3 +1,5 @@
+import 'dart:js';
+
 import 'package:bams_project/color-template.dart';
 import 'package:flutter/material.dart';
 import 'package:local_auth/local_auth.dart';
@@ -10,7 +12,6 @@ class FingerPrint extends StatefulWidget {
 }
 
 class _FingerPrintState extends State<FingerPrint> {
-  // final screensize = MediaQuery.of(BuildContext context).size;
   LocalAuthentication auth = LocalAuthentication();
   bool _canCheckBiometric = false;
   List<BiometricType>? available;
@@ -59,7 +60,7 @@ class _FingerPrintState extends State<FingerPrint> {
     if (!mounted) return;
     setState(() {
       canAuthenticate ? print(success) : print(unsuccessful);
-      Navigator.of(context).pushNamed("/screen1");
+      Navigator.of(context as BuildContext).pushNamed("/screen1");
     });
     return authenticate();
   }
@@ -75,8 +76,9 @@ class _FingerPrintState extends State<FingerPrint> {
 
   @override
   Widget build(BuildContext context) {
+    // final size = MediaQuery.sizeOf(context);
     return GestureDetector(
-      onTap: () => authenticate,
+      onTap: () => authenticate(),
       child: Container(
         decoration: const BoxDecoration(
           color: AppColors.btn2,

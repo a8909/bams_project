@@ -1,61 +1,28 @@
-import 'dart:convert';
 import 'dart:core';
 import 'dart:html';
 
 import 'package:bams_project/App-string.dart';
 import 'package:bams_project/color-template.dart';
-import 'package:bams_project/elevatedBut.dart';
+import 'package:bams_project/controller/Service_Provider/app_repo.dart';
+import 'package:bams_project/controller/Service_Provider/login_provider.dart';
 import 'package:bams_project/fingerprint.dart';
-import 'package:bams_project/global-string.dart';
 import 'package:bams_project/screen_1.dart';
 // import 'package:bams_project/screen_1.dart';
-import 'package:bams_project/textfield.dart';
 import 'package:bams_project/top-content.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'controller/Service_Provider/user_Service.dart';
+import 'package:provider/provider.dart';
 
 class LogIn extends StatefulWidget {
-  LogIn({super.key});
+  const LogIn({super.key});
 
   @override
   State<LogIn> createState() => _LogInState();
 }
 
 class _LogInState extends State<LogIn> {
-  String Password = "";
   bool visible = true;
   final emailcontroller = TextEditingController();
-
   final passwordcontroller = TextEditingController();
-
-  Future<User> doLogin() async {
-    final email = emailcontroller.text;
-    final password = Password;
-    final body = {
-      "email": email,
-      "password": password,
-    };
-    print(jsonEncode(body));
-    var url = "https://reqres.in/api/register";
-    final response = await http.post(Uri.parse(url), body: body);
-    print(response.body);
-    try {
-      if (response.statusCode == 200) {
-        print(response.body);
-        final json = jsonDecode(response.body);
-        final users = User.fromjson(json);
-        print(users.password);
-        return users;
-      } else {
-        print(response.statusCode);
-      }
-    } catch (e) {
-      print(e);
-    }
-
-    throw Exception("user not found");
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,18 +45,36 @@ class _LogInState extends State<LogIn> {
               const SizedBox(
                 height: 50,
               ),
-              AppField(
-                hint: AppStrings.email,
-                heigth: 7,
-                controller: emailcontroller,
+              TextField(
+                onChanged: (value) {
+                  Provider.of<LoginProvider>(context, listen: false).email =
+                      value;
+                },
+                decoration: const InputDecoration(
+                    label: Text(AppStrings.email),
+                    hintText: AppStrings.email,
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(7))),
+                    focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue),
+                        borderRadius: BorderRadius.all(Radius.circular(7)))),
               ),
+              // AppField(
+              //   hint: AppStrings.email,
+              //   heigth: 7,
+              //   controller: emailcontroller,
+              //   onChangecallback: (value) {
+              //     Provider.of<LoginProvider>(context).email = value;
+              //   },
+              // ),
               const SizedBox(
                 height: 20,
               ),
 
               TextField(
                 onChanged: (value) {
-                  Password = value;
+                  Provider.of<LoginProvider>(context, listen: false).password =
+                      value;
                 },
                 controller: passwordcontroller,
                 obscureText: visible,
@@ -126,9 +111,24 @@ class _LogInState extends State<LogIn> {
                     height: 50,
                     width: 266,
                     child: ElevatedButton(
-                        onPressed: () async {
-                          await doLogin();
-                          // Navigator.pushNamed(context, screen1);
+                        onPressed: () {
+                          Provider.of<LoginProvider>(context, listen: false)
+                              .login()
+                              .then((value) {
+                            Provider.of<AppRepo>(context, listen: false).user =
+                                value.user;
+                            print(value.user);
+                            Provider.of<AppRepo>(context, listen: false).token =
+                                value.token;
+                            print(value.token);
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) {
+                                print("new page is routed");
+                                return const Screen1();
+                              },
+                            ));
+                          });
+                          print("welcome");
                         },
                         style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.btn1,

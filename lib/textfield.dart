@@ -2,6 +2,7 @@
 
 import 'package:bams_project/App-string.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class TxtField extends StatefulWidget {
   final String label;
@@ -52,15 +53,20 @@ class AppField extends StatelessWidget {
   final TextEditingController controller;
   final String hint;
   final double heigth;
-  const AppField(
+  final Function(String) onChangecallback;
+  AppField(
       {super.key,
       required this.hint,
       required this.heigth,
-      required this.controller});
+      required this.controller,
+      required this.onChangecallback});
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      onChanged: (value) {
+        onChangecallback(value);
+      },
       controller: controller,
       decoration: InputDecoration(
           label: Text(hint),

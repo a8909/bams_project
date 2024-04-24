@@ -18,6 +18,10 @@ class _SignUpState extends State<SignUp> {
   final controller2 = TextEditingController();
   final controller3 = TextEditingController();
   final controller4 = TextEditingController();
+  var firstName = "";
+  var lastName = "";
+  var phone = "";
+  var gmail = "";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,24 +44,28 @@ class _SignUpState extends State<SignUp> {
                 hint: AppStrings.firstname,
                 heigth: 7,
                 controller: controller,
+                onChangecallback: (String) {},
               ),
               const SizedBox(height: 20),
               AppField(
                 hint: AppStrings.lastname,
                 heigth: 7,
                 controller: controller2,
+                onChangecallback: (String) {},
               ),
               const SizedBox(height: 20),
               AppField(
                 hint: AppStrings.phone,
                 heigth: 7,
                 controller: controller3,
+                onChangecallback: (String) {},
               ),
               const SizedBox(height: 20),
               AppField(
                 hint: AppStrings.gmail,
                 heigth: 7,
                 controller: controller4,
+                onChangecallback: (String) {},
               ),
               const SizedBox(height: 30),
               elvBtn(AppStrings.cont, "/verification", context, 50,

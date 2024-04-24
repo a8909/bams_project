@@ -30,6 +30,8 @@ class _OtherAccountState extends State<OtherAccount> {
   final List<String> accountNumber = ["3092773812"];
   final List<String> accountName = ["JOHN DOE ADEROGBA"];
   final List<String> accountstat = ["CUR."];
+  var sendingAmount = '';
+  var whySending = '';
 
   final statecontroller = MaterialStatesController();
   // @override
@@ -46,6 +48,7 @@ class _OtherAccountState extends State<OtherAccount> {
           hint: "Amount to send?",
           heigth: 7,
           controller: controller,
+          onChangecallback: (String) {},
         ),
         const SizedBox(height: 10),
         Container(
@@ -368,6 +371,7 @@ class _OtherAccountState extends State<OtherAccount> {
           hint: "Why are you sending money?",
           heigth: 7,
           controller: controller,
+          onChangecallback: (String) {},
         ),
         const SizedBox(
           height: 30,
@@ -391,12 +395,16 @@ enum Checkstate { init, done }
 
 Column ownAccount(BuildContext context) {
   final TextEditingController controller = TextEditingController();
+  var reason1 = "";
+  var reason2 = "";
+  var amountToSend = '';
   return Column(
     children: [
       AppField(
         hint: AppStrings.amountTosend,
         heigth: 7,
         controller: controller,
+        onChangecallback: (String) {},
       ),
       const SizedBox(
         height: 20,
@@ -416,6 +424,7 @@ Column ownAccount(BuildContext context) {
         hint: AppStrings.reason,
         heigth: 7,
         controller: controller,
+        onChangecallback: (String) {},
       ),
       const SizedBox(
         height: 30,
@@ -544,6 +553,7 @@ Column ownAccount(BuildContext context) {
                                 hint: "Reason",
                                 heigth: 7,
                                 controller: controller,
+                                onChangecallback: (String) {},
                               ),
                               const Spacer(),
                               SizedBox(
