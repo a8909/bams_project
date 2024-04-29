@@ -22,7 +22,7 @@ ButtonState state = ButtonState.init;
 
 class _OtherAccountState extends State<OtherAccount> {
   late final textchange;
-  List<TextEditingController> listcontroller = [TextEditingController()];
+
   final TextEditingController controller = TextEditingController();
   bool iconType = true;
   final isDone = state == ButtonState.done;
@@ -34,6 +34,7 @@ class _OtherAccountState extends State<OtherAccount> {
   var whySending = '';
 
   final statecontroller = MaterialStatesController();
+  List<TextEditingController> listcontroller = [TextEditingController()];
   // @override
   // void dispose() {
   //   listcontroller.dispose();
@@ -88,16 +89,27 @@ class _OtherAccountState extends State<OtherAccount> {
             GestureDetector(
               onTap: () async {
                 await showModalBottomSheet(
+                  backgroundColor: Colors.transparent,
                   context: context,
                   builder: (context) {
                     return StatefulBuilder(
                       builder: (context, setState) {
                         return Container(
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(20),
+                              topRight: Radius.circular(20),
+                            ),
+                          ),
                           child: Padding(
                             padding: const EdgeInsets.all(10.0),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                const SizedBox(
+                                  height: 10,
+                                ),
                                 cancelButton(context),
                                 const SizedBox(
                                   height: 10,
@@ -106,12 +118,14 @@ class _OtherAccountState extends State<OtherAccount> {
                                 const SizedBox(
                                   height: 40,
                                   child: TextField(
+                                    textCapitalization:
+                                        TextCapitalization.sentences,
                                     decoration: InputDecoration(
                                         hintText: "search beneficiaries",
                                         prefixIcon: Icon(Icons.search_outlined),
                                         border: OutlineInputBorder(
                                             borderRadius: BorderRadius.all(
-                                                Radius.circular(7)))),
+                                                Radius.circular(20)))),
                                   ),
                                 ),
                                 const SizedBox(
@@ -153,7 +167,9 @@ class _OtherAccountState extends State<OtherAccount> {
                                             // Image.asset(name)  image should be passed from backend
                                             Column(
                                               mainAxisAlignment:
-                                                  MainAxisAlignment.center,
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
                                               children: [
                                                 Row(
                                                   children: [
@@ -256,101 +272,100 @@ class _OtherAccountState extends State<OtherAccount> {
                                         itemCount: listcontroller.length,
                                         shrinkWrap: true,
                                         itemBuilder: (context, index) {
-                                          final controll =
-                                              TextEditingController();
-                                          return Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Container(
-                                                height: 150,
-                                                width: 300,
-                                                decoration: BoxDecoration(
-                                                    border: Border.all(
-                                                        color: Colors.black
-                                                            .withOpacity(0.5))),
-                                                margin:
-                                                    const EdgeInsets.fromLTRB(
-                                                        5, 10, 5, 10),
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      TextFormField(
-                                                        controller:
-                                                            listcontroller[
-                                                                index],
-                                                        decoration: const InputDecoration(
-                                                            hintText:
-                                                                "Enter Acoount Number",
-                                                            suffixIcon: Icon(Icons
-                                                                .keyboard_arrow_down_outlined)),
-                                                      ),
-                                                      const SizedBox(
-                                                        height: 10,
-                                                      ),
-                                                      TextFormField(
-                                                        controller: controll,
-                                                        onChanged: (value) {
-                                                          textchange = value;
-                                                        },
-                                                        decoration:
-                                                            const InputDecoration(
-                                                                hintText:
-                                                                    "Enter Amount",
-                                                                border: OutlineInputBorder(
-                                                                    borderRadius:
-                                                                        BorderRadius.all(Radius.circular(
-                                                                            7))),
-                                                                focusedBorder:
-                                                                    OutlineInputBorder(
-                                                                        // borderSide: const BorderSide(color: Colors.transparent),
-                                                                        borderRadius:
-                                                                            BorderRadius.all(Radius.circular(7)))),
-                                                      )
-                                                    ],
+                                          var endResult = [];
+                                          for (int y = 0;
+                                              y < listcontroller.length;
+                                              y++) {
+                                            var newItem = listcontroller[y];
+                                            print(newItem);
+                                            endResult.add(Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Container(
+                                                  height: 150,
+                                                  width: 300,
+                                                  decoration: BoxDecoration(
+                                                      border: Border.all(
+                                                          color: Colors.black
+                                                              .withOpacity(
+                                                                  0.5))),
+                                                  margin:
+                                                      const EdgeInsets.fromLTRB(
+                                                          5, 10, 5, 10),
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        TextFormField(
+                                                          controller:
+                                                              listcontroller[
+                                                                  index],
+                                                          decoration: const InputDecoration(
+                                                              hintText:
+                                                                  "Enter Acoount Number",
+                                                              suffixIcon: Icon(Icons
+                                                                  .keyboard_arrow_down_outlined)),
+                                                        ),
+                                                        const SizedBox(
+                                                          height: 10,
+                                                        ),
+                                                        TextFormField(
+                                                          onChanged: (value) {
+                                                            textchange = value;
+                                                          },
+                                                          decoration:
+                                                              const InputDecoration(
+                                                                  hintText:
+                                                                      "Enter Amount",
+                                                                  border: OutlineInputBorder(
+                                                                      borderRadius:
+                                                                          BorderRadius.all(Radius.circular(
+                                                                              7))),
+                                                                  focusedBorder:
+                                                                      OutlineInputBorder(
+                                                                          // borderSide: const BorderSide(color: Colors.transparent),
+                                                                          borderRadius:
+                                                                              BorderRadius.all(Radius.circular(7)))),
+                                                        )
+                                                      ],
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
-                                              GestureDetector(
-                                                onTap: () {
-                                                  setState(() {
-                                                    listcontroller[index]
-                                                        .clear();
-                                                    listcontroller[index]
-                                                        .dispose();
-                                                    listcontroller
-                                                        .removeAt(index);
-                                                  });
-                                                },
-                                                child: const Icon(Icons
-                                                    .disabled_by_default_outlined),
-                                              )
-                                            ],
-                                          );
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    setState(() {
+                                                      listcontroller[index]
+                                                          .clear();
+                                                      // listcontroller[index]
+                                                      //     .dispose();
+                                                      listcontroller
+                                                          .removeAt(index);
+                                                    });
+                                                  },
+                                                  child: const Icon(Icons
+                                                      .disabled_by_default_outlined),
+                                                )
+                                              ],
+                                            ));
+                                          }
+                                          print(endResult.length);
+                                          return endResult[index];
                                         },
                                       )
                                     : const Text(""),
 
                                 const SizedBox(height: 10),
                                 GestureDetector(
-                                    onTap: () {
-                                      for (var i = 0;
-                                          i < listcontroller.length;
-                                          i++) {
-                                        final entries = [];
-                                        setState(() {
-                                          entries.add(i);
-                                        });
-                                      }
-                                    },
+                                    onTap: () {},
                                     child: _BeneficiaryIcon(
                                         "Add Another Beneficiaries")),
                                 // elvBtn(AppStrings.cont, "routeName", context, 50,
@@ -407,7 +422,7 @@ Column ownAccount(BuildContext context) {
         onChangecallback: (String) {},
       ),
       const SizedBox(
-        height: 20,
+        height: 30,
       ),
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -418,7 +433,7 @@ Column ownAccount(BuildContext context) {
         ],
       ),
       const SizedBox(
-        height: 20,
+        height: 30,
       ),
       AppField(
         hint: AppStrings.reason,
@@ -437,16 +452,26 @@ Column ownAccount(BuildContext context) {
               showModalBottomSheet(
                 context: context,
                 isScrollControlled: true,
+                backgroundColor: Colors.transparent,
                 builder: (context) {
-                  return StatefulBuilder(
-                    builder: (context, setState) {
+                  return DraggableScrollableSheet(
+                    initialChildSize: 0.85,
+                    maxChildSize: 0.9,
+                    minChildSize: 0.5,
+                    builder: (context, scrollController) {
                       return Container(
+                        decoration: const BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.all(Radius.circular(7))),
                         child: Padding(
                           padding: const EdgeInsets.all(10.0),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisSize: MainAxisSize.max,
                             children: [
+                              const SizedBox(
+                                height: 10,
+                              ),
                               cancelButton(context),
                               const SizedBox(
                                 height: 30,
@@ -496,7 +521,7 @@ Column ownAccount(BuildContext context) {
                                         children: [
                                           Row(
                                             mainAxisAlignment:
-                                                MainAxisAlignment.center,
+                                                MainAxisAlignment.end,
                                             children: [
                                               Text("VAT: "),
                                               Text("#0.75"),
@@ -504,7 +529,7 @@ Column ownAccount(BuildContext context) {
                                           ),
                                           Row(
                                             mainAxisAlignment:
-                                                MainAxisAlignment.center,
+                                                MainAxisAlignment.end,
                                             children: [
                                               Text("Transfer Fee: "),
                                               Text("#25.00")
@@ -520,7 +545,7 @@ Column ownAccount(BuildContext context) {
                                 height: 10,
                               ),
                               Container(
-                                height: 100,
+                                height: 120,
                                 width: double.infinity,
                                 decoration: BoxDecoration(
                                     color: Colors.white,
@@ -536,13 +561,13 @@ Column ownAccount(BuildContext context) {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    fromTo("From", "accNo",
-                                        "assets/images/gtb.png"),
+                                    fromTo("From", "assets/images/gtb.png",
+                                        "9090397455"),
                                     const SizedBox(
                                       width: 10,
                                     ),
-                                    fromTo("To", "accNo",
-                                        "assets/images/firstbank.png")
+                                    fromTo("To", "assets/images/firstbank.png",
+                                        "2263997831")
                                   ],
                                 ),
                               ),

@@ -72,6 +72,9 @@ Container fromTo(String from, String image, String accNo) {
   //   {"accountNumber": "2263997831", "bankLogo": "assets/images/gtb.png"}
   // ];
   var items = ["9090397455", "9034500772", "2263997831"];
+  final itemImages = [
+    "",
+  ];
   String itemchange = "";
 
   void setState(Null Function() param0) {

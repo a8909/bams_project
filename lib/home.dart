@@ -26,7 +26,7 @@ class _HomeState extends State<Home> {
   List<Widget> userForm = [];
 
   serverInput() {
-    for (var i = 0; i < 1; i++) {
+    for (var pro = 0; pro < 1; pro++) {
       userForm
           .add(view("First Bank Of Nigeria", "assets/images/firstbank.png"));
     }
@@ -131,12 +131,23 @@ class _HomeState extends State<Home> {
                                               shrinkWrap: true,
                                               controller: ScrollController(),
                                               itemBuilder: (context, index) {
+                                                var finalUser = [];
                                                 List<TextEditingController>
                                                     _banknameController = [
                                                   TextEditingController()
                                                 ];
-                                                print(userForm.length);
-                                                return userForm[index];
+                                                if (userForm.isNotEmpty) {
+                                                  for (var user in userForm) {
+                                                    print("${user} is here");
+                                                    finalUser.add(user);
+                                                  }
+                                                } else {
+                                                  print(
+                                                      "${finalUser}, out of limit");
+                                                }
+
+                                                // print(finalUser.length);
+                                                return finalUser[index];
                                               },
                                               separatorBuilder:
                                                   (BuildContext context,
