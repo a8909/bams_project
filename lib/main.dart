@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
         firstScreen: (context) => const OnboardingScreens(),
         mainpage: (context) => const MainPage(),
         login: (context) => ChangeNotifierProvider(
-            create: (context) => LoginProvider(), child: LogIn()),
+            create: (context) => LoginProvider(), child: const LogIn()),
         signup: (context) => const SignUp(),
         verification: (context) => const Verification(),
         signin: (context) => const SignIn(),

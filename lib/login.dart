@@ -23,6 +23,12 @@ class _LogInState extends State<LogIn> {
   bool visible = true;
   final emailcontroller = TextEditingController();
   final passwordcontroller = TextEditingController();
+  bool buttonStatus = false;
+  void checkButtonStatus(bool status) {
+    setState(() {
+      buttonStatus = status;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -112,30 +118,48 @@ class _LogInState extends State<LogIn> {
                     width: 266,
                     child: ElevatedButton(
                         onPressed: () {
+                          checkButtonStatus(true);
                           Provider.of<LoginProvider>(context, listen: false)
                               .login()
                               .then((value) {
                             Provider.of<AppRepo>(context, listen: false).user =
                                 value.user;
-                            print(value.user);
                             Provider.of<AppRepo>(context, listen: false).token =
                                 value.token;
-                            print(value.token);
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) {
-                                print("new page is routed");
-                                return const Screen1();
+                            Future.delayed(
+                              const Duration(seconds: 3),
+                              () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) {
+                                    print("new page is routed");
+                                    return const Screen1();
+                                  },
+                                ));
+                                checkButtonStatus(false);
                               },
-                            ));
+                            );
                           });
                           print("welcome");
                         },
                         style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.btn1,
                             foregroundColor: Colors.white),
-                        child: const Center(
-                          child: Text(AppStrings.login),
-                        )),
+                        child: buttonStatus
+                            ? const Row(
+                                children: [
+                                  Text('loading...'),
+                                  SizedBox(
+                                    width: 20,
+                                    height: 20,
+                                    child: CircularProgressIndicator(
+                                      color: Colors.white,
+                                    ),
+                                  )
+                                ],
+                              )
+                            : const Center(
+                                child: Text(AppStrings.login),
+                              )),
                   ),
                   // elvBtn(AppStrings.login, "/screen1", context, 50, 266),
                   const Padding(

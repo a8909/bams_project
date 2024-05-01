@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:bams_project/cancel-button.dart';
 import 'package:bams_project/color-template.dart';
 import 'package:bams_project/home.dart';
@@ -21,7 +23,7 @@ class OtherAccount extends StatefulWidget {
 ButtonState state = ButtonState.init;
 
 class _OtherAccountState extends State<OtherAccount> {
-  late final textchange;
+  late var textchange = "";
 
   final TextEditingController controller = TextEditingController();
   bool iconType = true;
@@ -32,6 +34,7 @@ class _OtherAccountState extends State<OtherAccount> {
   final List<String> accountstat = ["CUR."];
   var sendingAmount = '';
   var whySending = '';
+  List BeneficiaryAccounts = [];
 
   final statecontroller = MaterialStatesController();
   List<TextEditingController> listcontroller = [TextEditingController()];
@@ -345,8 +348,6 @@ class _OtherAccountState extends State<OtherAccount> {
                                                     setState(() {
                                                       listcontroller[index]
                                                           .clear();
-                                                      // listcontroller[index]
-                                                      //     .dispose();
                                                       listcontroller
                                                           .removeAt(index);
                                                     });
@@ -365,7 +366,12 @@ class _OtherAccountState extends State<OtherAccount> {
 
                                 const SizedBox(height: 10),
                                 GestureDetector(
-                                    onTap: () {},
+                                    onTap: () {
+                                      final String response = textchange;
+                                      setState(() {
+                                        BeneficiaryAccounts.add(response);
+                                      });
+                                    },
                                     child: _BeneficiaryIcon(
                                         "Add Another Beneficiaries")),
                                 // elvBtn(AppStrings.cont, "routeName", context, 50,
@@ -381,7 +387,52 @@ class _OtherAccountState extends State<OtherAccount> {
               );
             },
             child: _BeneficiaryIcon(AppStrings.addBeneficiary)),
+        const SizedBox(height: 10),
+        (BeneficiaryAccounts.isEmpty)
+            ? const Text("")
+            : ListView.builder(
+                shrinkWrap: true,
+                itemCount: BeneficiaryAccounts.length,
+                itemBuilder: (context, index) {
+                  print("This is my current status");
+                  return Container(
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 325,
+                          height: 66,
+                          decoration: BoxDecoration(
+                              color: Colors.grey.shade900,
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(7))),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(BeneficiaryAccounts[index]),
+                                  const Row(
+                                    children: [Text("amount")],
+                                  )
+                                ],
+                              ),
+                              const Text("name")
+                            ],
+                          ),
+                        ),
+                        GestureDetector(
+                            child:
+                                const Icon(Icons.cancel_presentation_outlined))
+                      ],
+                    ),
+                  );
+                },
+              ),
         const SizedBox(height: 20),
+
         AppField(
           hint: "Why are you sending money?",
           heigth: 7,

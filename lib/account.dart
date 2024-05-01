@@ -1,9 +1,14 @@
 import 'package:bams_project/color-template.dart';
+import 'package:bams_project/models/bank_models.dart';
 import 'package:bams_project/top-content.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class BankAccount extends StatelessWidget {
-  const BankAccount({super.key});
+  BankAccount({super.key});
+  List banks = [
+    ["assets/images/gtb.png", "Tevi Adekunle F.", "3092773812"],
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -18,16 +23,29 @@ class BankAccount extends StatelessWidget {
                 style: TextStyle(color: AppColors.btn2, fontSize: 40),
               ),
               const SizedBox(
-                height: 20,
+                height: 10,
               ),
-              ...mockUsersFromServer()
+              ListView.separated(
+                shrinkWrap: true,
+                itemCount: banks.length,
+                itemBuilder: (context, index) {
+                  return userItem(
+                      banks[index][0], banks[index][1], banks[index][2]);
+                },
+                separatorBuilder: (BuildContext context, int index) {
+                  return const SizedBox(
+                    height: 8,
+                  );
+                },
+              )
+              // ...mockUsersFromServer()
             ],
           ),
         ));
   }
 }
 
-Widget userItem() {
+Widget userItem(String bankImage, bankName, accountNo) {
   return Padding(
     padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
     child: Column(
@@ -41,12 +59,12 @@ Widget userItem() {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Image.asset("assets/images/gtb.png"),
+              Image.asset(bankImage),
               // AssetImage(assetName) this  should be passed dynamically from end point
               Container(
-                  child: const Column(
+                  child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [Text("Tevi Adekunle F."), Text("3092773812")],
+                children: [Text(bankName), Text(accountNo)],
               )),
               Container(
                 height: 20,
@@ -73,10 +91,11 @@ Widget userItem() {
   );
 }
 
-List<Widget> mockUsersFromServer() {
-  List<Widget> users = [];
-  for (var i = 0; i < 1000; i++) {
-    users.add(userItem());
-  }
-  return users;
-}
+// List<Widget> mockUsersFromServer() {
+//   List<Widget> users = [];
+//   for (var i = 0; i < 1000; i++) {
+//     users.add(userItem());
+//   }
+//   return users;
+// }
+

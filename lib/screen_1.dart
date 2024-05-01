@@ -34,7 +34,7 @@ final pages = [
   Home(
     bankObject: BankObject(name: ''),
   ),
-  const BankAccount(),
+  BankAccount(),
   const Transfer(),
 ];
 
