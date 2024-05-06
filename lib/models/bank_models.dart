@@ -7,7 +7,23 @@ class BankInfo extends ChangeNotifier {
   List banks = [
     ["assets/images/gtb.png", "Tevi Adekunle F.", "3092773812"],
   ];
-  set bankUser(usr) {
-    bankusers = usr;
+  List bankimage = ["assets/images/gtb.png", "assets/images/firstbank.png"];
+  List<BankUser> banksUserList = [
+    BankUser(
+        bankImage: "assets/images/gtb.png",
+        accountName: "JOHN DOE ADEROGBA",
+        accountNumber: "3092773812")
+  ];
+  List<BankUser> getbankUserList() {
+    return banksUserList;
   }
+
+  final List accountNumber = [
+    [
+      "assets/images/gtb.png",
+      "CUR.",
+      "3092773812",
+      "JOHN DOE ADEROGBA",
+    ]
+  ];
 }

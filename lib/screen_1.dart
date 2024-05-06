@@ -2,8 +2,10 @@ import 'package:bams_project/account.dart';
 import 'package:bams_project/color-template.dart';
 import 'package:bams_project/controller/onboarding%20screens/bank_call.dart';
 import 'package:bams_project/home.dart';
+import 'package:bams_project/models/bank_models.dart';
 import 'package:bams_project/transfer.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Screen1 extends StatefulWidget {
   const Screen1({super.key});
@@ -34,7 +36,7 @@ final pages = [
   Home(
     bankObject: BankObject(name: ''),
   ),
-  BankAccount(),
+  ChangeNotifierProvider(create: (context) => BankInfo(), child: BankAccount()),
   const Transfer(),
 ];
 

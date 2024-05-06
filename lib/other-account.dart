@@ -3,6 +3,7 @@ import 'dart:html';
 import 'package:bams_project/cancel-button.dart';
 import 'package:bams_project/color-template.dart';
 import 'package:bams_project/home.dart';
+import 'package:bams_project/models/bank_models.dart';
 import 'package:bams_project/textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
@@ -24,17 +25,17 @@ ButtonState state = ButtonState.init;
 
 class _OtherAccountState extends State<OtherAccount> {
   late var textchange = "";
+  late var accNo = "";
 
   final TextEditingController controller = TextEditingController();
   bool iconType = true;
   final isDone = state == ButtonState.done;
   final initial = state == ButtonState.init;
-  final List<String> accountNumber = ["3092773812"];
-  final List<String> accountName = ["JOHN DOE ADEROGBA"];
-  final List<String> accountstat = ["CUR."];
+
   var sendingAmount = '';
   var whySending = '';
   List BeneficiaryAccounts = [];
+  final banksInfo = BankInfo();
 
   final statecontroller = MaterialStatesController();
   List<TextEditingController> listcontroller = [TextEditingController()];
@@ -136,7 +137,7 @@ class _OtherAccountState extends State<OtherAccount> {
                                 ),
 
                                 ListView.builder(
-                                  itemCount: accountNumber.length,
+                                  itemCount: banksInfo.accountNumber.length,
                                   shrinkWrap: true,
                                   itemBuilder: (context, index) {
                                     return InkWell(
@@ -150,6 +151,9 @@ class _OtherAccountState extends State<OtherAccount> {
                                         height: 50,
                                         width: double.infinity,
                                         decoration: BoxDecoration(
+                                            borderRadius:
+                                                const BorderRadius.all(
+                                                    Radius.circular(7)),
                                             border: Border.all(
                                                 color: Colors.black
                                                     .withOpacity(0.5))),
@@ -167,7 +171,12 @@ class _OtherAccountState extends State<OtherAccount> {
                                                       )
                                                     : const Icon(Icons
                                                         .check_circle_rounded)),
-                                            // Image.asset(name)  image should be passed from backend
+                                            Image.asset(
+                                              banksInfo.accountNumber[index][0],
+                                              width: 50,
+                                              height: 50,
+                                            ),
+                                            //  image should be passed from backend
                                             Column(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.start,
@@ -176,11 +185,16 @@ class _OtherAccountState extends State<OtherAccount> {
                                               children: [
                                                 Row(
                                                   children: [
-                                                    Text(accountstat[index]),
-                                                    Text(accountNumber[index])
+                                                    Text(
+                                                        banksInfo.accountNumber[
+                                                            index][1]),
+                                                    Text(
+                                                        banksInfo.accountNumber[
+                                                            index][2])
                                                   ],
                                                 ),
-                                                Text(accountName[index])
+                                                Text(banksInfo
+                                                    .accountNumber[index][3])
                                               ],
                                             )
                                           ],
@@ -309,6 +323,9 @@ class _OtherAccountState extends State<OtherAccount> {
                                                               .center,
                                                       children: [
                                                         TextFormField(
+                                                          onChanged: (value) {
+                                                            accNo = value;
+                                                          },
                                                           controller:
                                                               listcontroller[
                                                                   index],
@@ -369,8 +386,11 @@ class _OtherAccountState extends State<OtherAccount> {
                                     onTap: () {
                                       final String response = textchange;
                                       setState(() {
-                                        BeneficiaryAccounts.add(response);
+                                        BeneficiaryAccounts.add(
+                                            [response, accNo]);
+                                        listcontroller.clear();
                                       });
+                                      Navigator.of(context).pop();
                                     },
                                     child: _BeneficiaryIcon(
                                         "Add Another Beneficiaries")),
@@ -402,7 +422,7 @@ class _OtherAccountState extends State<OtherAccount> {
                           width: 325,
                           height: 66,
                           decoration: BoxDecoration(
-                              color: Colors.grey.shade900,
+                              border: Border.all(color: Colors.grey.shade900),
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(7))),
                           child: Column(
@@ -410,22 +430,27 @@ class _OtherAccountState extends State<OtherAccount> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  Text(BeneficiaryAccounts[index]),
-                                  const Row(
-                                    children: [Text("amount")],
-                                  )
+                                  Image.asset(banksInfo.bankimage[index],
+                                      height: 20, width: 20),
+                                  Text(accNo),
+                                  Text(textchange),
                                 ],
                               ),
-                              const Text("name")
+                              const Text("CIROMA ADEKUNLE")
                             ],
                           ),
                         ),
                         GestureDetector(
+                            onTap: () {
+                              // print("cancel widget");
+                              // setState(() {
+                              //   Navigator.of(context).pop();
+                              // });
+                            },
                             child:
-                                const Icon(Icons.cancel_presentation_outlined))
+                                const Icon(Icons.disabled_by_default_outlined))
                       ],
                     ),
                   );

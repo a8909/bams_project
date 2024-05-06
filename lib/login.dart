@@ -27,6 +27,19 @@ class _LogInState extends State<LogIn> {
   void checkButtonStatus(bool status) {
     setState(() {
       buttonStatus = status;
+      buttonStatus = false;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    emailcontroller.addListener(() {
+      final buttonStatus = emailcontroller.text.isNotEmpty;
+    });
+
+    passwordcontroller.addListener(() {
+      final buttonStatus = passwordcontroller.text.isNotEmpty;
     });
   }
 
@@ -52,6 +65,7 @@ class _LogInState extends State<LogIn> {
                 height: 50,
               ),
               TextField(
+                controller: emailcontroller,
                 onChanged: (value) {
                   Provider.of<LoginProvider>(context, listen: false).email =
                       value;
@@ -117,30 +131,36 @@ class _LogInState extends State<LogIn> {
                     height: 50,
                     width: 266,
                     child: ElevatedButton(
-                        onPressed: () {
-                          checkButtonStatus(true);
-                          Provider.of<LoginProvider>(context, listen: false)
-                              .login()
-                              .then((value) {
-                            Provider.of<AppRepo>(context, listen: false).user =
-                                value.user;
-                            Provider.of<AppRepo>(context, listen: false).token =
-                                value.token;
-                            Future.delayed(
-                              const Duration(seconds: 3),
-                              () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) {
-                                    print("new page is routed");
-                                    return const Screen1();
-                                  },
-                                ));
-                                checkButtonStatus(false);
+                        onPressed: buttonStatus
+                            ? null
+                            : () {
+                                checkButtonStatus(true);
+                                Provider.of<LoginProvider>(context,
+                                        listen: false)
+                                    .login()
+                                    .then((value) {
+                                  Provider.of<AppRepo>(context, listen: false)
+                                      .user = value.user;
+                                  Provider.of<AppRepo>(context, listen: false)
+                                      .token = value.token;
+                                  Future.delayed(
+                                    const Duration(seconds: 3),
+                                    () {
+                                      Navigator.of(context)
+                                          .push(MaterialPageRoute(
+                                        builder: (context) {
+                                          print("new page is routed");
+                                          return const Screen1();
+                                        },
+                                      ));
+                                      checkButtonStatus(false);
+                                      emailcontroller.clear();
+                                      passwordcontroller.clear();
+                                    },
+                                  );
+                                });
+                                print("welcome");
                               },
-                            );
-                          });
-                          print("welcome");
-                        },
                         style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.btn1,
                             foregroundColor: Colors.white),
