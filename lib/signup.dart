@@ -22,6 +22,7 @@ class _SignUpState extends State<SignUp> {
   var lastName = "";
   var phone = "";
   var gmail = "";
+  bool buttonController = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,8 +69,41 @@ class _SignUpState extends State<SignUp> {
                 onChangecallback: (String) {},
               ),
               const SizedBox(height: 30),
-              elvBtn(AppStrings.cont, "/verification", context, 50,
-                  double.infinity)
+
+              SizedBox(
+                width: double.infinity,
+                height: 50,
+                child: ElevatedButton(
+                    onPressed: buttonController == false &&
+                            controller.text.isEmpty &&
+                            controller2.text.isEmpty &&
+                            controller3.text.isEmpty &&
+                            controller4.text.isEmpty
+                        ? null
+                        : () {
+                            Future.delayed(
+                              const Duration(seconds: 3),
+                              () {
+                                setState(() {
+                                  buttonController = true;
+                                });
+                                print("verification complete");
+                                Navigator.of(context)
+                                    .pushNamed("/verification");
+                              },
+                            );
+                          },
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.btn1,
+                        foregroundColor: Colors.white),
+                    child: const Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [Text(AppStrings.cont)],
+                    )),
+              )
+
+              // elvBtn(AppStrings.cont, "/verification", context, 50,
+              //     double.infinity)
             ],
           ),
         ),

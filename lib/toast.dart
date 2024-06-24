@@ -1,14 +1,34 @@
 import 'package:bams_project/App-string.dart';
 import 'package:bams_project/cancel-button.dart';
 import 'package:bams_project/color-template.dart';
+import 'package:bams_project/data/database.dart';
 import 'package:bams_project/elevatedBut.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 
-class Toast extends StatelessWidget {
+class Toast extends StatefulWidget {
   const Toast({super.key});
 
   @override
+  State<Toast> createState() => _ToastState();
+}
+
+class _ToastState extends State<Toast> {
+  @override
   Widget build(BuildContext context) {
+    final _box = Hive.box('DataBase');
+    BamsDataBase dbBox = BamsDataBase();
+    @override
+    void initState() {
+      super.initState();
+
+      if (_box.get('tst') == null) {
+        dbBox.createInitaialDb();
+      } else {
+        dbBox.deleteDb();
+      }
+    }
+
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(16.0),

@@ -1,12 +1,11 @@
-import 'dart:html';
-
 import 'package:bams_project/cancel-button.dart';
 import 'package:bams_project/color-template.dart';
-import 'package:bams_project/home.dart';
+import 'package:bams_project/data/database.dart';
 import 'package:bams_project/models/bank_models.dart';
 import 'package:bams_project/textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 // import 'package:get/get_connect/sockets/src/sockets_html.dart';
 
 import 'App-string.dart';
@@ -39,6 +38,15 @@ class _OtherAccountState extends State<OtherAccount> {
 
   final statecontroller = MaterialStatesController();
   List<TextEditingController> listcontroller = [TextEditingController()];
+
+  final _dbox = Hive.box('DataBase');
+  BamsDataBase db = BamsDataBase();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   // @override
   // void dispose() {
   //   listcontroller.dispose();
@@ -386,7 +394,7 @@ class _OtherAccountState extends State<OtherAccount> {
                                     onTap: () {
                                       final String response = textchange;
                                       setState(() {
-                                        BeneficiaryAccounts.add(
+                                        db.BeneficiaryAccounts.add(
                                             [response, accNo]);
                                         listcontroller.clear();
                                       });
@@ -430,11 +438,16 @@ class _OtherAccountState extends State<OtherAccount> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Image.asset(banksInfo.bankimage[index],
-                                      height: 20, width: 20),
-                                  Text(accNo),
+                                  Row(
+                                    children: [
+                                      Image.asset(banksInfo.bankimage[index],
+                                          height: 20, width: 20),
+                                      Text(accNo),
+                                    ],
+                                  ),
                                   Text(textchange),
                                 ],
                               ),

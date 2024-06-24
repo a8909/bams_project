@@ -15,6 +15,7 @@ import 'package:bams_project/transfer.dart';
 import 'package:bams_project/verify-account.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
 import 'otp-verificaion.dart';
@@ -23,6 +24,9 @@ Future<void> main() async {
   runApp(ChangeNotifierProvider<AppRepo>(
       create: (BuildContext context) => AppRepo(), child: const MyApp()));
   DependencyInjection.init();
+  await Hive.initFlutter();
+  var box = await Hive.openBox("DataBase");
+  print(box);
 }
 
 class MyApp extends StatelessWidget {

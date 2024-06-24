@@ -109,9 +109,6 @@ class _SignInState extends State<SignIn> {
                         : strenght == 2 / 4 || strenght == 3 / 4
                             ? Colors.yellow
                             : Colors.green),
-                // (AppStrings.helperTxt != "")
-                //     ? const HelperPassword(helper: AppStrings.helperTxt)
-                //     : const TxtField(label: AppStrings.password),
                 const SizedBox(height: 10),
                 Text(message,
                     style: const TextStyle(fontSize: 10, color: Colors.black)),

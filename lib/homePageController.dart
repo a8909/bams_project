@@ -14,13 +14,26 @@ class HomepageController extends StatefulWidget {
 }
 
 class _HomepageControllerState extends State<HomepageController> {
-  final _controller = PageController();
-  int currentPage = 0;
-  List<Widget> pages = [
+  // final _dbBox = Hive.box('DataBase');
+  List pages = [
     const MainPage2(imagePath: ""),
     const MainPage(),
     const MainPage2(imagePath: "")
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    // if (_dbBox.get('onboarding') == null) {
+    //   db.createInitaialDb();
+    // } else {
+    //   db.loadDb();
+    // }
+  }
+
+  final _controller = PageController();
+  int currentPage = 0;
+  // BamsDataBase db = BamsDataBase();
 
   void onPageChange(int value) {
     if (currentPage == 0) {

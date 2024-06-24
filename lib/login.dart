@@ -24,24 +24,24 @@ class _LogInState extends State<LogIn> {
   final emailcontroller = TextEditingController();
   final passwordcontroller = TextEditingController();
   bool buttonStatus = false;
+  bool butStatus = true;
   void checkButtonStatus(bool status) {
     setState(() {
       buttonStatus = status;
-      buttonStatus = false;
     });
   }
 
-  @override
-  void initState() {
-    super.initState();
-    emailcontroller.addListener(() {
-      final buttonStatus = emailcontroller.text.isNotEmpty;
-    });
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   emailcontroller.addListener(() {
+  //     final buttonStatus = emailcontroller.text.isNotEmpty;
+  //   });
 
-    passwordcontroller.addListener(() {
-      final buttonStatus = passwordcontroller.text.isNotEmpty;
-    });
-  }
+  //   passwordcontroller.addListener(() {
+  //     final buttonStatus = passwordcontroller.text.isNotEmpty;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -131,14 +131,18 @@ class _LogInState extends State<LogIn> {
                     height: 50,
                     width: 266,
                     child: ElevatedButton(
-                        onPressed: buttonStatus
-                            ? null
-                            : () {
+                        onPressed: (emailcontroller.text.isNotEmpty &&
+                                passwordcontroller.text.isNotEmpty &&
+                                butStatus)
+                            ? () {
                                 checkButtonStatus(true);
                                 Provider.of<LoginProvider>(context,
                                         listen: false)
                                     .login()
                                     .then((value) {
+                                  setState(() {
+                                    butStatus = false;
+                                  });
                                   Provider.of<AppRepo>(context, listen: false)
                                       .user = value.user;
                                   Provider.of<AppRepo>(context, listen: false)
@@ -154,13 +158,16 @@ class _LogInState extends State<LogIn> {
                                         },
                                       ));
                                       checkButtonStatus(false);
-                                      emailcontroller.clear();
-                                      passwordcontroller.clear();
+
+                                      print("welcome");
+
+                                      // emailcontroller.clear();
+                                      // passwordcontroller.clear();
                                     },
                                   );
                                 });
-                                print("welcome");
-                              },
+                              }
+                            : null,
                         style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.btn1,
                             foregroundColor: Colors.white),

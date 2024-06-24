@@ -9,7 +9,7 @@ class LoginService {
 
   LoginService({required this.email, required this.password});
   Future<LoginResponse> call() async {
-    var url = "https://reqres.in/api/register";
+    var url = "https://reqres.in/api/login";
     final body = {"email": email, "password": password};
     print(jsonEncode(body));
     final result = await http.post(Uri.parse(url), body: body);
