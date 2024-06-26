@@ -1,5 +1,4 @@
 import 'package:bams_project/App-string.dart';
-import 'package:bams_project/elevatedBut.dart';
 import 'package:bams_project/textfield.dart';
 import 'package:bams_project/top-content.dart';
 import 'package:flutter/material.dart';
@@ -42,57 +41,67 @@ class _SignUpState extends State<SignUp> {
                   style: TextStyle(color: AppColors.txt2)),
               const SizedBox(height: 30),
               AppField(
+                keyboardType: TextInputType.name,
                 hint: AppStrings.firstname,
                 heigth: 7,
                 controller: controller,
-                onChangecallback: (String) {},
+                onChangecallback: (value) {
+                  firstName = value;
+                },
               ),
               const SizedBox(height: 20),
               AppField(
+                keyboardType: TextInputType.name,
                 hint: AppStrings.lastname,
                 heigth: 7,
                 controller: controller2,
-                onChangecallback: (String) {},
+                onChangecallback: (value) {
+                  lastName = value;
+                },
               ),
               const SizedBox(height: 20),
               AppField(
+                keyboardType: TextInputType.number,
                 hint: AppStrings.phone,
                 heigth: 7,
                 controller: controller3,
-                onChangecallback: (String) {},
+                onChangecallback: (value) {
+                  phone = value;
+                },
               ),
               const SizedBox(height: 20),
               AppField(
+                keyboardType: TextInputType.emailAddress,
                 hint: AppStrings.gmail,
                 heigth: 7,
                 controller: controller4,
-                onChangecallback: (String) {},
+                onChangecallback: (value) {
+                  gmail = value;
+                },
               ),
               const SizedBox(height: 30),
-
               SizedBox(
                 width: double.infinity,
                 height: 50,
                 child: ElevatedButton(
-                    onPressed: buttonController == false &&
-                            controller.text.isEmpty &&
-                            controller2.text.isEmpty &&
-                            controller3.text.isEmpty &&
-                            controller4.text.isEmpty
-                        ? null
-                        : () {
-                            Future.delayed(
-                              const Duration(seconds: 3),
-                              () {
-                                setState(() {
-                                  buttonController = true;
-                                });
-                                print("verification complete");
-                                Navigator.of(context)
-                                    .pushNamed("/verification");
-                              },
-                            );
-                          },
+                    onPressed: () {
+                      if (controller2.text.isEmpty &&
+                          controller3.text.isEmpty &&
+                          controller4.text.isEmpty) {
+                        snackBar(
+                            'Make sure no field is empty!', AppColors.danger);
+
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(snackBar as SnackBar);
+                      } else {
+                        final snackbar = snackBar(
+                            'verification successfully created..',
+                            AppColors.success);
+
+                        Navigator.of(context).pushNamed("/verification");
+                        ScaffoldMessenger.of(context).showSnackBar(snackbar);
+                      }
+                    },
                     style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.btn1,
                         foregroundColor: Colors.white),
@@ -101,9 +110,6 @@ class _SignUpState extends State<SignUp> {
                       children: [Text(AppStrings.cont)],
                     )),
               )
-
-              // elvBtn(AppStrings.cont, "/verification", context, 50,
-              //     double.infinity)
             ],
           ),
         ),
@@ -111,3 +117,11 @@ class _SignUpState extends State<SignUp> {
     );
   }
 }
+
+snackBar(String content, var color) {
+  return SnackBar(
+    content: Text(content),
+    backgroundColor: color,
+  );
+}
+// var snackBar = const 

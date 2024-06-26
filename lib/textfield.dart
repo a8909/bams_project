@@ -6,9 +6,15 @@ import 'package:get/get.dart';
 
 class TxtField extends StatefulWidget {
   final String label;
-  final TextEditingController controller;
+  final keyboardType;
+  void Function(String)? onChanged;
 
-  const TxtField({super.key, required this.label, required this.controller});
+  TxtField({
+    super.key,
+    required this.label,
+    required this.keyboardType,
+    required this.onChanged,
+  });
 
   @override
   State<TxtField> createState() => _TxtFieldState();
@@ -22,6 +28,10 @@ class _TxtFieldState extends State<TxtField> {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      keyboardType: widget.keyboardType,
+      onChanged: (value) {
+        widget.onChanged!(value);
+      },
       controller: controller,
       obscureText: visible,
       decoration: InputDecoration(
@@ -54,16 +64,19 @@ class AppField extends StatelessWidget {
   final String hint;
   final double heigth;
   final Function(String) onChangecallback;
-  AppField(
+  final keyboardType;
+  const AppField(
       {super.key,
       required this.hint,
       required this.heigth,
       required this.controller,
-      required this.onChangecallback});
+      required this.onChangecallback,
+      required this.keyboardType});
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      keyboardType: keyboardType,
       onChanged: (value) {
         onChangecallback(value);
       },

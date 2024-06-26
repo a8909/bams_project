@@ -16,45 +16,33 @@ class BankAccount extends StatelessWidget {
         builder: (context, value, child) => Scaffold(
             appBar: appBar(),
             body: Padding(
-              padding: const EdgeInsets.fromLTRB(16.0, 8, 16.0, 8),
-              child: ListView(
-                children: [
-                  const Text(
-                    "Accounts",
-                    style: TextStyle(color: AppColors.btn2, fontSize: 40),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  ListView.separated(
-                    shrinkWrap: true,
-                    itemCount: accountUser.banksUserList.length,
-                    itemBuilder: (context, index) {
-                      BankUser bankies = value.getbankUserList()[index];
-                      return Useritem(bankies: bankies);
+                padding: const EdgeInsets.fromLTRB(16.0, 8, 16.0, 8),
+                child: Column(
+                  children: [
+                    const Text(
+                      "Accounts",
+                      style: TextStyle(color: AppColors.btn2, fontSize: 40),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    ListView.separated(
+                      shrinkWrap: true,
+                      itemCount: accountUser.banksUserList.length,
+                      itemBuilder: (context, index) {
+                        BankUser bankies = value.getbankUserList()[index];
+                        return Useritem(bankies: bankies);
 
-                      // userItem(accountUser.banks[index][0],
-                      //     accountUser.banks[index][1], accountUser.banks[index][2]);
-                    },
-                    separatorBuilder: (BuildContext context, int index) {
-                      return const SizedBox(
-                        height: 8,
-                      );
-                    },
-                  )
-                  // ...mockUsersFromServer()
-                ],
-              ),
-            )));
+                        // userItem(accountUser.banks[index][0],
+                        //     accountUser.banks[index][1], accountUser.banks[index][2]);
+                      },
+                      separatorBuilder: (BuildContext context, int index) {
+                        return const SizedBox(
+                          height: 8,
+                        );
+                      },
+                    )
+                  ],
+                ))));
   }
 }
-
-
-// List<Widget> mockUsersFromServer() {
-//   List<Widget> users = [];
-//   for (var i = 0; i < 1000; i++) {
-//     users.add(userItem());
-//   }
-//   return users;
-// }
-

@@ -6,8 +6,8 @@ import 'package:bams_project/color-template.dart';
 import 'package:bams_project/controller/Service_Provider/app_repo.dart';
 import 'package:bams_project/controller/Service_Provider/login_provider.dart';
 import 'package:bams_project/fingerprint.dart';
-import 'package:bams_project/screen_1.dart';
-// import 'package:bams_project/screen_1.dart';
+import 'package:bams_project/textfield.dart';
+import 'package:bams_project/toast.dart';
 import 'package:bams_project/top-content.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -21,27 +21,14 @@ class LogIn extends StatefulWidget {
 
 class _LogInState extends State<LogIn> {
   bool visible = true;
-  final emailcontroller = TextEditingController();
-  final passwordcontroller = TextEditingController();
-  bool buttonStatus = false;
-  bool butStatus = true;
+  bool buttonStatus =
+      false; //the button is used for loading spinal of the login button
+  // bool butStatus = true;
   void checkButtonStatus(bool status) {
     setState(() {
       buttonStatus = status;
     });
   }
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   emailcontroller.addListener(() {
-  //     final buttonStatus = emailcontroller.text.isNotEmpty;
-  //   });
-
-  //   passwordcontroller.addListener(() {
-  //     final buttonStatus = passwordcontroller.text.isNotEmpty;
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -64,11 +51,11 @@ class _LogInState extends State<LogIn> {
               const SizedBox(
                 height: 50,
               ),
+              // email field
               TextField(
-                controller: emailcontroller,
+                keyboardType: TextInputType.emailAddress,
                 onChanged: (value) {
-                  Provider.of<LoginProvider>(context, listen: false).email =
-                      value;
+                  context.read<LoginProvider>().email = value;
                 },
                 decoration: const InputDecoration(
                     label: Text(AppStrings.email),
@@ -79,51 +66,18 @@ class _LogInState extends State<LogIn> {
                         borderSide: BorderSide(color: Colors.blue),
                         borderRadius: BorderRadius.all(Radius.circular(7)))),
               ),
-              // AppField(
-              //   hint: AppStrings.email,
-              //   heigth: 7,
-              //   controller: emailcontroller,
-              //   onChangecallback: (value) {
-              //     Provider.of<LoginProvider>(context).email = value;
-              //   },
-              // ),
+
               const SizedBox(
                 height: 20,
               ),
-
-              TextField(
+              //password field
+              TxtField(
+                label: "password",
+                keyboardType: TextInputType.text,
                 onChanged: (value) {
-                  Provider.of<LoginProvider>(context, listen: false).password =
-                      value;
+                  context.read<LoginProvider>().password = value;
                 },
-                controller: passwordcontroller,
-                obscureText: visible,
-                decoration: InputDecoration(
-                    label: const Text("password"),
-                    hintText: "pasword",
-                    suffixIcon: TextButton(
-                        onPressed: () {
-                          setState(() {
-                            visible = !visible;
-                          });
-                        },
-                        child: Column(
-                          children: [
-                            visible
-                                ? const Text(AppStrings.show)
-                                : const Text(AppStrings.hide)
-                          ], //conditional statement for show text toggle
-                        )),
-                    border: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(7))),
-                    focusedBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.blue),
-                        borderRadius: BorderRadius.all(Radius.circular(7)))),
               ),
-              // TxtField(
-              //   label: AppStrings.password,
-              //   controller: passwordcontroller,
-              // ),
               const SizedBox(height: 20),
               Row(
                 children: [
@@ -131,48 +85,39 @@ class _LogInState extends State<LogIn> {
                     height: 50,
                     width: 266,
                     child: ElevatedButton(
-                        onPressed: (emailcontroller.text.isNotEmpty &&
-                                passwordcontroller.text.isNotEmpty &&
-                                butStatus)
-                            ? () {
+                        onPressed: context
+                                    .read<LoginProvider>()
+                                    .email
+                                    .isEmpty ||
+                                context.read<LoginProvider>().password.isEmpty
+                            ? null
+                            : () {
                                 checkButtonStatus(true);
-                                Provider.of<LoginProvider>(context,
-                                        listen: false)
-                                    .login()
+                                context
+                                    .read<LoginProvider>()
+                                    .login("https://reqres.in/api/login")
                                     .then((value) {
-                                  setState(() {
-                                    butStatus = false;
-                                  });
-                                  Provider.of<AppRepo>(context, listen: false)
-                                      .user = value.user;
-                                  Provider.of<AppRepo>(context, listen: false)
-                                      .token = value.token;
-                                  Future.delayed(
-                                    const Duration(seconds: 3),
-                                    () {
-                                      Navigator.of(context)
-                                          .push(MaterialPageRoute(
-                                        builder: (context) {
-                                          print("new page is routed");
-                                          return const Screen1();
-                                        },
-                                      ));
-                                      checkButtonStatus(false);
-
-                                      print("welcome");
-
-                                      // emailcontroller.clear();
-                                      // passwordcontroller.clear();
+                                  context.read<AppRepo>().user = value.user;
+                                  context.read<AppRepo>().token = value.token;
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) {
+                                      print("new page is routed");
+                                      return const Toast();
                                     },
-                                  );
+                                  ));
+                                  checkButtonStatus(false);
+                                  //  this return the button back to false
+                                  //== login text is giving back
+
+                                  print("welcome");
                                 });
-                              }
-                            : null,
+                              },
                         style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.btn1,
                             foregroundColor: Colors.white),
                         child: buttonStatus
                             ? const Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text('loading...'),
                                   SizedBox(
@@ -188,7 +133,6 @@ class _LogInState extends State<LogIn> {
                                 child: Text(AppStrings.login),
                               )),
                   ),
-                  // elvBtn(AppStrings.login, "/screen1", context, 50, 266),
                   const Padding(
                     padding: EdgeInsets.only(left: 10),
                     child: FingerPrint(),

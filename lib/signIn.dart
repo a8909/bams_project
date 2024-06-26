@@ -1,6 +1,10 @@
+import 'package:bams_project/controller/Service_Provider/api_calls/request.dart';
+import 'package:bams_project/controller/Service_Provider/login_provider.dart';
+import 'package:bams_project/signup.dart';
 import 'package:bams_project/textfield.dart';
 import 'package:bams_project/top-content.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'App-string.dart';
 import 'color-template.dart';
@@ -20,24 +24,23 @@ class _SignInState extends State<SignIn> {
   bool visible = true;
   String message = AppStrings.helperTxt;
   final TextEditingController controller = TextEditingController();
+  final pwdController = TextEditingController();
 
   void onPasswordChange(String value) {
     password = value.trim();
     if (password.isEmpty) {
       setState(() {
         strenght = 0;
-        message = "Strenght is low";
+        message = "Password is required";
       });
     } else if (password.length < 6) {
       setState(() {
         strenght = 1 / 4;
         message = "Password strenght too short";
-        print("$message");
       });
     } else if (password.length < 8) {
       strenght = 2 / 4;
       message = "Average password strenght";
-      print(message);
     } else {
       if (!number.hasMatch(password) || !letters.hasMatch(password)) {
         setState(() {
@@ -47,7 +50,6 @@ class _SignInState extends State<SignIn> {
         setState(() {
           strenght = 4 / 4;
           message = "password is strong";
-          print(message);
         });
       }
     }
@@ -64,7 +66,7 @@ class _SignInState extends State<SignIn> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  AppStrings.register,
+                  AppStrings.register, // register text
                   style: TextStyle(color: AppColors.txt1, fontSize: 50),
                 ),
                 const SizedBox(height: 10),
@@ -73,30 +75,14 @@ class _SignInState extends State<SignIn> {
                 const SizedBox(
                   height: 10,
                 ),
-                TextField(
-                  onChanged: (value) => onPasswordChange(value),
-                  obscureText: visible,
-                  decoration: InputDecoration(
-                      label: const Text(AppStrings.password),
-                      hintText: AppStrings.password,
-                      suffixIcon: TextButton(
-                          onPressed: () {
-                            setState(() {
-                              visible = !visible;
-                            });
-                          },
-                          child: Column(
-                            children: [
-                              visible
-                                  ? const Text(AppStrings.show)
-                                  : const Text(AppStrings.hide)
-                            ], //conditional statement for show text toggle
-                          )),
-                      border: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(7))),
-                      focusedBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.blue),
-                          borderRadius: BorderRadius.all(Radius.circular(7)))),
+
+                //firstPassword is set here
+                TxtField(
+                  keyboardType: TextInputType.text,
+                  label: AppStrings.password,
+                  onChanged: (value) {
+                    context.read<LoginProvider>().email = value;
+                  },
                 ),
                 const SizedBox(
                   height: 10,
@@ -113,10 +99,17 @@ class _SignInState extends State<SignIn> {
                 Text(message,
                     style: const TextStyle(fontSize: 10, color: Colors.black)),
                 const SizedBox(height: 10),
+
+                //confirm password is set here
                 TxtField(
+                  keyboardType: TextInputType.text,
                   label: AppStrings.confirmPassword,
-                  controller: controller,
+                  onChanged: (value) {
+                    context.read<LoginProvider>().password = value;
+                  },
                 ),
+
+                // if user already has an account then the login here can be clicked
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -125,6 +118,8 @@ class _SignInState extends State<SignIn> {
                     TextButton(
                         onPressed: () {
                           Navigator.of(context).pushNamed("/login");
+                          pwdController.clear();
+                          controller.clear();
                         },
                         child: const Row(
                           children: [
@@ -137,12 +132,22 @@ class _SignInState extends State<SignIn> {
                         ))
                   ],
                 ),
+
+                // for creating new user account
                 SizedBox(
                   height: 50,
                   width: double.infinity,
                   child: ElevatedButton(
                       onPressed: () {
-                        Navigator.of(context).pushNamed("/toast");
+                        snackBar('Sucessfully created !', AppColors.success);
+                        context.read<LoginProvider>().login('apiUrl').then(
+                            (value) => Navigator.of(context).pushNamed(
+                                "/login")); // here the api link will be passed for get request
+
+                        pwdController.clear();
+                        controller.clear();
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(snackBar as SnackBar);
                       },
                       style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.btn1,

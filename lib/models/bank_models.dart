@@ -2,6 +2,7 @@ import 'package:bams_project/models/bankDetails_model.dart';
 import 'package:flutter/material.dart';
 
 class BankInfo extends ChangeNotifier {
+  //requirements are to be supplied from End point
   BankUser? bankusers;
   final account = [];
   List banks = [

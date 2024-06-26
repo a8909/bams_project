@@ -58,6 +58,7 @@ class _OtherAccountState extends State<OtherAccount> {
     return Column(
       children: [
         AppField(
+          keyboardType: TextInputType.number,
           hint: "Amount to send?",
           heigth: 7,
           controller: controller,
@@ -472,6 +473,7 @@ class _OtherAccountState extends State<OtherAccount> {
         const SizedBox(height: 20),
 
         AppField(
+          keyboardType: TextInputType.text,
           hint: "Why are you sending money?",
           heigth: 7,
           controller: controller,
@@ -505,6 +507,7 @@ Column ownAccount(BuildContext context) {
   return Column(
     children: [
       AppField(
+        keyboardType: TextInputType.number,
         hint: AppStrings.amountTosend,
         heigth: 7,
         controller: controller,
@@ -525,6 +528,7 @@ Column ownAccount(BuildContext context) {
         height: 30,
       ),
       AppField(
+        keyboardType: TextInputType.text,
         hint: AppStrings.reason,
         heigth: 7,
         controller: controller,
@@ -664,6 +668,7 @@ Column ownAccount(BuildContext context) {
                                 height: 15,
                               ),
                               AppField(
+                                keyboardType: TextInputType.text,
                                 hint: "Reason",
                                 heigth: 7,
                                 controller: controller,

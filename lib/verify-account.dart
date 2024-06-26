@@ -10,6 +10,8 @@ class VerifyAccount extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // final otpController = [TextEditingController()]; controller
+    String codeChange;
     return Container(
       child: Padding(
         padding: const EdgeInsets.all(10.0),
@@ -29,8 +31,50 @@ class VerifyAccount extends StatelessWidget {
               height: 20,
             ),
             OtpTextField(
+              // handleControllers: otpController,
+              clearText: true,
+              keyboardType: TextInputType.number,
+              onCodeChanged: (value) {
+                codeChange = value;
+              },
               numberOfFields: 6,
               showFieldAsBox: true,
+              onSubmit: (value) {
+                codeChange = value;
+
+                if (codeChange == value) {
+                  showDialog(
+                    context: context,
+                    builder: (context) => const AlertDialog(
+                      content: Text('Account verification successfully'),
+                      actions: [
+                        Icon(
+                          Icons.check_circle,
+                          semanticLabel: 'Success',
+                          color: AppColors.success,
+                        )
+                      ],
+                    ),
+                  );
+                  Navigator.pushNamed(context, '/signin');
+                  // clear the otpfield text controller.clear()
+                } else {
+                  showDialog(
+                    context: context,
+                    builder: (context) => const AlertDialog(
+                      content: Text('Account not created, incorrect otp'),
+                      actions: [
+                        Icon(
+                          Icons.cancel_rounded,
+                          semanticLabel: 'Ignore',
+                          color: AppColors.danger,
+                        )
+                      ],
+                    ),
+                  );
+                  // clear the otpfield text controller.clear()
+                }
+              },
             ),
             const SizedBox(
               height: 20,
@@ -49,6 +93,7 @@ class VerifyAccount extends StatelessWidget {
                 )),
             const Spacer(),
             elvBtn(AppStrings.cont, "routeName", context, 50, double.infinity)
+            // this secto should perform same function as onSubmit()
           ],
         ),
       ),
