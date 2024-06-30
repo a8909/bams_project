@@ -1,6 +1,6 @@
 // ignore_for_file: constant_pattern_never_matches_value_type
 
-import 'package:bams_project/App-string.dart';
+import 'package:bams_project/components/App-string.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

@@ -1,4 +1,4 @@
-import 'package:bams_project/App-string.dart';
+import 'package:bams_project/components/App-string.dart';
 import 'package:flutter/material.dart';
 
 import 'color-template.dart';
@@ -23,7 +23,7 @@ class _MainPage2State extends State<MainPage2> {
             AppStrings.welcome,
             style: TextStyle(color: AppColors.txt1),
           ),
-          const Text(
+          Text(
             "Monitor your accounts in a single interface",
             style: TextStyle(color: AppColors.txt2, fontSize: 50),
           ),

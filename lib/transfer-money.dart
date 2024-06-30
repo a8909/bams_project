@@ -1,5 +1,5 @@
-import 'package:bams_project/App-string.dart';
 import 'package:bams_project/color-template.dart';
+import 'package:bams_project/components/App-string.dart';
 import 'package:bams_project/other-account.dart';
 // import 'package:bams_project/elevatedBut.dart';
 
@@ -66,7 +66,7 @@ class _TransferMoneyState extends State<TransferMoney> {
   }
 }
 
-Container fromTo(String from, String image, String accNo) {
+Expanded fromTo(String from, String image, String accNo) {
   // final List<Map<dynamic, String>> bankState = [
   //   {"accountNumber": "2263997831", "bankLogo": "assets/images/gtb.png"},
   //   {"accountNumber": "2263997831", "bankLogo": "assets/images/gtb.png"}
@@ -81,87 +81,89 @@ Container fromTo(String from, String image, String accNo) {
     return setState(() {});
   }
 
-  return Container(
-    height: 120,
-    width: 156,
-    decoration: BoxDecoration(
-        border: Border.all(color: Colors.black.withOpacity(0.2)),
-        color: Colors.white,
-        borderRadius: const BorderRadius.all(Radius.circular(7))),
-    child: Padding(
-      padding: const EdgeInsets.fromLTRB(10, 5, 10, 0),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(from),
-              DropdownButton(
-                underline: const SizedBox(
-                  height: 0,
+  return Expanded(
+    child: Container(
+      height: 120,
+      width: 156,
+      decoration: BoxDecoration(
+          border: Border.all(color: Colors.black.withOpacity(0.2)),
+          color: Colors.white,
+          borderRadius: const BorderRadius.all(Radius.circular(7))),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(10, 5, 10, 0),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(from),
+                DropdownButton(
+                  underline: const SizedBox(
+                    height: 0,
+                  ),
+                  value: "2263997831",
+                  icon: const Icon(Icons.keyboard_arrow_down_outlined),
+                  items: items.map((e) {
+                    return DropdownMenuItem(
+                        value: e,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Image.asset(
+                              "assets/images/gtb.png",
+                              width: 30,
+                              height: 30,
+                            ),
+                            Text(e, style: const TextStyle(fontSize: 10))
+                          ],
+                        )
+
+                        // ListView.builder(
+                        //   shrinkWrap: true,
+                        //   itemCount: items.length,
+                        //   itemBuilder: (context, index) {
+                        //     return ListTile(
+                        //       leading: Image.asset("assets/images/gtb.png"),
+                        //       trailing: Text(
+                        //         e,
+                        //         style: const TextStyle(fontSize: 10),
+                        //       ),
+                        //     );
+                        //   },
+                        // )
+
+                        );
+                  }).toList(),
+                  onChanged: (String? value) {
+                    setState(() {
+                      itemchange = value!;
+                    });
+                  },
                 ),
-                value: "2263997831",
-                icon: const Icon(Icons.keyboard_arrow_down_outlined),
-                items: items.map((e) {
-                  return DropdownMenuItem(
-                      value: e,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Image.asset(
-                            "assets/images/gtb.png",
-                            width: 30,
-                            height: 30,
-                          ),
-                          Text(e, style: const TextStyle(fontSize: 10))
-                        ],
-                      )
-
-                      // ListView.builder(
-                      //   shrinkWrap: true,
-                      //   itemCount: items.length,
-                      //   itemBuilder: (context, index) {
-                      //     return ListTile(
-                      //       leading: Image.asset("assets/images/gtb.png"),
-                      //       trailing: Text(
-                      //         e,
-                      //         style: const TextStyle(fontSize: 10),
-                      //       ),
-                      //     );
-                      //   },
-                      // )
-
-                      );
-                }).toList(),
-                onChanged: (String? value) {
-                  setState(() {
-                    itemchange = value!;
-                  });
-                },
-              ),
-            ],
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              ClipRRect(
-                  borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(15),
-                      topRight: Radius.circular(15),
-                      bottomLeft: Radius.circular(15),
-                      bottomRight: Radius.circular(15)),
-                  child: Image.asset(
-                    image,
-                    width: 40,
-                    height: 40,
-                  )),
-              Text(accNo),
-            ],
-          )
-        ],
+              ],
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ClipRRect(
+                    borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(15),
+                        topRight: Radius.circular(15),
+                        bottomLeft: Radius.circular(15),
+                        bottomRight: Radius.circular(15)),
+                    child: Image.asset(
+                      image,
+                      width: 40,
+                      height: 40,
+                    )),
+                Text(accNo),
+              ],
+            )
+          ],
+        ),
       ),
     ),
   );

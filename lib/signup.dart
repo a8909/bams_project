@@ -1,4 +1,4 @@
-import 'package:bams_project/App-string.dart';
+import 'package:bams_project/components/App-string.dart';
 import 'package:bams_project/textfield.dart';
 import 'package:bams_project/top-content.dart';
 import 'package:flutter/material.dart';
@@ -88,15 +88,23 @@ class _SignUpState extends State<SignUp> {
                       if (controller2.text.isEmpty &&
                           controller3.text.isEmpty &&
                           controller4.text.isEmpty) {
-                        snackBar(
-                            'Make sure no field is empty!', AppColors.danger);
+                        const snack = SnackBar(
+                          content: Text('Make sure no field is empty!'),
+                          backgroundColor: AppColors.danger,
+                        );
+                        // snackBar(
+                        //     'Make sure no field is empty!', AppColors.danger);
 
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(snackBar as SnackBar);
+                        ScaffoldMessenger.of(context).showSnackBar(snack);
                       } else {
-                        final snackbar = snackBar(
-                            'verification successfully created..',
-                            AppColors.success);
+                        const snackbar = SnackBar(
+                          content: Text('verification successfully created..'),
+                          backgroundColor: AppColors.success,
+                        );
+
+                        // snackBar(
+                        //     'verification successfully created..',
+                        //     AppColors.success);
 
                         Navigator.of(context).pushNamed("/verification");
                         ScaffoldMessenger.of(context).showSnackBar(snackbar);
@@ -118,10 +126,10 @@ class _SignUpState extends State<SignUp> {
   }
 }
 
-snackBar(String content, var color) {
-  return SnackBar(
-    content: Text(content),
-    backgroundColor: color,
-  );
-}
+// var snackBar = (String content, var color) {
+//   return SnackBar(
+//     content: Text(content),
+//     backgroundColor: color,
+//   );
+// };
 // var snackBar = const 

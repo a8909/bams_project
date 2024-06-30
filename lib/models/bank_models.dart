@@ -19,12 +19,15 @@ class BankInfo extends ChangeNotifier {
     return banksUserList;
   }
 
-  final List accountNumber = [
-    [
-      "assets/images/gtb.png",
-      "CUR.",
-      "3092773812",
-      "JOHN DOE ADEROGBA",
-    ]
+  final List<BenAcc> beneficials = [
+    BenAcc(
+        bnkImg: "assets/images/gtb.png",
+        tag: "CUR.",
+        accNo: "3092773812",
+        accName: "JOHN DOE ADEROGBA")
   ];
+
+  List<BenAcc> getBeneficiaries() {
+    return beneficials;
+  }
 }

@@ -1,5 +1,5 @@
-import 'package:bams_project/App-string.dart';
 import 'package:bams_project/color-template.dart';
+import 'package:bams_project/components/App-string.dart';
 import 'package:bams_project/login.dart';
 import 'package:flutter/material.dart';
 

@@ -1,4 +1,7 @@
-import 'package:bams_project/cancel-button.dart';
+import 'package:bams_project/components/App-string.dart';
+import 'package:bams_project/components/add-beneficiary.dart';
+import 'package:bams_project/components/beneficiary.dart';
+import 'package:bams_project/components/cancel-button.dart';
 import 'package:bams_project/color-template.dart';
 import 'package:bams_project/data/database.dart';
 import 'package:bams_project/models/bank_models.dart';
@@ -8,7 +11,6 @@ import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 // import 'package:get/get_connect/sockets/src/sockets_html.dart';
 
-import 'App-string.dart';
 import 'transfer-money.dart';
 
 enum ButtonState { init, done }
@@ -23,21 +25,20 @@ class OtherAccount extends StatefulWidget {
 ButtonState state = ButtonState.init;
 
 class _OtherAccountState extends State<OtherAccount> {
-  late var textchange = "";
-  late var accNo = "";
-
   final TextEditingController controller = TextEditingController();
   bool iconType = true;
-  final isDone = state == ButtonState.done;
-  final initial = state == ButtonState.init;
+  // final isDone = state == ButtonState.done;
+  // final initial = state == ButtonState.init;
 
   var sendingAmount = '';
   var whySending = '';
-  List BeneficiaryAccounts = [];
   final banksInfo = BankInfo();
 
   final statecontroller = MaterialStatesController();
   List<TextEditingController> listcontroller = [TextEditingController()];
+  List bAccount = [];
+  final contForm = TextEditingController();
+  final contForm2 = TextEditingController();
 
   final _dbox = Hive.box('DataBase');
   BamsDataBase db = BamsDataBase();
@@ -45,6 +46,11 @@ class _OtherAccountState extends State<OtherAccount> {
   @override
   void initState() {
     super.initState();
+    if (_dbox.get('bfaccount') == null) {
+      db.createInitaialDb();
+    } else {
+      db.loadDb();
+    }
   }
 
   // @override
@@ -145,71 +151,17 @@ class _OtherAccountState extends State<OtherAccount> {
                                   height: 10,
                                 ),
 
-                                ListView.builder(
-                                  itemCount: banksInfo.accountNumber.length,
+                                ListView.separated(
+                                  itemCount: banksInfo.beneficials.length,
                                   shrinkWrap: true,
                                   itemBuilder: (context, index) {
-                                    return InkWell(
-                                      onTap: () {
-                                        print("This is my present state..");
-                                      },
-                                      statesController: statecontroller,
-                                      child: Container(
-                                        margin: const EdgeInsets.fromLTRB(
-                                            0, 8, 0, 8),
-                                        height: 50,
-                                        width: double.infinity,
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                const BorderRadius.all(
-                                                    Radius.circular(7)),
-                                            border: Border.all(
-                                                color: Colors.black
-                                                    .withOpacity(0.5))),
-                                        child: Row(
-                                          children: [
-                                            IconButton(
-                                                onPressed: () {
-                                                  setState(() {
-                                                    iconType = !iconType;
-                                                  });
-                                                },
-                                                icon: (iconType)
-                                                    ? const Icon(
-                                                        Icons.circle_outlined,
-                                                      )
-                                                    : const Icon(Icons
-                                                        .check_circle_rounded)),
-                                            Image.asset(
-                                              banksInfo.accountNumber[index][0],
-                                              width: 50,
-                                              height: 50,
-                                            ),
-                                            //  image should be passed from backend
-                                            Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Row(
-                                                  children: [
-                                                    Text(
-                                                        banksInfo.accountNumber[
-                                                            index][1]),
-                                                    Text(
-                                                        banksInfo.accountNumber[
-                                                            index][2])
-                                                  ],
-                                                ),
-                                                Text(banksInfo
-                                                    .accountNumber[index][3])
-                                              ],
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    );
+                                    final benAccc =
+                                        banksInfo.getBeneficiaries()[index];
+                                    return BeneficiariesAccount(b: benAccc);
+                                  },
+                                  separatorBuilder:
+                                      (BuildContext context, int index) {
+                                    return const SizedBox(height: 8);
                                   },
                                 ),
 
@@ -287,105 +239,37 @@ class _OtherAccountState extends State<OtherAccount> {
                                 GestureDetector(
                                     onTap: () {
                                       setState(() {
-                                        listcontroller
-                                            .add(TextEditingController());
+                                        bAccount.add({
+                                          'accNo': contForm.text,
+                                          'amount': contForm2.text
+                                        });
                                       });
+                                      // setState(() {
+                                      //   BeneficiaryAccounts.add(
+                                      //       // TextEditingController()
+                                      //       {
+                                      //         'accNo': contForm.text,
+                                      //         'amount': contForm2.text
+                                      //       });
+                                      // });
                                     },
                                     child: _BeneficiaryIcon(
                                         "Create beneficiaries Group")),
-                                (listcontroller.isNotEmpty)
+                                (bAccount.isNotEmpty)
                                     ? ListView.builder(
-                                        itemCount: listcontroller.length,
+                                        itemCount: bAccount.length,
+                                        // listcontroller.length,
                                         shrinkWrap: true,
                                         itemBuilder: (context, index) {
-                                          var endResult = [];
-                                          for (int y = 0;
-                                              y < listcontroller.length;
-                                              y++) {
-                                            var newItem = listcontroller[y];
-                                            print(newItem);
-                                            endResult.add(Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Container(
-                                                  height: 150,
-                                                  width: 300,
-                                                  decoration: BoxDecoration(
-                                                      border: Border.all(
-                                                          color: Colors.black
-                                                              .withOpacity(
-                                                                  0.5))),
-                                                  margin:
-                                                      const EdgeInsets.fromLTRB(
-                                                          5, 10, 5, 10),
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        TextFormField(
-                                                          onChanged: (value) {
-                                                            accNo = value;
-                                                          },
-                                                          controller:
-                                                              listcontroller[
-                                                                  index],
-                                                          decoration: const InputDecoration(
-                                                              hintText:
-                                                                  "Enter Acoount Number",
-                                                              suffixIcon: Icon(Icons
-                                                                  .keyboard_arrow_down_outlined)),
-                                                        ),
-                                                        const SizedBox(
-                                                          height: 10,
-                                                        ),
-                                                        TextFormField(
-                                                          onChanged: (value) {
-                                                            textchange = value;
-                                                          },
-                                                          decoration:
-                                                              const InputDecoration(
-                                                                  hintText:
-                                                                      "Enter Amount",
-                                                                  border: OutlineInputBorder(
-                                                                      borderRadius:
-                                                                          BorderRadius.all(Radius.circular(
-                                                                              7))),
-                                                                  focusedBorder:
-                                                                      OutlineInputBorder(
-                                                                          // borderSide: const BorderSide(color: Colors.transparent),
-                                                                          borderRadius:
-                                                                              BorderRadius.all(Radius.circular(7)))),
-                                                        )
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                                GestureDetector(
-                                                  onTap: () {
-                                                    setState(() {
-                                                      listcontroller[index]
-                                                          .clear();
-                                                      listcontroller
-                                                          .removeAt(index);
-                                                    });
-                                                  },
-                                                  child: const Icon(Icons
-                                                      .disabled_by_default_outlined),
-                                                )
-                                              ],
-                                            ));
-                                          }
-                                          print(endResult.length);
-                                          return endResult[index];
+                                          return Benf(
+                                            contForm: contForm,
+                                            contForm2: contForm2,
+                                            onTap: () {
+                                              setState(() {
+                                                bAccount.removeAt(index);
+                                              });
+                                            },
+                                          );
                                         },
                                       )
                                     : const Text(""),
@@ -393,13 +277,16 @@ class _OtherAccountState extends State<OtherAccount> {
                                 const SizedBox(height: 10),
                                 GestureDetector(
                                     onTap: () {
-                                      final String response = textchange;
                                       setState(() {
-                                        db.BeneficiaryAccounts.add(
-                                            [response, accNo]);
-                                        listcontroller.clear();
+                                        db.BeneficiaryAccounts.add({
+                                          'accNo': contForm.text,
+                                          'amount': contForm2.text
+                                        });
+                                        contForm.clear();
+                                        contForm2.clear();
                                       });
                                       Navigator.of(context).pop();
+                                      db.updateDb();
                                     },
                                     child: _BeneficiaryIcon(
                                         "Add Another Beneficiaries")),
@@ -417,11 +304,11 @@ class _OtherAccountState extends State<OtherAccount> {
             },
             child: _BeneficiaryIcon(AppStrings.addBeneficiary)),
         const SizedBox(height: 10),
-        (BeneficiaryAccounts.isEmpty)
+        (db.BeneficiaryAccounts.isEmpty)
             ? const Text("")
             : ListView.builder(
                 shrinkWrap: true,
-                itemCount: BeneficiaryAccounts.length,
+                itemCount: db.BeneficiaryAccounts.length,
                 itemBuilder: (context, index) {
                   print("This is my current status");
                   return Container(
@@ -446,10 +333,11 @@ class _OtherAccountState extends State<OtherAccount> {
                                     children: [
                                       Image.asset(banksInfo.bankimage[index],
                                           height: 20, width: 20),
-                                      Text(accNo),
+                                      Text(db.BeneficiaryAccounts[index]
+                                          ['accNo']),
                                     ],
                                   ),
-                                  Text(textchange),
+                                  Text(db.BeneficiaryAccounts[index]['amount']),
                                 ],
                               ),
                               const Text("CIROMA ADEKUNLE")
@@ -458,10 +346,10 @@ class _OtherAccountState extends State<OtherAccount> {
                         ),
                         GestureDetector(
                             onTap: () {
-                              // print("cancel widget");
-                              // setState(() {
-                              //   Navigator.of(context).pop();
-                              // });
+                              setState(() {
+                                db.BeneficiaryAccounts.removeAt(index);
+                              });
+                              db.updateDb();
                             },
                             child:
                                 const Icon(Icons.disabled_by_default_outlined))

@@ -1,8 +1,8 @@
 import 'package:bams_project/HomePage_1.dart';
+import 'package:bams_project/components/App-string.dart';
 import 'package:bams_project/homepage2..dart';
 import 'package:flutter/material.dart';
 
-import 'App-string.dart';
 import 'color-template.dart';
 import 'elevatedBut.dart';
 

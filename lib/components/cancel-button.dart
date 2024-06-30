@@ -1,9 +1,9 @@
+import 'package:bams_project/components/App-string.dart';
 import 'package:flutter/material.dart';
 
-import 'App-string.dart';
-
-void handleCancel(BuildContext context) {
+handleCancel(BuildContext context) {
   return Navigator.of(context).pop();
+  // Navigator.pushNamed(context, routeName)
 }
 
 Row cancelButton(

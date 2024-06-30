@@ -1,5 +1,5 @@
-import 'package:bams_project/App-string.dart';
-import 'package:bams_project/cancel-button.dart';
+import 'package:bams_project/components/App-string.dart';
+import 'package:bams_project/components/cancel-button.dart';
 import 'package:bams_project/color-template.dart';
 import 'package:bams_project/elevatedBut.dart';
 import 'package:flutter/material.dart';

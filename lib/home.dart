@@ -1,7 +1,7 @@
-import 'package:bams_project/App-string.dart';
-import 'package:bams_project/cancel-button.dart';
+import 'package:bams_project/components/App-string.dart';
+import 'package:bams_project/components/cancel-button.dart';
 import 'package:bams_project/controller/onboarding%20screens/bank_call.dart';
-import 'package:bams_project/textfield.dart';
+// import 'package:bams_project/textfield.dart';
 import 'package:bams_project/verify-account.dart';
 import 'package:flutter/material.dart';
 
