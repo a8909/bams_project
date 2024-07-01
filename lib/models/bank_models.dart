@@ -19,7 +19,7 @@ class BankInfo extends ChangeNotifier {
     return banksUserList;
   }
 
-  final List<BenAcc> beneficials = [
+  List<BenAcc> beneficials = [
     BenAcc(
         bnkImg: "assets/images/gtb.png",
         tag: "CUR.",

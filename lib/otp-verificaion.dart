@@ -20,10 +20,7 @@ class Verification extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                AppStrings.verification,
-                style: TextStyle(fontSize: 50, color: AppColors.txt1),
-              ),
+              appHead(AppStrings.verification),
               const SizedBox(height: 10),
               const Text(
                 AppStrings.verTxt,

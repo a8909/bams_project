@@ -1,3 +1,4 @@
+import 'package:bams_project/color-template.dart';
 import 'package:bams_project/components/App-string.dart';
 import 'package:flutter/material.dart';
 
@@ -25,4 +26,12 @@ GestureDetector call() {
         Icons.call_sharp,
         size: 15,
       ));
+}
+
+Text appHead(String text) {
+  return Text(
+    text, // register text
+    style: const TextStyle(
+        fontWeight: FontWeight.w700, color: AppColors.txt1, fontSize: 50),
+  );
 }

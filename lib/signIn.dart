@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:bams_project/components/App-string.dart';
+import 'package:bams_project/components/cancel-button.dart';
 import 'package:bams_project/controller/Service_Provider/api_calls/request.dart';
 import 'package:bams_project/controller/Service_Provider/login_provider.dart';
 import 'package:bams_project/signup.dart';
@@ -65,10 +68,7 @@ class _SignInState extends State<SignIn> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  AppStrings.register, // register text
-                  style: TextStyle(color: AppColors.txt1, fontSize: 50),
-                ),
+                appHead(AppStrings.register),
                 const SizedBox(height: 10),
                 const Text(AppStrings.regTxt,
                     style: TextStyle(color: AppColors.txt2)),

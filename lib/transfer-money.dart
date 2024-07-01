@@ -1,5 +1,6 @@
 import 'package:bams_project/color-template.dart';
 import 'package:bams_project/components/App-string.dart';
+import 'package:bams_project/components/cancel-button.dart';
 import 'package:bams_project/other-account.dart';
 // import 'package:bams_project/elevatedBut.dart';
 
@@ -30,10 +31,7 @@ class _TransferMoneyState extends State<TransferMoney> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                AppStrings.transfermoney,
-                style: TextStyle(color: AppColors.btn2, fontSize: 40),
-              ),
+              appHead(AppStrings.transfermoney),
               const SizedBox(
                 height: 20,
               ),

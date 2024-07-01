@@ -8,6 +8,7 @@ import 'package:bams_project/models/bank_models.dart';
 import 'package:bams_project/textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 // import 'package:get/get_connect/sockets/src/sockets_html.dart';
 
@@ -35,10 +36,18 @@ class _OtherAccountState extends State<OtherAccount> {
   final banksInfo = BankInfo();
 
   final statecontroller = MaterialStatesController();
-  List<TextEditingController> listcontroller = [TextEditingController()];
   List bAccount = [];
   final contForm = TextEditingController();
   final contForm2 = TextEditingController();
+
+  void onFilter(value) {
+    print(value);
+    setState(() {
+      banksInfo.beneficials
+          .where((d) => d.accName.toLowerCase().contains(value.toLowerCase()))
+          .toList();
+    });
+  }
 
   final _dbox = Hive.box('DataBase');
   BamsDataBase db = BamsDataBase();
@@ -46,6 +55,7 @@ class _OtherAccountState extends State<OtherAccount> {
   @override
   void initState() {
     super.initState();
+    // banksInfo.beneficials = fDetails;
     if (_dbox.get('bfaccount') == null) {
       db.createInitaialDb();
     } else {
@@ -108,84 +118,92 @@ class _OtherAccountState extends State<OtherAccount> {
             GestureDetector(
               onTap: () async {
                 await showModalBottomSheet(
+                  isScrollControlled: true,
                   backgroundColor: Colors.transparent,
                   context: context,
                   builder: (context) {
-                    return StatefulBuilder(
-                      builder: (context, setState) {
-                        return Container(
-                          decoration: const BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(20),
-                              topRight: Radius.circular(20),
+                    return Container(
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          topRight: Radius.circular(10),
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(
+                              height: 10,
                             ),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                cancelButton(context),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                const Text(AppStrings.savedBeneficiary),
-                                const SizedBox(
-                                  height: 40,
-                                  child: TextField(
-                                    textCapitalization:
-                                        TextCapitalization.sentences,
-                                    decoration: InputDecoration(
-                                        hintText: "search beneficiaries",
-                                        prefixIcon: Icon(Icons.search_outlined),
-                                        border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(20)))),
+                            cancelButton(context),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            appHead(AppStrings.savedBeneficiary),
+
+                            Container(
+                              height: 36,
+                              width: double.infinity,
+                              decoration: const BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(8)),
+                              ),
+                              child: TextField(
+                                onChanged: onFilter,
+                                textCapitalization:
+                                    TextCapitalization.sentences,
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  fillColor: Colors.grey.shade100,
+                                  hintText: "search beneficiaries",
+                                  prefixIcon: const Icon(
+                                    Icons.search_outlined,
+                                    size: 20,
                                   ),
                                 ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-
-                                ListView.separated(
-                                  itemCount: banksInfo.beneficials.length,
-                                  shrinkWrap: true,
-                                  itemBuilder: (context, index) {
-                                    final benAccc =
-                                        banksInfo.getBeneficiaries()[index];
-                                    return BeneficiariesAccount(b: benAccc);
-                                  },
-                                  separatorBuilder:
-                                      (BuildContext context, int index) {
-                                    return const SizedBox(height: 8);
-                                  },
-                                ),
-
-                                // if(i = 0; i < bank bbeneficiary API.length; i++ ) the api to be render should be loop through using listviewbuilder
-                                const Spacer(),
-                                SizedBox(
-                                  height: 50,
-                                  width: double.infinity,
-                                  child: ElevatedButton(
-                                      onPressed: () {},
-                                      style: ElevatedButton.styleFrom(
-                                          backgroundColor: AppColors.btn1,
-                                          foregroundColor: Colors.white),
-                                      child: const Text(AppStrings.cont)),
-                                )
-                              ],
+                              ),
                             ),
-                          ),
-                        );
-                      },
+
+                            const SizedBox(
+                              height: 10,
+                            ),
+
+                            ListView.separated(
+                              itemCount: banksInfo.beneficials.length,
+                              shrinkWrap: true,
+                              itemBuilder: (context, index) {
+                                // print(details.accName);
+                                final benAccc = banksInfo.beneficials[index];
+                                return BeneficiariesAccount(b: benAccc);
+                              },
+                              separatorBuilder:
+                                  (BuildContext context, int index) {
+                                return const SizedBox(height: 8);
+                              },
+                            ),
+
+                            // if(i = 0; i < bank bbeneficiary API.length; i++ ) the api to be render should be loop through using listviewbuilder
+                            // const Spacer(),
+                            SizedBox(
+                              height: 50,
+                              width: double.infinity,
+                              child: ElevatedButton(
+                                  onPressed: () {},
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor: AppColors.btn1,
+                                      foregroundColor: Colors.white),
+                                  child: const Text(AppStrings.cont)),
+                            )
+                          ],
+                        ),
+                      ),
                     );
                   },
                 );
-                Navigator.pop(context);
               },
               child: Container(
                 height: 50,
@@ -209,95 +227,82 @@ class _OtherAccountState extends State<OtherAccount> {
                 backgroundColor: Colors.transparent,
                 context: context,
                 builder: (context) {
-                  return DraggableScrollableSheet(
-                    initialChildSize: 0.85,
-                    maxChildSize: 0.9,
-                    minChildSize: 0.5,
-                    builder: (context, controller) {
-                      return Container(
-                        decoration: const BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.vertical(
-                                top: Radius.circular(20))),
-                        child: SingleChildScrollView(
-                          controller: controller,
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Column(
-                              // mainAxisSize: MainAxisSize.min,
-                              children: [
-                                cancelButton(context),
-                                const Align(
-                                  alignment: AlignmentDirectional.topStart,
-                                  child: Text(
-                                    AppStrings.addBeneficiary,
-                                    style: TextStyle(
-                                        fontSize: 30, color: AppColors.btn2),
-                                  ),
-                                ),
-
-                                GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        bAccount.add({
-                                          'accNo': contForm.text,
-                                          'amount': contForm2.text
-                                        });
-                                      });
-                                      // setState(() {
-                                      //   BeneficiaryAccounts.add(
-                                      //       // TextEditingController()
-                                      //       {
-                                      //         'accNo': contForm.text,
-                                      //         'amount': contForm2.text
-                                      //       });
-                                      // });
-                                    },
-                                    child: _BeneficiaryIcon(
-                                        "Create beneficiaries Group")),
-                                (bAccount.isNotEmpty)
-                                    ? ListView.builder(
-                                        itemCount: bAccount.length,
-                                        // listcontroller.length,
-                                        shrinkWrap: true,
-                                        itemBuilder: (context, index) {
-                                          return Benf(
-                                            contForm: contForm,
-                                            contForm2: contForm2,
-                                            onTap: () {
-                                              setState(() {
-                                                bAccount.removeAt(index);
-                                              });
-                                            },
-                                          );
-                                        },
-                                      )
-                                    : const Text(""),
-
-                                const SizedBox(height: 10),
-                                GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        db.BeneficiaryAccounts.add({
-                                          'accNo': contForm.text,
-                                          'amount': contForm2.text
-                                        });
-                                        contForm.clear();
-                                        contForm2.clear();
-                                      });
-                                      Navigator.of(context).pop();
-                                      db.updateDb();
-                                    },
-                                    child: _BeneficiaryIcon(
-                                        "Add Another Beneficiaries")),
-                                // elvBtn(AppStrings.cont, "routeName", context, 50,
-                                //     double.infinity)
-                              ],
+                  return Container(
+                    decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius:
+                            BorderRadius.vertical(top: Radius.circular(20))),
+                    child: SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Column(
+                          // mainAxisSize: MainAxisSize.min,
+                          children: [
+                            cancelButton(context),
+                            const Align(
+                              alignment: AlignmentDirectional.topStart,
+                              child: Text(
+                                AppStrings.addBeneficiary,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 30,
+                                    color: AppColors.btn2),
+                              ),
                             ),
-                          ),
+
+                            GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    bAccount.add({
+                                      'accNo': contForm.text,
+                                      'amount': contForm2.text
+                                    });
+                                  });
+                                },
+                                child: _BeneficiaryIcon(
+                                    "Create beneficiaries Group")),
+                            (bAccount.isNotEmpty)
+                                ? ListView.builder(
+                                    itemCount: bAccount.length,
+                                    // listcontroller.length,
+                                    shrinkWrap: true,
+                                    itemBuilder: (context, index) {
+                                      return Benf(
+                                        contForm: contForm,
+                                        contForm2: contForm2,
+                                        onTap: () {
+                                          setState(() {
+                                            bAccount.removeAt(index);
+                                          });
+                                        },
+                                      );
+                                    },
+                                  )
+                                : const Text(
+                                    "No beneficiary group created at the moment.."),
+
+                            const SizedBox(height: 10),
+                            GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    db.BeneficiaryAccounts.add({
+                                      'accNo': contForm.text,
+                                      'amount': contForm2.text
+                                    });
+                                    contForm.clear();
+                                    contForm2.clear();
+                                  });
+                                  Navigator.of(context).pop();
+                                  db.updateDb();
+                                },
+                                child: _BeneficiaryIcon(
+                                    "Add Another Beneficiaries")),
+                            // elvBtn(AppStrings.cont, "routeName", context, 50,
+                            //     double.infinity)
+                          ],
                         ),
-                      );
-                    },
+                      ),
+                    ),
                   );
                 },
               );

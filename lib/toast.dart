@@ -50,11 +50,8 @@ class _ToastState extends State<Toast> {
             // n0d3qbqJs5NWLLcaSID4M41ZrrJAQcVpA
             // csmOEi04wGe-frdzJeukzv6Gxxit166R5
             // fv~Xu8NmwPv8r~G-L89jc-htGvzIC3tVu
-            // vvcJCYEK41wxRiboYh0mO0g1w__"),
-            const Text(
-              AppStrings.toast,
-              style: TextStyle(color: AppColors.txt1, fontSize: 45),
-            ),
+            // vvcJCYEK41wxRiboYh0mO0g1w__semanticLabel:"),
+            appHead(AppStrings.toast),
             const Text(AppStrings.greatness),
             const SizedBox(height: 15),
             const Center(

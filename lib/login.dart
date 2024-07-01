@@ -3,12 +3,12 @@ import 'dart:core';
 
 import 'package:bams_project/color-template.dart';
 import 'package:bams_project/components/App-string.dart';
+import 'package:bams_project/components/cancel-button.dart';
 import 'package:bams_project/controller/Service_Provider/app_repo.dart';
 import 'package:bams_project/controller/Service_Provider/login_provider.dart';
 import 'package:bams_project/fingerprint.dart';
 import 'package:bams_project/textfield.dart';
 import 'package:bams_project/toast.dart';
-import 'package:bams_project/top-content.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -32,21 +32,23 @@ class _LogInState extends State<LogIn> {
 
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).viewPadding.top;
     return Scaffold(
-      appBar: appBar(),
+      // appBar: appBar(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                AppStrings.capLog,
-                style: TextStyle(fontSize: 50, color: AppColors.txt1),
-              ),
+              SizedBox(height: 80 + height),
+              appHead(AppStrings.capLog),
               const Text(
                 AppStrings.logtxt,
-                style: TextStyle(color: AppColors.txt2),
+                style: TextStyle(
+                    fontFamily: 'Airbnb Cereal App',
+                    color: AppColors.txt2,
+                    fontWeight: FontWeight.w400),
               ),
               const SizedBox(
                 height: 50,
@@ -97,18 +99,30 @@ class _LogInState extends State<LogIn> {
                           checkButtonStatus(true);
                           context
                               .read<LoginProvider>()
-                              .login("https://reqres.in/api/login")
+                              .login("https://reqres.in/api/register")
                               .then((value) {
-                            context.read<AppRepo>().user = value.user;
-                            context.read<AppRepo>().token = value.token;
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) {
-                                print("new page is routed");
-                                print('login successful');
-                                return const Toast();
-                              },
-                            ));
-                            checkButtonStatus(false);
+                            final uValue =
+                                context.read<AppRepo>().user = value.user;
+                            final tValue =
+                                context.read<AppRepo>().token = value.token;
+                            if (uValue != uValue && tValue != tValue) {
+                              const snackBar = SnackBar(
+                                content: Text('Account not valid'),
+                                backgroundColor: AppColors.danger,
+                              );
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackBar);
+                            } else {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) {
+                                  print("new page is routed");
+                                  print('login successful');
+                                  return const Toast();
+                                },
+                              ));
+                              checkButtonStatus(false);
+                            }
+
                             //  this return the button back to false
                             //== login text is giving back
 

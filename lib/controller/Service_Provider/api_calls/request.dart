@@ -25,3 +25,10 @@ abstract class Requests<T> {
     }
   }
 }
+
+class Endpoint {
+  final String url = "https://reqres.in/api/register";
+  postMethod(body) async {
+    return await http.post(Uri.parse(url), body: jsonEncode(body));
+  }
+}

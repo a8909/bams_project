@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:bams_project/components/App-string.dart';
+import 'package:bams_project/components/cancel-button.dart';
+import 'package:bams_project/controller/Service_Provider/api_calls/request.dart';
 import 'package:bams_project/textfield.dart';
 import 'package:bams_project/top-content.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +26,31 @@ class _SignUpState extends State<SignUp> {
   var phone = "";
   var gmail = "";
   bool buttonController = true;
+
+  Endpoint endPoint = Endpoint();
+
+  _req() async {
+    final data = {
+      'fname': controller.text,
+      'lname': controller2.text,
+      'phone': controller3.text,
+      'mail': controller4.text,
+    };
+
+    var response = await endPoint.postMethod(data);
+    print(response.body);
+    var resBody = jsonDecode(response.body);
+    try {
+      if (resBody == 200) {
+        print(response.body);
+        print('New user just sign in now..');
+        Navigator.of(context).pushNamed("/verification");
+      }
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,10 +61,7 @@ class _SignUpState extends State<SignUp> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                AppStrings.register,
-                style: TextStyle(color: AppColors.txt1, fontSize: 50),
-              ),
+              appHead(AppStrings.register),
               const SizedBox(height: 10),
               const Text(AppStrings.regTxt,
                   style: TextStyle(color: AppColors.txt2)),
@@ -94,7 +120,7 @@ class _SignUpState extends State<SignUp> {
                         );
                         // snackBar(
                         //     'Make sure no field is empty!', AppColors.danger);
-
+                        // _req();
                         ScaffoldMessenger.of(context).showSnackBar(snack);
                       } else {
                         const snackbar = SnackBar(
@@ -106,8 +132,12 @@ class _SignUpState extends State<SignUp> {
                         //     'verification successfully created..',
                         //     AppColors.success);
 
-                        Navigator.of(context).pushNamed("/verification");
+                        _req();
                         ScaffoldMessenger.of(context).showSnackBar(snackbar);
+                        controller.clear();
+                        controller2.clear();
+                        controller3.clear();
+                        controller4.clear();
                       }
                     },
                     style: ElevatedButton.styleFrom(
