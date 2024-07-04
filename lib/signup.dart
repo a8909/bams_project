@@ -172,7 +172,7 @@ class _SignUpState extends State<SignUp> {
                             for (var f in formFields.values) {
                               f['controller'].clear();
                             }
-                            // displayState(true);
+                            displayState(true);
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(snackbar);
                           },
