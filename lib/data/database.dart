@@ -1,32 +1,28 @@
-import 'package:bams_project/components/add-beneficiary.dart';
-import 'package:bams_project/models/bankDetails_model.dart';
-import 'package:bams_project/toast.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 
 class BamsDataBase {
   // Toast toast = const Toast();
   List BeneficiaryAccounts = [];
-  // List<BenfAccount>? getbenfAcc() {
-  //   return BeneficiaryAccounts;
-  // }
+  List loginUsers = [];
 
   final dbox = Hive.box("DataBase");
 
   void createInitaialDb() {
     // toast = const Toast();
     BeneficiaryAccounts = [];
+    loginUsers = [];
   }
 
   void loadDb() {
     // toast = dbox.get('tst');
     BeneficiaryAccounts = dbox.get('bfaccount');
+    loginUsers = dbox.get('userLogin');
   }
 
   void updateDb() {
     // dbox.put('tst', toast);
     dbox.put('bfaccount', BeneficiaryAccounts);
+    dbox.put('userLogin', loginUsers);
   }
 
   void deleteDb() {

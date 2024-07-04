@@ -17,39 +17,70 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  final TextEditingController controller = TextEditingController();
-  final controller2 = TextEditingController();
-  final controller3 = TextEditingController();
-  final controller4 = TextEditingController();
-  var firstName = "";
-  var lastName = "";
-  var phone = "";
-  var gmail = "";
-  bool buttonController = true;
+  final Map<String, String> _payLoad = {};
+  bool displayT = true;
+
+  get _validForm {
+    for (var k in formFields.keys) {
+      if (_payLoad[k] == null || _payLoad[k]!.isEmpty) return false;
+    }
+    return true;
+  }
+
+  displayState(bool display) {
+    setState(() {
+      displayT = display;
+    });
+  }
 
   Endpoint endPoint = Endpoint();
 
   _req() async {
     final data = {
-      'fname': controller.text,
-      'lname': controller2.text,
-      'phone': controller3.text,
-      'mail': controller4.text,
+      'fname': formFields['firstName']['controller'].text.trim(),
+      'lname': formFields['lastName']['controller'].text.trim(),
+      'phone': formFields['phone']['controller'].text.trim(),
+      'mail': formFields['mail']['controller'].text.trim(),
     };
 
     var response = await endPoint.postMethod(data);
     print(response.body);
-    var resBody = jsonDecode(response.body);
+    jsonDecode(response.body);
     try {
-      if (resBody == 200) {
+      if (response.statusCode == 200) {
         print(response.body);
         print('New user just sign in now..');
+        // ignore: use_build_context_synchronously
         Navigator.of(context).pushNamed("/verification");
       }
     } catch (e) {
+      // displayState(true);
       throw Exception(e);
     }
   }
+
+  Map<String, dynamic> formFields = {
+    'firstName': {
+      'valid': false,
+      'controller': TextEditingController(),
+      'focusNode': FocusNode()
+    },
+    'lastName': {
+      'valid': false,
+      'controller': TextEditingController(),
+      'focusNode': FocusNode()
+    },
+    'phone': {
+      'valid': false,
+      'controller': TextEditingController(),
+      'focusNode': FocusNode()
+    },
+    'mail': {
+      'valid': false,
+      'controller': TextEditingController(),
+      'focusNode': FocusNode()
+    }
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -70,9 +101,11 @@ class _SignUpState extends State<SignUp> {
                 keyboardType: TextInputType.name,
                 hint: AppStrings.firstname,
                 heigth: 7,
-                controller: controller,
+                controller: formFields['firstName']['controller'],
                 onChangecallback: (value) {
-                  firstName = value;
+                  setState(() {
+                    _payLoad['firstName'] = value;
+                  });
                 },
               ),
               const SizedBox(height: 20),
@@ -80,9 +113,11 @@ class _SignUpState extends State<SignUp> {
                 keyboardType: TextInputType.name,
                 hint: AppStrings.lastname,
                 heigth: 7,
-                controller: controller2,
+                controller: formFields['lastName']['controller'],
                 onChangecallback: (value) {
-                  lastName = value;
+                  setState(() {
+                    _payLoad['lastName'] = value;
+                  });
                 },
               ),
               const SizedBox(height: 20),
@@ -90,9 +125,18 @@ class _SignUpState extends State<SignUp> {
                 keyboardType: TextInputType.number,
                 hint: AppStrings.phone,
                 heigth: 7,
-                controller: controller3,
+                controller: formFields['phone']['controller'],
                 onChangecallback: (value) {
-                  phone = value;
+                  if (value.length > 11) {
+                    formFields['phone']['controller'].text =
+                        value.substring(0, 11);
+                    TextSelection.fromPosition(TextPosition(
+                        offset: formFields['phone']['controller'].text.length));
+                  }
+                  setState(() {
+                    _payLoad['phone'] =
+                        value.length > 11 ? value.substring(0, 11) : value;
+                  });
                 },
               ),
               const SizedBox(height: 20),
@@ -100,9 +144,11 @@ class _SignUpState extends State<SignUp> {
                 keyboardType: TextInputType.emailAddress,
                 hint: AppStrings.gmail,
                 heigth: 7,
-                controller: controller4,
+                controller: formFields['mail']['controller'],
                 onChangecallback: (value) {
-                  gmail = value;
+                  setState(() {
+                    _payLoad['mail'] = value;
+                  });
                 },
               ),
               const SizedBox(height: 30),
@@ -110,42 +156,41 @@ class _SignUpState extends State<SignUp> {
                 width: double.infinity,
                 height: 50,
                 child: ElevatedButton(
-                    onPressed: () {
-                      if (controller2.text.isEmpty &&
-                          controller3.text.isEmpty &&
-                          controller4.text.isEmpty) {
-                        const snack = SnackBar(
-                          content: Text('Make sure no field is empty!'),
-                          backgroundColor: AppColors.danger,
-                        );
-                        // snackBar(
-                        //     'Make sure no field is empty!', AppColors.danger);
-                        // _req();
-                        ScaffoldMessenger.of(context).showSnackBar(snack);
-                      } else {
-                        const snackbar = SnackBar(
-                          content: Text('verification successfully created..'),
-                          backgroundColor: AppColors.success,
-                        );
+                    onPressed: !_validForm
+                        ? null
+                        : () {
+                            const snackbar = SnackBar(
+                              content:
+                                  Text('verification successfully created..'),
+                              backgroundColor: AppColors.success,
+                            );
 
-                        // snackBar(
-                        //     'verification successfully created..',
-                        //     AppColors.success);
+                            displayState(false);
+                            Navigator.of(context).pushNamed("/verification");
 
-                        _req();
-                        ScaffoldMessenger.of(context).showSnackBar(snackbar);
-                        controller.clear();
-                        controller2.clear();
-                        controller3.clear();
-                        controller4.clear();
-                      }
-                    },
+                            // _req();
+                            for (var f in formFields.values) {
+                              f['controller'].clear();
+                            }
+                            // displayState(true);
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackbar);
+                          },
                     style: ElevatedButton.styleFrom(
+                        disabledBackgroundColor: const Color(0xFF6CACE1),
                         backgroundColor: AppColors.btn1,
                         foregroundColor: Colors.white),
-                    child: const Column(
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: [Text(AppStrings.cont)],
+                      children: [
+                        displayT
+                            ? const Text(AppStrings.cont)
+                            : const Center(
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2.0,
+                                ),
+                              )
+                      ],
                     )),
               )
             ],
@@ -155,11 +200,3 @@ class _SignUpState extends State<SignUp> {
     );
   }
 }
-
-// var snackBar = (String content, var color) {
-//   return SnackBar(
-//     content: Text(content),
-//     backgroundColor: color,
-//   );
-// };
-// var snackBar = const 

@@ -1,10 +1,7 @@
-import 'dart:convert';
-
 import 'package:bams_project/components/App-string.dart';
 import 'package:bams_project/components/cancel-button.dart';
-import 'package:bams_project/controller/Service_Provider/api_calls/request.dart';
 import 'package:bams_project/controller/Service_Provider/login_provider.dart';
-import 'package:bams_project/signup.dart';
+
 import 'package:bams_project/textfield.dart';
 import 'package:bams_project/top-content.dart';
 import 'package:flutter/material.dart';

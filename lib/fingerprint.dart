@@ -13,40 +13,14 @@ class FingerPrint extends StatefulWidget {
 
 class _FingerPrintState extends State<FingerPrint> {
   LocalAuthentication auth = LocalAuthentication();
-  bool _canCheckBiometric = false;
+  bool canCheckBiometrics = true;
   List<BiometricType>? available;
   String success = "Authorization Successful";
   String unsuccessful = "Authorization failed";
 
-  Future<void> _checkBiomerics() async {
-    bool canCheckBiometric = false;
-    try {
-      canCheckBiometric = await auth.canCheckBiometrics;
-    } catch (e) {
-      print(e);
-    }
-    if (!mounted) return;
-    setState(() {
-      _canCheckBiometric = canCheckBiometric;
-    });
-  }
-
-  Future<void> getAvailableBiometric() async {
-    List<BiometricType>? availableBiometric;
-    try {
-      availableBiometric = await auth.getAvailableBiometrics();
-    } catch (e) {
-      print(e);
-    }
-    setState(() {
-      available = availableBiometric;
-    });
-  }
-
   Future<void> authenticate() async {
-    bool canAuthenticate = false;
     try {
-      canAuthenticate = await auth.authenticate(
+      bool isAuthenticated = await auth.authenticate(
         localizedReason: "Permission to login to App",
         options: const AuthenticationOptions(
           biometricOnly: true,
@@ -54,38 +28,33 @@ class _FingerPrintState extends State<FingerPrint> {
           stickyAuth: true,
         ),
       );
+      if (isAuthenticated) {}
     } catch (e) {
       print("Error message : $e");
     }
-    if (!mounted) return;
-    setState(() {
-      canAuthenticate ? print(success) : print(unsuccessful);
-      Navigator.of(context as BuildContext).pushNamed("/screen1");
-    });
+    // if (!mounted) return;
+    // setState(() {
+    //   isAuthenticated ? print(success) : print(unsuccessful);
+    //   Navigator.of(context).pushNamed("/screen1");
+    // });
     return authenticate();
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-
-    getAvailableBiometric();
-    _checkBiomerics();
   }
 
   @override
   Widget build(BuildContext context) {
     // final size = MediaQuery.sizeOf(context);
     return GestureDetector(
-      onTap: () => authenticate(),
+      onTap: () => authenticate,
       child: Container(
         decoration: const BoxDecoration(
           color: AppColors.btn2,
           borderRadius: BorderRadius.all(Radius.circular(7)),
         ),
-        // width: screensize.width,
-        // height: screensize.height,
         child: ClipRRect(
           child: Padding(
             padding: const EdgeInsets.all(3.0),

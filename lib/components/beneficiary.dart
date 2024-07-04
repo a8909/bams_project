@@ -1,10 +1,9 @@
 import 'package:bams_project/models/bankDetails_model.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 
 class BeneficiariesAccount extends StatefulWidget {
-  BenAcc b;
-  BeneficiariesAccount({super.key, required this.b});
+  final BenAcc b;
+  const BeneficiariesAccount({super.key, required this.b});
 
   @override
   State<BeneficiariesAccount> createState() => _BeneficiariesAccountState();

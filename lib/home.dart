@@ -8,9 +8,9 @@ import 'package:flutter/material.dart';
 import 'color-template.dart';
 
 class Home extends StatefulWidget {
-  late final BankObject bankObject;
+  final BankObject bankObject;
 
-  Home({super.key, required this.bankObject});
+  const Home({super.key, required this.bankObject});
 
   @override
   State<Home> createState() => _HomeState();
@@ -132,10 +132,10 @@ class _HomeState extends State<Home> {
                                               controller: ScrollController(),
                                               itemBuilder: (context, index) {
                                                 var finalUser = [];
-                                                List<TextEditingController>
-                                                    _banknameController = [
-                                                  TextEditingController()
-                                                ];
+                                                // List<TextEditingController>
+                                                //     _banknameController = [
+                                                //   TextEditingController()
+                                                // ];
                                                 if (userForm.isNotEmpty) {
                                                   for (var user in userForm) {
                                                     print("${user} is here");

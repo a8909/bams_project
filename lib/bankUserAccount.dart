@@ -4,8 +4,8 @@ import 'models/bankDetails_model.dart';
 import 'top-content.dart';
 
 class Useritem extends StatelessWidget {
-  BankUser bankies;
-  Useritem({super.key, required this.bankies});
+  final BankUser bankies;
+  const Useritem({super.key, required this.bankies});
 
   @override
   Widget build(BuildContext context) {

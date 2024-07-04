@@ -8,13 +8,10 @@ import 'package:bams_project/models/bank_models.dart';
 import 'package:bams_project/textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 // import 'package:get/get_connect/sockets/src/sockets_html.dart';
 
 import 'transfer-money.dart';
-
-enum ButtonState { init, done }
 
 class OtherAccount extends StatefulWidget {
   const OtherAccount({super.key});
@@ -22,8 +19,6 @@ class OtherAccount extends StatefulWidget {
   @override
   State<OtherAccount> createState() => _OtherAccountState();
 }
-
-ButtonState state = ButtonState.init;
 
 class _OtherAccountState extends State<OtherAccount> {
   final TextEditingController controller = TextEditingController();
@@ -41,7 +36,6 @@ class _OtherAccountState extends State<OtherAccount> {
   final contForm2 = TextEditingController();
 
   void onFilter(value) {
-    print(value);
     setState(() {
       banksInfo.beneficials
           .where((d) => d.accName.toLowerCase().contains(value.toLowerCase()))
@@ -176,7 +170,6 @@ class _OtherAccountState extends State<OtherAccount> {
                               itemCount: banksInfo.beneficials.length,
                               shrinkWrap: true,
                               itemBuilder: (context, index) {
-                                // print(details.accName);
                                 final benAccc = banksInfo.beneficials[index];
                                 return BeneficiariesAccount(b: benAccc);
                               },
@@ -394,9 +387,9 @@ enum Checkstate { init, done }
 
 Column ownAccount(BuildContext context) {
   final TextEditingController controller = TextEditingController();
-  var reason1 = "";
-  var reason2 = "";
-  var amountToSend = '';
+  // var reason1 = "";
+  // var reason2 = "";
+  // var amountToSend = '';
   return Column(
     children: [
       AppField(

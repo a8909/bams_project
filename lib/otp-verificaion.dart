@@ -30,6 +30,8 @@ class Verification extends StatelessWidget {
               OtpTextField(
                 numberOfFields: 5,
                 showFieldAsBox: true,
+                obscureText: true,
+                focusedBorderColor: const Color(0xFF074F89),
                 borderRadius: const BorderRadius.all(Radius.circular(7)),
                 fieldWidth: 50,
                 onSubmit: (String verificationCode) {
@@ -58,6 +60,7 @@ class Verification extends StatelessWidget {
                     ],
                   )),
               const SizedBox(height: 40),
+              // if ()
               elvBtn(
                   AppStrings.vercont, "/signin", context, 50, double.infinity)
             ],

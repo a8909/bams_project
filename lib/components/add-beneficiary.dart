@@ -4,8 +4,8 @@ class Benf extends StatefulWidget {
   final TextEditingController contForm;
 
   final TextEditingController contForm2;
-  void Function()? onTap;
-  Benf(
+  final void Function()? onTap;
+  const Benf(
       {super.key,
       required this.contForm,
       required this.contForm2,

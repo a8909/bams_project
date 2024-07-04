@@ -27,7 +27,7 @@ class _MainPage2State extends State<MainPage2> {
             "Monitor your accounts in a single interface",
             style: TextStyle(color: AppColors.txt2, fontSize: 50),
           ),
-          const SizedBox(
+          SizedBox(
             height: 30,
           ),
           // Image.asset(widget.imagePath)

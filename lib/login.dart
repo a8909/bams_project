@@ -6,10 +6,13 @@ import 'package:bams_project/components/App-string.dart';
 import 'package:bams_project/components/cancel-button.dart';
 import 'package:bams_project/controller/Service_Provider/app_repo.dart';
 import 'package:bams_project/controller/Service_Provider/login_provider.dart';
+import 'package:bams_project/data/database.dart';
 import 'package:bams_project/fingerprint.dart';
+import 'package:bams_project/screen_1.dart';
 import 'package:bams_project/textfield.dart';
 import 'package:bams_project/toast.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
 class LogIn extends StatefulWidget {
@@ -28,6 +31,19 @@ class _LogInState extends State<LogIn> {
     setState(() {
       buttonStatus = status;
     });
+  }
+
+  final box = Hive.box('DataBase');
+  BamsDataBase bdb = BamsDataBase();
+
+  @override
+  void initState() {
+    super.initState();
+    // if (box.get('userLogin') == null) {
+    //   bdb.loadDb();
+    // } else {
+    //   bdb.createInitaialDb();
+    // }
   }
 
   @override
@@ -57,7 +73,9 @@ class _LogInState extends State<LogIn> {
               TextField(
                 keyboardType: TextInputType.emailAddress,
                 onChanged: (value) {
-                  context.read<LoginProvider>().email = value;
+                  setState(() {
+                    context.read<LoginProvider>().email = value;
+                  });
                 },
                 decoration: const InputDecoration(
                     label: Text(AppStrings.email),
@@ -77,7 +95,9 @@ class _LogInState extends State<LogIn> {
                 label: "password",
                 keyboardType: TextInputType.text,
                 onChanged: (value) {
-                  context.read<LoginProvider>().password = value;
+                  setState(() {
+                    context.read<LoginProvider>().password = value;
+                  });
                 },
               ),
               const SizedBox(height: 20),
@@ -87,48 +107,42 @@ class _LogInState extends State<LogIn> {
                     height: 50,
                     width: 266,
                     child: ElevatedButton(
-                        onPressed:
-                            // context
-                            //             .read<LoginProvider>()
-                            //             .email
-                            //             .isEmpty ||
-                            //         context.read<LoginProvider>().password.isEmpty
-                            //     ? null
-                            // :
-                            () {
-                          checkButtonStatus(true);
-                          context
-                              .read<LoginProvider>()
-                              .login("https://reqres.in/api/register")
-                              .then((value) {
-                            final uValue =
-                                context.read<AppRepo>().user = value.user;
-                            final tValue =
-                                context.read<AppRepo>().token = value.token;
-                            if (uValue != uValue && tValue != tValue) {
-                              const snackBar = SnackBar(
-                                content: Text('Account not valid'),
-                                backgroundColor: AppColors.danger,
-                              );
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(snackBar);
-                            } else {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) {
-                                  print("new page is routed");
-                                  print('login successful');
-                                  return const Toast();
-                                },
-                              ));
-                              checkButtonStatus(false);
-                            }
+                        onPressed: context
+                                    .read<LoginProvider>()
+                                    .email
+                                    .isEmpty ||
+                                context.read<LoginProvider>().password.isEmpty
+                            ? null
+                            : () {
+                                checkButtonStatus(true);
+                                context
+                                    .read<LoginProvider>()
+                                    .login("https://reqres.in/api/register")
+                                    .then((value) {
+                                  context.read<AppRepo>().user = value.user;
+                                  context.read<AppRepo>().token = value.token;
+                                  Navigator.of(context)
+                                      .pushReplacement(MaterialPageRoute(
+                                    builder: (context) {
+                                      bdb.updateDb();
+                                      print('login successful');
+                                      return const Toast();
+                                      // if (box.get('userLogin') != null) {
+                                      //   bdb.updateDb();
+                                      //   return const Screen1();
+                                      // } else {
+                                      //   return const Toast();
+                                      // }
+                                    },
+                                  ));
+                                  checkButtonStatus(false);
 
-                            //  this return the button back to false
-                            //== login text is giving back
+                                  //  this return the button back to false
+                                  //== login text is giving back
 
-                            print("welcome");
-                          });
-                        },
+                                  print("welcome");
+                                });
+                              },
                         style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.btn1,
                             foregroundColor: Colors.white),

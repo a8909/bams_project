@@ -1,10 +1,6 @@
-import 'package:bams_project/color-template.dart';
 import 'package:bams_project/components/App-string.dart';
 import 'package:bams_project/components/cancel-button.dart';
 import 'package:bams_project/other-account.dart';
-// import 'package:bams_project/elevatedBut.dart';
-
-// import 'package:bams_project/textfield.dart';
 import 'package:bams_project/top-content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_toggle_tab/flutter_toggle_tab.dart';
@@ -65,14 +61,8 @@ class _TransferMoneyState extends State<TransferMoney> {
 }
 
 Expanded fromTo(String from, String image, String accNo) {
-  // final List<Map<dynamic, String>> bankState = [
-  //   {"accountNumber": "2263997831", "bankLogo": "assets/images/gtb.png"},
-  //   {"accountNumber": "2263997831", "bankLogo": "assets/images/gtb.png"}
-  // ];
   var items = ["9090397455", "9034500772", "2263997831"];
-  final itemImages = [
-    "",
-  ];
+
   String itemchange = "";
 
   void setState(Null Function() param0) {

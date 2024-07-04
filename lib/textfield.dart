@@ -2,14 +2,13 @@
 
 import 'package:bams_project/components/App-string.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class TxtField extends StatefulWidget {
   final String label;
   final keyboardType;
-  void Function(String)? onChanged;
+  final void Function(String)? onChanged;
 
-  TxtField({
+  const TxtField({
     super.key,
     required this.label,
     required this.keyboardType,
@@ -131,80 +130,6 @@ class _HelperPasswordState extends State<HelperPassword> {
           focusedBorder: const OutlineInputBorder(
               borderSide: BorderSide(color: Colors.transparent),
               borderRadius: BorderRadius.all(Radius.circular(7)))),
-    );
-  }
-}
-
-// enum Accounts { own, others }
-
-class SwitchAccount extends StatefulWidget {
-  bool accountType = true;
-  SwitchAccount({super.key, required this.accountType});
-
-  @override
-  State<SwitchAccount> createState() => _SwitchAccountState();
-}
-
-class _SwitchAccountState extends State<SwitchAccount> {
-  bool accounts = true;
-  void changeAccount() {
-    setState(() {
-      accounts = !accounts;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 30,
-      width: double.infinity,
-      decoration: const BoxDecoration(
-        color: Colors.grey,
-        borderRadius: BorderRadius.all(Radius.circular(10)),
-      ),
-      child: Row(
-        children: [
-          GestureDetector(
-            onTap: () {
-              changeAccount();
-            },
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: Container(
-                color: Colors.white.withOpacity(0.5),
-                width: 100,
-                child: const Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(AppStrings.ownaccount),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(
-            width: 40,
-          ),
-          GestureDetector(
-            onTap: () {
-              changeAccount();
-            },
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: Container(
-                width: 100,
-                color: Colors.white.withOpacity(0.5),
-                child: const Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(AppStrings.otheraccount),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
     );
   }
 }
