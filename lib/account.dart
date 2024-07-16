@@ -1,5 +1,5 @@
 import 'package:bams_project/bankUserAccount.dart';
-import 'package:bams_project/color-template.dart';
+import 'package:bams_project/components/cancel-button.dart';
 import 'package:bams_project/models/bankDetails_model.dart';
 import 'package:bams_project/models/bank_models.dart';
 import 'package:bams_project/top-content.dart';
@@ -18,11 +18,9 @@ class BankAccount extends StatelessWidget {
             body: Padding(
                 padding: const EdgeInsets.fromLTRB(16.0, 8, 16.0, 8),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      "Accounts",
-                      style: TextStyle(color: AppColors.btn2, fontSize: 40),
-                    ),
+                    appHead("Accounts"),
                     const SizedBox(
                       height: 10,
                     ),

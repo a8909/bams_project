@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class LoginProvider extends ChangeNotifier {
   String email = "";
   String password = "";
-  Future<LoginResponse> login(String urls) async {
-    return LoginService(email: email, password: password).call(urls);
+  Future<LoginResponse> login() async {
+    return LoginService(email: email, password: password).call();
   }
 }

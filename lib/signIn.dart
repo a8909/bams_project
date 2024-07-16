@@ -5,6 +5,7 @@ import 'package:bams_project/controller/Service_Provider/login_provider.dart';
 import 'package:bams_project/textfield.dart';
 import 'package:bams_project/top-content.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 import 'color-template.dart';
@@ -75,6 +76,7 @@ class _SignInState extends State<SignIn> {
 
                 //firstPassword is set here
                 TxtField(
+                  controller: controller,
                   keyboardType: TextInputType.text,
                   label: AppStrings.password,
                   onChanged: (value) {
@@ -99,6 +101,7 @@ class _SignInState extends State<SignIn> {
 
                 //confirm password is set here
                 TxtField(
+                  controller: pwdController,
                   keyboardType: TextInputType.text,
                   label: AppStrings.confirmPassword,
                   onChanged: (value) {
@@ -135,17 +138,15 @@ class _SignInState extends State<SignIn> {
                   height: 50,
                   width: double.infinity,
                   child: ElevatedButton(
-                      onPressed: () {
-                        // snackBar('Sucessfully created !', AppColors.success);
-                        context.read<LoginProvider>().login('apiUrl').then(
-                            (value) => Navigator.of(context).pushNamed(
-                                "/login")); // here the api link will be passed for get request
+                      onPressed:
+                          controller.text.isEmpty || pwdController.text.isEmpty
+                              ? null
+                              : () {
+                                  Navigator.of(context).pushNamed("/screen1");
 
-                        pwdController.clear();
-                        controller.clear();
-                        // ScaffoldMessenger.of(context)
-                        //     .showSnackBar(snackBar as SnackBar);
-                      },
+                                  pwdController.clear();
+                                  controller.clear();
+                                },
                       style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.btn1,
                           foregroundColor: Colors.white),

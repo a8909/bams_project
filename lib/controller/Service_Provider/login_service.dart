@@ -8,8 +8,8 @@ class LoginService {
   final String password;
 
   LoginService({required this.email, required this.password});
-  Future<LoginResponse> call(String urls) async {
-    var url = urls;
+  Future<LoginResponse> call() async {
+    var url = "https://reqres.in/api/register";
     final body = {"email": email, "password": password};
     print(jsonEncode(body));
     final result = await http.post(Uri.parse(url), body: body);

@@ -2,27 +2,26 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
-abstract class Requests<T> {
-  Uri getUri(String url) {
-    return Uri.parse(url);
+class Services {
+  Future<Map<String, dynamic>> doLogin(body) async {
+    final response = await http.post(
+        Uri.parse("https://reqres.in/api/register"),
+        body: jsonEncode(body));
+    print(response.body);
+    return jsonDecode(response.body);
   }
 
-  // Get request, the method get is used to set the url of the api that will be passed
-  Future<Map<String, dynamic>> get(String apiUrl) async {
-    try {
-      return responseHandler(await http.get(getUri(apiUrl)));
-    } catch (e) {
-      throw Exception(e);
-    }
-  }
-
-  // responseHandler is used for getting and setting the response body
-  Map<String, dynamic> responseHandler(http.Response response) {
-    if (response.statusCode == 200) {
-      return jsonDecode(response.body);
+  Future<Map<String, dynamic>> getUsers() async {
+    final result = await http.get(Uri.parse("https://reqres.in/api/users/2"));
+    if (result.statusCode == 200) {
+      return jsonDecode(result.body);
     } else {
       throw Exception();
     }
+  }
+
+  delS() async {
+    await http.delete(Uri.parse("https://reqres.in/api/register"), body: {});
   }
 }
 

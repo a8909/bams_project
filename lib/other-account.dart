@@ -247,8 +247,8 @@ class _OtherAccountState extends State<OtherAccount> {
                                 onTap: () {
                                   setState(() {
                                     bAccount.add({
-                                      'accNo': contForm.text,
-                                      'amount': contForm2.text
+                                      'accNo': contForm,
+                                      'amount': contForm2
                                     });
                                   });
                                 },
@@ -263,6 +263,11 @@ class _OtherAccountState extends State<OtherAccount> {
                                       return Benf(
                                         contForm: contForm,
                                         contForm2: contForm2,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            // fieldValue = value;
+                                          });
+                                        },
                                         onTap: () {
                                           setState(() {
                                             bAccount.removeAt(index);
@@ -304,16 +309,16 @@ class _OtherAccountState extends State<OtherAccount> {
         const SizedBox(height: 10),
         (db.BeneficiaryAccounts.isEmpty)
             ? const Text("")
-            : ListView.builder(
+            : ListView.separated(
                 shrinkWrap: true,
                 itemCount: db.BeneficiaryAccounts.length,
                 itemBuilder: (context, index) {
                   print("This is my current status");
-                  return Container(
+                  return Expanded(
                     child: Row(
                       children: [
                         Container(
-                          width: 325,
+                          width: 410,
                           height: 66,
                           decoration: BoxDecoration(
                               border: Border.all(color: Colors.grey.shade900),
@@ -355,8 +360,10 @@ class _OtherAccountState extends State<OtherAccount> {
                     ),
                   );
                 },
+                separatorBuilder: (BuildContext context, int index) {
+                  return const SizedBox(height: 20);
+                },
               ),
-        const SizedBox(height: 20),
 
         AppField(
           keyboardType: TextInputType.text,

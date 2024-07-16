@@ -1,11 +1,15 @@
+import 'dart:developer';
+
 import 'package:bams_project/components/App-string.dart';
 import 'package:bams_project/components/cancel-button.dart';
 import 'package:bams_project/controller/onboarding%20screens/bank_call.dart';
 // import 'package:bams_project/textfield.dart';
 import 'package:bams_project/verify-account.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 import 'color-template.dart';
+import 'controller/Service_Provider/api_calls/request.dart';
 
 class Home extends StatefulWidget {
   final BankObject bankObject;
@@ -33,294 +37,303 @@ class _HomeState extends State<Home> {
   }
 
   final TextEditingController controller = TextEditingController();
-  final _formKey = GlobalKey();
+
+  Services service = Services();
+  @override
+  void initState() {
+    super.initState();
+    final _db = Hive.box('DataBase');
+    _db.get('authData');
+
+    service.getUsers().then((value) => {_db.put('users', value)});
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              const SizedBox(
-                height: 30,
-              ),
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CircleAvatar(
-                    radius: 20,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [Text(AppStrings.jd)],
-                    ),
-                  ),
-                  Icon(
-                    Icons.notifications_none_outlined,
-                    size: 30,
-                  )
-                ],
-              ),
-              SizedBox(
-                height: 30,
-                width: 150,
-                child: OutlinedButton(
-                    onPressed: () {
-                      showModalBottomSheet(
-                        isScrollControlled: true,
-                        backgroundColor: Colors.transparent,
-                        context: context,
-                        builder: (context) {
-                          return DraggableScrollableSheet(
-                            initialChildSize: 0.85,
-                            maxChildSize: 0.9,
-                            minChildSize: 0.5,
-                            builder: (BuildContext context,
-                                ScrollController scrollController) {
-                              return Container(
-                                decoration: const BoxDecoration(
-                                  borderRadius: BorderRadius.vertical(
-                                      top: Radius.circular(20)),
-                                  color: Colors.white,
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: ListView(
-                                    controller: scrollController,
+        child: Column(
+          children: [
+            const SizedBox(
+              height: 30,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                FutureBuilder(
+                  future: service.getUsers(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return const CircleAvatar(
+                        radius: 20,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [Image(image: AssetImage(''))],
+                        ),
+                      );
+                    } else {
+                      return CircularProgressIndicator();
+                    }
+                  },
+                ),
+                const Icon(
+                  Icons.notifications_none_outlined,
+                  size: 30,
+                )
+              ],
+            ),
+            SizedBox(
+              height: 30,
+              width: 150,
+              child: OutlinedButton(
+                  onPressed: () {
+                    showModalBottomSheet(
+                      isScrollControlled: true,
+                      backgroundColor: Colors.transparent,
+                      context: context,
+                      builder: (context) {
+                        return DraggableScrollableSheet(
+                          initialChildSize: 0.85,
+                          maxChildSize: 0.9,
+                          minChildSize: 0.5,
+                          builder: (BuildContext context,
+                              ScrollController scrollController) {
+                            return Container(
+                              decoration: const BoxDecoration(
+                                borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(20)),
+                                color: Colors.white,
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: ListView(
+                                  controller: scrollController,
 
-                                    // mainAxisSize: MainAxisSize.min,
-                                    // crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      cancelButton(context),
-                                      const Text(
-                                        AppStrings.addAccount,
-                                        style: TextStyle(
-                                            fontSize: 40,
-                                            color: AppColors.txt1),
-                                      ),
-                                      const Text(
-                                        AppStrings.local,
-                                        style: TextStyle(fontSize: 15),
-                                      ),
-                                      const SizedBox(height: 10),
-                                      TextFormField(
-                                        onChanged: (value) =>
-                                            widget.bankObject.name = value,
-                                        onSaved: (newValue) =>
-                                            widget.bankObject.name == newValue,
-                                        controller: controller,
-                                        decoration: const InputDecoration(
-                                            border: OutlineInputBorder(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(7))),
-                                            hintText: "Enter account number",
-                                            labelText: "Enter account number"),
-                                      ),
-                                      const SizedBox(height: 10),
-                                      container("Guarantee Trust Bank",
-                                          "assets/images/gtb.png"),
-                                      const SizedBox(
-                                        height: 24,
-                                      ),
-                                      (userForm.isEmpty)
-                                          ? const Text("")
-                                          : ListView.separated(
-                                              itemCount: userForm.length,
-                                              shrinkWrap: true,
-                                              controller: ScrollController(),
-                                              itemBuilder: (context, index) {
-                                                var finalUser = [];
-                                                // List<TextEditingController>
-                                                //     _banknameController = [
-                                                //   TextEditingController()
-                                                // ];
-                                                if (userForm.isNotEmpty) {
-                                                  for (var user in userForm) {
-                                                    print("${user} is here");
-                                                    finalUser.add(user);
-                                                  }
-                                                } else {
-                                                  print(
-                                                      "${finalUser}, out of limit");
+                                  // mainAxisSize: MainAxisSize.min,
+                                  // crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    cancelButton(context),
+                                    const Text(
+                                      AppStrings.addAccount,
+                                      style: TextStyle(
+                                          fontSize: 40, color: AppColors.txt1),
+                                    ),
+                                    const Text(
+                                      AppStrings.local,
+                                      style: TextStyle(fontSize: 15),
+                                    ),
+                                    const SizedBox(height: 10),
+                                    TextFormField(
+                                      onChanged: (value) =>
+                                          widget.bankObject.name = value,
+                                      onSaved: (newValue) =>
+                                          widget.bankObject.name == newValue,
+                                      controller: controller,
+                                      decoration: const InputDecoration(
+                                          border: OutlineInputBorder(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(7))),
+                                          hintText: "Enter account number",
+                                          labelText: "Enter account number"),
+                                    ),
+                                    const SizedBox(height: 10),
+                                    container("Guarantee Trust Bank",
+                                        "assets/images/gtb.png"),
+                                    const SizedBox(
+                                      height: 24,
+                                    ),
+                                    (userForm.isEmpty)
+                                        ? const Text("")
+                                        : ListView.separated(
+                                            itemCount: userForm.length,
+                                            shrinkWrap: true,
+                                            controller: ScrollController(),
+                                            itemBuilder: (context, index) {
+                                              var finalUser = [];
+                                              // List<TextEditingController>
+                                              //     _banknameController = [
+                                              //   TextEditingController()
+                                              // ];
+                                              if (userForm.isNotEmpty) {
+                                                for (var user in userForm) {
+                                                  print("${user} is here");
+                                                  finalUser.add(user);
                                                 }
+                                              } else {
+                                                print(
+                                                    "${finalUser}, out of limit");
+                                              }
 
-                                                // print(finalUser.length);
-                                                return finalUser[index];
-                                              },
-                                              separatorBuilder:
-                                                  (BuildContext context,
-                                                      int index) {
-                                                return const SizedBox(
-                                                  height: 24,
-                                                );
-                                              },
-                                            ),
-                                      const SizedBox(height: 10),
-                                      Align(
-                                        alignment: Alignment.center,
-                                        child: SizedBox(
-                                          height: 50,
-                                          width: 180,
-                                          child: OutlinedButton(
-                                              onPressed: () {
-                                                setState(() {
-                                                  serverInput();
-
-                                                  // userForm.add(Views(
-                                                  //         bankName: "bankName",
-                                                  //         bankImage:
-                                                  //             "bankImage",
-                                                  //         bankobj: BankObject(
-                                                  //             name: widget
-                                                  //                 .bankObject
-                                                  //                 .name))
-
-                                                  //     // Home(
-                                                  //     //   bankObject: BankObject(
-                                                  //     //       name: widget
-                                                  //     //           .bankObject
-                                                  //     //           .name))
-                                                  //     );
-                                                });
-                                              },
-                                              style: OutlinedButton.styleFrom(
-                                                  backgroundColor: AppColors
-                                                      .btn2
-                                                      .withOpacity(0.1),
-                                                  foregroundColor:
-                                                      Colors.black),
-                                              child: const Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceEvenly,
-                                                children: [
-                                                  Text("Add another account"),
-                                                  // Icon(Icons
-                                                  //     .add_circle_outline_outlined)
-                                                ],
-                                              )),
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        height: 160,
-                                      ),
-                                      SizedBox(
-                                        height: 50,
-                                        width: double.infinity,
-                                        child: ElevatedButton(
-                                            onPressed: () {
-                                              showModalBottomSheet(
-                                                shape:
-                                                    const RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius.vertical(
-                                                                top: Radius
-                                                                    .circular(
-                                                                        20))),
-                                                context: context,
-                                                builder: (context) {
-                                                  return const VerifyAccount();
-                                                },
+                                              // print(finalUser.length);
+                                              return finalUser[index];
+                                            },
+                                            separatorBuilder:
+                                                (BuildContext context,
+                                                    int index) {
+                                              return const SizedBox(
+                                                height: 24,
                                               );
                                             },
-                                            style: ElevatedButton.styleFrom(
-                                                // shape:  OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(7))),
-                                                backgroundColor:
-                                                    AppColors.btn1),
-                                            child: const Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [Text(AppStrings.done)],
-                                            )),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              );
-                            },
-                          );
-                        },
-                      );
-                    },
-                    child: const Row(
-                      children: [
-                        Text("Add accounts"),
-                        Icon(Icons.add_circle_outline_outlined)
-                      ],
-                    )),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              const Spacer(),
-              Container(
-                margin: const EdgeInsets.fromLTRB(0, 0, 0, 50),
-                height: 300,
-                width: double.infinity,
-                decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(10))),
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text(AppStrings.transactionhistory),
-                          Container(
-                            height: 30,
-                            width: 140,
-                            decoration: BoxDecoration(
-                                color: Colors.grey.withOpacity(0.5),
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(5))),
-                            child: DropdownButton(
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(7)),
-                              // value: dropdownvalue,
-                              items: monthList.map((e) {
-                                return DropdownMenuItem(
-                                    value: e, child: Text(e));
-                              }).toList(),
-                              onChanged: (String? value) {
-                                setState(() {
-                                  dropdownvalue = value!;
-                                });
-                              },
-                            ),
-                          )
-                        ],
-                      ),
-                      // const CircleAvatar(
-                      //   radius: 40,
-                      //   backgroundImage: AssetImage("assetName"),
-                      // )
-                      const SizedBox(
-                        height: 50,
-                      ),
+                                          ),
+                                    const SizedBox(height: 10),
+                                    Align(
+                                      alignment: Alignment.center,
+                                      child: SizedBox(
+                                        height: 50,
+                                        width: 180,
+                                        child: OutlinedButton(
+                                            onPressed: () {
+                                              setState(() {
+                                                serverInput();
 
-                      // Center(
-                      //   child: Image.network(
-                      //       width: 200,
-                      //       "https://s3-alpha-sig.figma.com/img/ea98/44da/314dc153d45c81e0f231af41598adb5b?Expires=1710720000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=SkqivKJV5PadUV8G9QItab9BtJZAGdQWEOiqaKYV~mZpobk~whixFncKtQZr50EAdxruAGbThZmrKkzHjyQAx5SQXZrHHW~jtM3Le3JmA7PdynxvrippG2RpxSe1dopg0Dg4dIdXZHiCtuNKmHAUIgQW7fYg9t-FZ12Es1vkkst-bSMqYD9dQPa-WE-tdlh2dcL7S7C1ACGRDqEkdEeup9jazGua7GsmaPMhRHsO5eIFOLlf8BiVUPd6rBgCxIj4g3wwrz4j6jo19~8mkh1bK~tUHpRV4FZtpbeXhFoMNI0R4ELSqwzMT2-P5IO9VAXdp79Ap1iN2vFW2dzKUfRSIA__"),
-                      // ),
-                      const Text(
-                        "Oops!",
-                        style: TextStyle(fontSize: 10),
-                      ),
-                      Text(
-                        "We don’t have any transaction to show yet. ",
-                        style: TextStyle(color: Colors.black.withOpacity(0.5)),
-                      )
+                                                // userForm.add(Views(
+                                                //         bankName: "bankName",
+                                                //         bankImage:
+                                                //             "bankImage",
+                                                //         bankobj: BankObject(
+                                                //             name: widget
+                                                //                 .bankObject
+                                                //                 .name))
+
+                                                //     // Home(
+                                                //     //   bankObject: BankObject(
+                                                //     //       name: widget
+                                                //     //           .bankObject
+                                                //     //           .name))
+                                                //     );
+                                              });
+                                            },
+                                            style: OutlinedButton.styleFrom(
+                                                backgroundColor: AppColors.btn2
+                                                    .withOpacity(0.1),
+                                                foregroundColor: Colors.black),
+                                            child: const Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                Text("Add another account"),
+                                                // Icon(Icons
+                                                //     .add_circle_outline_outlined)
+                                              ],
+                                            )),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 160,
+                                    ),
+                                    SizedBox(
+                                      height: 50,
+                                      width: double.infinity,
+                                      child: ElevatedButton(
+                                          onPressed: () {
+                                            showModalBottomSheet(
+                                              shape:
+                                                  const RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.vertical(
+                                                              top: Radius
+                                                                  .circular(
+                                                                      20))),
+                                              context: context,
+                                              builder: (context) {
+                                                return const VerifyAccount();
+                                              },
+                                            );
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                              // shape:  OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(7))),
+                                              backgroundColor: AppColors.btn1),
+                                          child: const Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [Text(AppStrings.done)],
+                                          )),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                      },
+                    );
+                  },
+                  child: const Row(
+                    children: [
+                      Text("Add accounts"),
+                      Icon(Icons.add_circle_outline_outlined)
                     ],
-                  ),
+                  )),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            const Spacer(),
+            Container(
+              margin: const EdgeInsets.fromLTRB(0, 0, 0, 50),
+              height: 300,
+              width: double.infinity,
+              decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(10))),
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(AppStrings.transactionhistory),
+                        Container(
+                          height: 30,
+                          width: 140,
+                          decoration: BoxDecoration(
+                              color: Colors.grey.withOpacity(0.5),
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(5))),
+                          child: DropdownButton(
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(7)),
+                            // value: dropdownvalue,
+                            items: monthList.map((e) {
+                              return DropdownMenuItem(value: e, child: Text(e));
+                            }).toList(),
+                            onChanged: (String? value) {
+                              setState(() {
+                                dropdownvalue = value!;
+                              });
+                            },
+                          ),
+                        )
+                      ],
+                    ),
+                    // const CircleAvatar(
+                    //   radius: 40,
+                    //   backgroundImage: AssetImage("assetName"),
+                    // )
+                    const SizedBox(
+                      height: 50,
+                    ),
+
+                    // Center(
+                    //   child: Image.network(
+                    //       width: 200,
+                    //       "https://s3-alpha-sig.figma.com/img/ea98/44da/314dc153d45c81e0f231af41598adb5b?Expires=1710720000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=SkqivKJV5PadUV8G9QItab9BtJZAGdQWEOiqaKYV~mZpobk~whixFncKtQZr50EAdxruAGbThZmrKkzHjyQAx5SQXZrHHW~jtM3Le3JmA7PdynxvrippG2RpxSe1dopg0Dg4dIdXZHiCtuNKmHAUIgQW7fYg9t-FZ12Es1vkkst-bSMqYD9dQPa-WE-tdlh2dcL7S7C1ACGRDqEkdEeup9jazGua7GsmaPMhRHsO5eIFOLlf8BiVUPd6rBgCxIj4g3wwrz4j6jo19~8mkh1bK~tUHpRV4FZtpbeXhFoMNI0R4ELSqwzMT2-P5IO9VAXdp79Ap1iN2vFW2dzKUfRSIA__"),
+                    // ),
+                    const Text(
+                      "Oops!",
+                      style: TextStyle(fontSize: 10),
+                    ),
+                    Text(
+                      "We don’t have any transaction to show yet. ",
+                      style: TextStyle(color: Colors.black.withOpacity(0.5)),
+                    )
+                  ],
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

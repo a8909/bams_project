@@ -1,6 +1,5 @@
 import 'package:bams_project/components/App-string.dart';
 import 'package:bams_project/components/cancel-button.dart';
-import 'package:bams_project/data/database.dart';
 import 'package:bams_project/elevatedBut.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
@@ -14,20 +13,18 @@ class Toast extends StatefulWidget {
 
 class _ToastState extends State<Toast> {
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
     final _box = Hive.box('DataBase');
-    BamsDataBase dbBox = BamsDataBase();
-    @override
-    void initState() {
-      super.initState();
-
-      if (_box.get('tst') == null) {
-        dbBox.createInitaialDb();
-      } else {
-        dbBox.deleteDb();
-      }
+    final box = _box.get('authData');
+    print(box);
+    if (box != null) {
+      Navigator.pushNamed(context, '/screen1');
     }
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(16.0),

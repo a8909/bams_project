@@ -7,12 +7,14 @@ class TxtField extends StatefulWidget {
   final String label;
   final keyboardType;
   final void Function(String)? onChanged;
+  final TextEditingController controller;
 
   const TxtField({
     super.key,
     required this.label,
     required this.keyboardType,
     required this.onChanged,
+    required this.controller,
   });
 
   @override
@@ -20,40 +22,43 @@ class TxtField extends StatefulWidget {
 }
 
 class _TxtFieldState extends State<TxtField> {
-  final TextEditingController controller = TextEditingController();
-
   // late final String label;
   bool visible = true;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      keyboardType: widget.keyboardType,
-      onChanged: (value) {
-        widget.onChanged!(value);
-      },
-      controller: controller,
-      obscureText: visible,
-      decoration: InputDecoration(
-          label: Text(widget.label),
-          hintText: widget.label,
-          suffixIcon: TextButton(
-              onPressed: () {
-                setState(() {
-                  visible = !visible;
-                });
-              },
-              child: Column(
-                children: [
-                  visible
-                      ? const Text(AppStrings.show)
-                      : const Text(AppStrings.hide)
-                ], //conditional statement for show text toggle
-              )),
-          border: const OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(7))),
-          focusedBorder: const OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.blue),
-              borderRadius: BorderRadius.all(Radius.circular(7)))),
+    return Form(
+      key: _formKey,
+      child: TextField(
+        controller: widget.controller,
+        keyboardType: widget.keyboardType,
+        onChanged: (value) {
+          widget.onChanged!(value);
+        },
+        // controller: widget.controller,
+        obscureText: visible,
+        decoration: InputDecoration(
+            label: Text(widget.label),
+            hintText: widget.label,
+            suffixIcon: TextButton(
+                onPressed: () {
+                  setState(() {
+                    visible = !visible;
+                  });
+                },
+                child: Column(
+                  children: [
+                    visible
+                        ? const Text(AppStrings.show)
+                        : const Text(AppStrings.hide)
+                  ], //conditional statement for show text toggle
+                )),
+            border: const OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(7))),
+            focusedBorder: const OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.blue),
+                borderRadius: BorderRadius.all(Radius.circular(7)))),
+      ),
     );
   }
 }

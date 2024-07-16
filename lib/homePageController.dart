@@ -2,7 +2,6 @@ import 'package:bams_project/HomePage_1.dart';
 import 'package:bams_project/components/App-string.dart';
 import 'package:bams_project/homepage2..dart';
 import 'package:flutter/material.dart';
-
 import 'color-template.dart';
 import 'elevatedBut.dart';
 
@@ -15,6 +14,7 @@ class HomepageController extends StatefulWidget {
 
 class _HomepageControllerState extends State<HomepageController> {
   // final _dbBox = Hive.box('DataBase');
+  // final BamsDataBase _db = BamsDataBase();
   List pages = [
     const MainPage2(imagePath: ""),
     const MainPage(),
@@ -24,11 +24,6 @@ class _HomepageControllerState extends State<HomepageController> {
   @override
   void initState() {
     super.initState();
-    // if (_dbBox.get('onboarding') == null) {
-    //   db.createInitaialDb();
-    // } else {
-    //   db.loadDb();
-    // }
   }
 
   final _controller = PageController();

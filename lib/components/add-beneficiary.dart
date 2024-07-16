@@ -5,11 +5,13 @@ class Benf extends StatefulWidget {
 
   final TextEditingController contForm2;
   final void Function()? onTap;
+  final void Function(String)? onChanged;
   const Benf(
       {super.key,
       required this.contForm,
       required this.contForm2,
-      required this.onTap});
+      required this.onTap,
+      required this.onChanged});
 
   @override
   State<Benf> createState() => _BenfState();
@@ -44,6 +46,9 @@ class _BenfState extends State<Benf> {
                 ),
                 TextFormField(
                   controller: widget.contForm2,
+                  onChanged: (value) {
+                    widget.onChanged!(value);
+                  },
                   decoration: const InputDecoration(
                       hintText: "Enter Amount",
                       border: OutlineInputBorder(

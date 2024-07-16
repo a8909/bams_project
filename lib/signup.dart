@@ -33,30 +33,10 @@ class _SignUpState extends State<SignUp> {
     });
   }
 
-  Endpoint endPoint = Endpoint();
-
-  _req() async {
-    final data = {
-      'fname': formFields['firstName']['controller'].text.trim(),
-      'lname': formFields['lastName']['controller'].text.trim(),
-      'phone': formFields['phone']['controller'].text.trim(),
-      'mail': formFields['mail']['controller'].text.trim(),
-    };
-
-    var response = await endPoint.postMethod(data);
-    print(response.body);
-    jsonDecode(response.body);
-    try {
-      if (response.statusCode == 200) {
-        print(response.body);
-        print('New user just sign in now..');
-        // ignore: use_build_context_synchronously
-        Navigator.of(context).pushNamed("/verification");
-      }
-    } catch (e) {
-      // displayState(true);
-      throw Exception(e);
-    }
+  @override
+  void initState() {
+    super.initState();
+    print(_validForm);
   }
 
   Map<String, dynamic> formFields = {

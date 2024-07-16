@@ -8,12 +8,13 @@ import 'package:bams_project/controller/Service_Provider/app_repo.dart';
 import 'package:bams_project/controller/Service_Provider/login_provider.dart';
 import 'package:bams_project/data/database.dart';
 import 'package:bams_project/fingerprint.dart';
-import 'package:bams_project/screen_1.dart';
 import 'package:bams_project/textfield.dart';
 import 'package:bams_project/toast.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
+
+import 'controller/Service_Provider/api_calls/request.dart';
 
 class LogIn extends StatefulWidget {
   const LogIn({super.key});
@@ -33,17 +34,26 @@ class _LogInState extends State<LogIn> {
     });
   }
 
-  final box = Hive.box('DataBase');
-  BamsDataBase bdb = BamsDataBase();
+  Map<String, dynamic> auth = {
+    'email': {
+      'validator': false,
+      'controller': TextEditingController(),
+      'focusNode': FocusNode()
+    },
+    'password': {
+      'validator': false,
+      'controller': TextEditingController(),
+      'focusNode': FocusNode()
+    }
+  };
+
+  Services service = Services();
+  final _db = Hive.box('DataBase');
+  String message = "";
 
   @override
   void initState() {
     super.initState();
-    // if (box.get('userLogin') == null) {
-    //   bdb.loadDb();
-    // } else {
-    //   bdb.createInitaialDb();
-    // }
   }
 
   @override
@@ -71,6 +81,7 @@ class _LogInState extends State<LogIn> {
               ),
               // email field
               TextField(
+                controller: auth['email']['controller'],
                 keyboardType: TextInputType.emailAddress,
                 onChanged: (value) {
                   setState(() {
@@ -92,6 +103,7 @@ class _LogInState extends State<LogIn> {
               ),
               //password field
               TxtField(
+                controller: auth['password']['controller'],
                 label: "password",
                 keyboardType: TextInputType.text,
                 onChanged: (value) {
@@ -107,41 +119,45 @@ class _LogInState extends State<LogIn> {
                     height: 50,
                     width: 266,
                     child: ElevatedButton(
-                        onPressed: context
-                                    .read<LoginProvider>()
-                                    .email
-                                    .isEmpty ||
-                                context.read<LoginProvider>().password.isEmpty
+                        onPressed: auth['email']['controller'].text.isEmpty ||
+                                auth['password']['controller'].text.isEmpty
                             ? null
                             : () {
-                                checkButtonStatus(true);
-                                context
-                                    .read<LoginProvider>()
-                                    .login("https://reqres.in/api/register")
-                                    .then((value) {
-                                  context.read<AppRepo>().user = value.user;
-                                  context.read<AppRepo>().token = value.token;
+                                final body = {
+                                  'email': auth['email']['controller'].text,
+                                  'password':
+                                      auth['password']['controller'].text
+                                };
+
+                                print(body);
+                                service.doLogin(body).then((value) {
+                                  checkButtonStatus(true);
+                                  print(value);
+                                  _db.put('authSevice', value);
                                   Navigator.of(context)
                                       .pushReplacement(MaterialPageRoute(
                                     builder: (context) {
-                                      bdb.updateDb();
                                       print('login successful');
                                       return const Toast();
-                                      // if (box.get('userLogin') != null) {
-                                      //   bdb.updateDb();
-                                      //   return const Screen1();
-                                      // } else {
-                                      //   return const Toast();
-                                      // }
                                     },
                                   ));
-                                  checkButtonStatus(false);
-
-                                  //  this return the button back to false
-                                  //== login text is giving back
-
-                                  print("welcome");
                                 });
+                                // context
+                                //     .read<LoginProvider>()
+                                //     .login()
+                                //     .then((value) {
+                                //   context.read<AppRepo>().user = value.user;
+                                //   context.read<AppRepo>().token = value.token;
+                                //   Navigator.of(context)
+                                //       .pushReplacement(MaterialPageRoute(
+                                //     builder: (context) {
+                                //       print('login successful');
+                                //       return const Toast();
+                                //     },
+                                //   ));
+                                // });
+
+                                checkButtonStatus(false);
                               },
                         style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.btn1,
